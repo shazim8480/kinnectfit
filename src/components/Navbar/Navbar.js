@@ -12,7 +12,7 @@ import {
   Button,
 } from "@nextui-org/react";
 
-export default function KinnectNavbar() {
+export default function KFNavbar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const menuItems = [

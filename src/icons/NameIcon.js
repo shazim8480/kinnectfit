@@ -1,17 +1,17 @@
 import React from "react";
 
-export const NameIcon = () => {
+export const NameIcon = (props) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      class="h-5 w-5 text-gray-400"
+      className="h-5 w-5 text-default-400"
       viewBox="0 0 20 20"
       fill="currentColor"
     >
       <path
-        fill-rule="evenodd"
+        fillRule="evenodd"
         d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-        clip-rule="evenodd"
+        clipRule="evenodd"
       />
     </svg>
   );

@@ -5,7 +5,6 @@ export const KFInput = extendVariants(Input, {
     color: {
       stone: {
         inputWrapper: [
-          "bg-[#0C134F]-100",
           "border",
           "shadow",
           "transition-colors",

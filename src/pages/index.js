@@ -1,13 +1,17 @@
 import Image from "next/image";
-import { Inter } from "next/font/google";
-import { Button, ButtonGroup } from "@nextui-org/react";
-
-const inter = Inter({ subsets: ["latin"] });
-
+import KinnectNavbar from "@/components/Navbar/Navbar";
+import { Poppins } from "next/font/google";
+const poppins = Poppins({
+  weight: ["400", "500", "700", "800"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+});
 export default function Home() {
   return (
     <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    ></main>
+      className={`flex min-h-screen flex-col items-center justify-between ${poppins.className}`}
+    >
+      <KinnectNavbar />
+    </main>
   );
 }

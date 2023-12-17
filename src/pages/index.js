@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Montserrat } from "next/font/google";
+import FAQ from "@/components/FAQ";
 
 const montserrat = Montserrat({
   weight: ["400", "500", "700", "800", "900"],
@@ -8,8 +9,8 @@ const montserrat = Montserrat({
 
 export default function Home() {
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${montserrat.className}`}
-    ></main>
+    <main className={` ${montserrat.className}`}>
+      <FAQ />
+    </main>
   );
 }

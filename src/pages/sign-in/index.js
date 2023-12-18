@@ -4,9 +4,9 @@ import Link from "next/link";
 import { KFButton } from "@/components/KFButton";
 import { KFInput } from "@/components/KFInput";
 
-import { EyeFilledIcon } from "@/icons/EyeFilledIcon";
-import { EyeSlashFilledIcon } from "@/icons/EyeSlashFilledIcon";
-import { MailIcon } from "@/icons/MailIcon";
+import { EyeFilledIcon } from "@/assets/icons/EyeFilledIcon";
+import { EyeSlashFilledIcon } from "@/assets/icons/EyeSlashFilledIcon";
+import { MailIcon } from "@/assets/icons/MailIcon";
 
 const SignInPage = () => {
   const [isVisible, setIsVisible] = useState(false);

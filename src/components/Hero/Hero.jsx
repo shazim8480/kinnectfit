@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { KFButton } from "./KFButton";
+import { KFButton } from "../UI/KFButton";
 
 import hero_img from "../assets/images/hero-img.webp";
 

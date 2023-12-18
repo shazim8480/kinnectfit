@@ -1,8 +1,8 @@
 import { Montserrat } from "next/font/google";
 
 // landing page components
-import Hero from "@/components/Hero";
-import FAQ from "@/components/FAQ";
+import Hero from "@/components/Hero/Hero";
+import FAQ from "@/components/FAQ/FAQ";
 
 const montserrat = Montserrat({
   weight: ["400", "500", "700", "800", "900"],

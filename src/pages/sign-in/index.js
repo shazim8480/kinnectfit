@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Montserrat } from "next/font/google";
 
-import { KFButton } from "@/components/KFButton";
-import { KFInput } from "@/components/KFInput";
+import { KFButton } from "@/components/UI/KFButton";
+import { KFInput } from "@/components/UI/KFInput";
 
 import { EyeFilledIcon } from "@/assets/icons/EyeFilledIcon";
 import { EyeSlashFilledIcon } from "@/assets/icons/EyeSlashFilledIcon";

@@ -6,7 +6,7 @@ import { FiTwitter } from "react-icons/fi";
 import { FiInstagram } from "react-icons/fi";
 const Footer = () => {
   return (
-    <footer className={`bg-primary w-[100%] text-gray-200`}>
+    <footer className={`bg-black w-[100%] text-gray-200`}>
       <div className="relative px-10 py-14">
         <div className="grid gap-10 lg:grid-cols-4 sm:grid-cols-1">
           <div>

@@ -5,10 +5,10 @@ import { Montserrat } from "next/font/google";
 import { KFButton } from "@/components/KFButton";
 import { KFInput } from "@/components/KFInput";
 
-import { EyeFilledIcon } from "@/icons/EyeFilledIcon";
-import { EyeSlashFilledIcon } from "@/icons/EyeSlashFilledIcon";
-import { MailIcon } from "@/icons/MailIcon";
-import { NameIcon } from "@/icons/NameIcon";
+import { EyeFilledIcon } from "@/assets/icons/EyeFilledIcon";
+import { EyeSlashFilledIcon } from "@/assets/icons/EyeSlashFilledIcon";
+import { MailIcon } from "@/assets/icons/MailIcon";
+import { NameIcon } from "@/assets/icons/NameIcon";
 
 const montserrat = Montserrat({
   weight: ["400", "500", "700", "800", "900"],

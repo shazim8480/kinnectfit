@@ -1,5 +1,4 @@
 import React from "react";
-import styles from "./Navbar.module.css";
 import {
   Navbar,
   NavbarBrand,
@@ -41,9 +40,7 @@ export default function KFNavbar() {
 
       <NavbarContent className="hidden sm:flex gap-4" justify="end">
         <NavbarBrand>
-          <p className={`font-bold text-inherit ${styles.brandName}`}>
-            KinnectFit
-          </p>
+          <p className={`font-bold text-inherit  text-[18px]`}>KinnectFit</p>
         </NavbarBrand>
         <NavbarItem>
           <Link href="#">Features</Link>

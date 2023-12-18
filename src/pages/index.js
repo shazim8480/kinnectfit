@@ -8,11 +8,13 @@ import Footer from "@/components/Footer/Footer";
 
 // layout
 import MainLayout from "@/layouts/mainLayout";
+import Review from "@/components/Review/Review";
 
 export default function HomePage() {
   return (
     <section>
       <Hero />
+      <Review />
       <FAQ />
     </section>
   );

@@ -6,11 +6,11 @@ import { FiTwitter } from "react-icons/fi";
 import { FiInstagram } from "react-icons/fi";
 const Footer = () => {
   return (
-    <footer className={`bg-primary w-[100%] text-white`}>
+    <footer className={`bg-primary w-[100%] text-gray-200`}>
       <div className="relative px-10 py-14">
         <div className="grid gap-10 lg:grid-cols-4 sm:grid-cols-1">
           <div>
-            {/* <H1 text="About Us"></H1> */}
+            <h1 className="font-bold text-[22px] mb-4">About Us</h1>
             <div>
               <p>
                 We are a team of fitness enthusiasts dedicated to bringing you
@@ -19,7 +19,7 @@ const Footer = () => {
             </div>
           </div>
           <div>
-            {/* <H1 text="Quick Links"></H1> */}
+            <h1 className="font-bold text-[22px] mb-4">Quick Links</h1>
             <div className="flex flex-col space-y-1">
               <Link href="/">Home</Link>
               <Link href="/">Workouts</Link>
@@ -28,7 +28,7 @@ const Footer = () => {
             </div>
           </div>
           <div>
-            {/* <H1 text="Contact"></H1> */}
+            <h1 className="font-bold text-[22px] mb-4">Contact</h1>
             <div className="flex flex-col">
               <span>123 Fitness Street,</span>
               <span>Fit City, 56789</span>
@@ -36,7 +36,7 @@ const Footer = () => {
             </div>
           </div>
           <div>
-            {/* <H1 text="Follow Us"></H1> */}
+            <h1 className="font-bold text-[22px] mb-4">Follow Us</h1>
             <div className="flex space-x-8">
               <FiFacebook size={24} />
               <FiTwitter size={24} />

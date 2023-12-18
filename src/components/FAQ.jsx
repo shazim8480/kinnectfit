@@ -3,16 +3,25 @@ import { MinusSmallIcon, PlusSmallIcon } from "@heroicons/react/24/outline";
 
 const faqs = [
   {
-    question: "What's the best thing about Switzerland?",
+    question: "What is KinnectFit?",
     answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+      "KinnectFit is a comprehensive fitness app designed to help you achieve your health and wellness goals. We offer a user-friendly interface, compelling features, and personalized guidance to track your progress, stay motivated, and reach your full potential",
   },
   {
-    question: "What's the best thing about Switzerland?",
+    question: "How does the Activity Tracking work?",
     answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+      "You can easily log your meals, exercise routines, and other physical activities in the KinnectFit database. Track your progress over time and gain valuable insights into your fitness journey",
   },
-  // More questions...
+  {
+    question: "What does the Nutritional Database offer?",
+    answer:
+      "Our extensive Nutritional Database provides detailed information on various foods and beverages, including calories, macronutrients, and micronutrients. Make informed choices and optimize your diet for better results.",
+  },
+  {
+    question: "What kind of Workout Plans are available?",
+    answer:
+      "KinnectFit offers pre-built workout plans for a variety of fitness goals, including weight loss, muscle gain, and specific body sculpting. You can also personalize existing plans or create your own custom routines.",
+  },
 ];
 
 export default function FAQ() {

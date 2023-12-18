@@ -1,4 +1,4 @@
-import { Montserrat } from "next/font/google";
+import React from "react";
 
 // landing page components
 import Hero from "@/components/Hero/Hero";
@@ -6,18 +6,18 @@ import FAQ from "@/components/FAQ/FAQ";
 import KFNavbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
 
-const montserrat = Montserrat({
-  weight: ["400", "500", "700", "800", "900"],
-  subsets: ["latin"],
-});
+// layout
+import MainLayout from "@/layouts/mainLayout";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <main className={` ${montserrat.className}`}>
-      <KFNavbar />
+    <section>
       <Hero />
       <FAQ />
-      <Footer />
-    </main>
+    </section>
   );
 }
+
+HomePage.getLayout = function getLayout(page) {
+  return <MainLayout>{page}</MainLayout>;
+};

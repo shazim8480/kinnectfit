@@ -4,17 +4,17 @@ import React from "react";
 import Hero from "@/components/Hero/Hero";
 import FAQ from "@/components/FAQ/FAQ";
 import FeaturedWorkouts from "@/components/FeaturedWorkouts/FeaturedWorkouts";
+import Review from "@/components/Review/Review";
 
 // layout
 import MainLayout from "@/layouts/mainLayout";
-import Review from "@/components/Review/Review";
 
 export default function HomePage() {
   return (
     <section>
       <Hero />
-      <Review />
       <FeaturedWorkouts />
+      <Review />
       <FAQ />
     </section>
   );

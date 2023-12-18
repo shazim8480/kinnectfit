@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import { KFButton } from "../UI/KFButton";
 
-import hero_img from "../assets/images/hero-img.webp";
+// import { hero_img } from "../assets/images/hero-img.webp";
 
 const Hero = () => {
   return (
@@ -12,7 +12,7 @@ const Hero = () => {
           <p className="max-w-2xl font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl">
             #1 nutrition tracking app
           </p>
-          <h1 className="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl">
+          <h1 className="max-w-2xl mb-4 text-4xl font-extrabold leading-none tracking-tight md:text-5xl xl:text-6xl">
             Reach your goals <br /> with kinnectfit
           </h1>
           <p className="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl">
@@ -41,7 +41,7 @@ const Hero = () => {
           </KFButton>
         </div>
         <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
-          <Image alt="hero" src={hero_img} width={"300"} height={300} />
+          {/* <Image alt="hero" src={hero_img} width={"300"} height={300} /> */}
         </div>
       </div>
     </section>

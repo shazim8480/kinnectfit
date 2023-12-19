@@ -48,7 +48,7 @@ const Footer = () => {
       </div>
       <div className="flex flex-col px-10 text-center lg:flex-row lg:justify-between">
         <div>© 2023 Fitness App.All rights reserved.</div>
-        <div className="flex flex-col pb-10 lg:flex-row lg:gap-5">
+        <div className="flex flex-col pb-10 lg:flex-row lg:gap-5 privacy-container">
           <Link href={"/"}>Privacy Policy</Link>
           <Link href={"/"}>Terms & Conditions</Link>
         </div>

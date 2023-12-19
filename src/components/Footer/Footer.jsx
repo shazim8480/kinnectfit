@@ -45,8 +45,8 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col justify-center pb-6 text-center ">
-        <div>© 2023 Fitness App.All rights reserved.</div>
+      <div className="flex flex-col items-center justify-center py-3 text-slate-200 text-center bg-[#1D267D] ">
+        <div>© 2023 KinnectFit.All rights reserved.</div>
       </div>
     </footer>
   );

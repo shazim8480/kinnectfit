@@ -5,6 +5,7 @@ import Hero from "@/components/Hero/Hero";
 import FAQ from "@/components/FAQ/FAQ";
 import FeaturedWorkouts from "@/components/FeaturedWorkouts/FeaturedWorkouts";
 import Review from "@/components/Review/Review";
+import FeatureMealPlans from "@/components/FeatureMealPlans/FeatureMealPlans";
 
 // layout
 import MainLayout from "@/layouts/mainLayout";
@@ -14,6 +15,7 @@ export default function HomePage() {
     <section>
       <Hero />
       <FeaturedWorkouts />
+      <FeatureMealPlans />
       <Review />
       <FAQ />
     </section>

@@ -8,6 +8,7 @@ import Review from "@/components/Review/Review";
 
 // layout
 import MainLayout from "@/layouts/mainLayout";
+import DownloadApp from "@/components/DownloadApp/DownloadApp";
 
 export default function HomePage() {
   return (
@@ -16,6 +17,7 @@ export default function HomePage() {
       <FeaturedWorkouts />
       <Review />
       <FAQ />
+      <DownloadApp />
     </section>
   );
 }

@@ -18,8 +18,8 @@ export default function HomePage() {
       <FeaturedWorkouts />
       <FeatureMealPlans />
       <Review />
-      <FAQ />
       <DownloadApp />
+      <FAQ />
     </section>
   );
 }

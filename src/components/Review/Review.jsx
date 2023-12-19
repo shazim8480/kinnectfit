@@ -11,14 +11,13 @@ import Image from "next/image";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import HeadingText from "../UI/HeadingText";
 const Review = () => {
   return (
-    <>
+    <section className="py-8 lg:py-16">
       <div className="max-w-6xl mx-auto">
-        <div>
-          <h1 className="text-2xl font-bold leading-10 tracking-tight text-gray-900 text-center">
-            WHAT CUSTOMER'S SAY
-          </h1>
+        <div className="mb-16">
+          <HeadingText title="What Our Customers Say" className="text-center" />
         </div>
         <Swiper
           spaceBetween={30}
@@ -37,9 +36,9 @@ const Review = () => {
           <SwiperSlide>
             <div className="lg:flex lg:gap-10">
               {/* customer 1 review */}
-              <div className="flex text-center items-center lg:items-stretch lg:text-left flex-col lg:flex-row  gap-8 pt-6 lg:py-16">
+              <div className="flex flex-col items-center gap-8 pt-6 text-center lg:items-stretch lg:text-left lg:flex-row lg:py-16">
                 {/* customer image */}
-                <div className="w-20 h-20  rounded-full overflow-hidden flex-shrink-0">
+                <div className="flex-shrink-0 w-20 h-20 overflow-hidden rounded-full">
                   <Image src={user1} alt="user1" />
                 </div>
                 {/* customer details */}
@@ -50,7 +49,7 @@ const Review = () => {
                       <div className="absolute  left-0 right-0  h-[1px] bg-black"></div>
                     </span>
                   </div>
-                  <div className="text-base leading-7 text-gray-600 mt-5">
+                  <div className="mt-5 text-base leading-7 text-gray-600">
                     Amazing workouts! The variety keeps me motivated. The
                     user-friendly interface makes tracking progress a breeze.
                     Highly recommend for anyone looking to elevate their fitness
@@ -60,9 +59,9 @@ const Review = () => {
               </div>
 
               {/* customer 2 review */}
-              <div className="flex text-center items-center lg:items-stretch lg:text-left flex-col lg:flex-row  gap-8 py-16">
+              <div className="flex flex-col items-center gap-8 py-16 text-center lg:items-stretch lg:text-left lg:flex-row">
                 {/* customer image */}
-                <div className="w-20 h-20  rounded-full overflow-hidden flex-shrink-0">
+                <div className="flex-shrink-0 w-20 h-20 overflow-hidden rounded-full">
                   <Image src={user2} alt="user2" />
                 </div>
                 {/* customer details */}
@@ -73,7 +72,7 @@ const Review = () => {
                       <div className="absolute  left-0 right-0  h-[1px] bg-black"></div>
                     </span>
                   </div>
-                  <div className="text-base leading-7 text-gray-600 mt-5">
+                  <div className="mt-5 text-base leading-7 text-gray-600">
                     Incredible fitness resource! The expert guidance and diverse
                     routines make every session enjoyable. The interactive
                     features add an extra layer of engagement. A must-try for
@@ -86,9 +85,9 @@ const Review = () => {
           <SwiperSlide>
             <div className="lg:flex lg:gap-10">
               {/* customer 3 review */}
-              <div className="flex text-center items-center lg:items-stretch lg:text-left flex-col lg:flex-row  gap-8 pt-6 lg:py-16">
+              <div className="flex flex-col items-center gap-8 pt-6 text-center lg:items-stretch lg:text-left lg:flex-row lg:py-16">
                 {/* customer image */}
-                <div className="w-20 h-20  rounded-full overflow-hidden flex-shrink-0">
+                <div className="flex-shrink-0 w-20 h-20 overflow-hidden rounded-full">
                   <Image src={user3} alt="user3" />
                 </div>
                 {/* customer details */}
@@ -99,7 +98,7 @@ const Review = () => {
                       <div className="absolute  left-0 right-0  h-[1px] bg-black"></div>
                     </span>
                   </div>
-                  <div className="text-base leading-7 text-gray-600 mt-5">
+                  <div className="mt-5 text-base leading-7 text-gray-600">
                     Exceptional fitness platform! The personalized plans cater
                     to my goals, and the video demos ensure proper form. The
                     community support is fantastic. Transform your fitness with
@@ -109,9 +108,9 @@ const Review = () => {
               </div>
 
               {/* customer 4 review */}
-              <div className="flex text-center items-center lg:items-stretch lg:text-left flex-col lg:flex-row  gap-8 py-16">
+              <div className="flex flex-col items-center gap-8 py-16 text-center lg:items-stretch lg:text-left lg:flex-row">
                 {/* customer image */}
-                <div className="w-20 h-20  rounded-full overflow-hidden flex-shrink-0">
+                <div className="flex-shrink-0 w-20 h-20 overflow-hidden rounded-full">
                   <Image src={user4} alt="user4" />
                 </div>
                 {/* customer details */}
@@ -122,7 +121,7 @@ const Review = () => {
                       <div className="absolute  left-0 right-0  h-[1px] bg-black"></div>
                     </span>
                   </div>
-                  <div className="text-base leading-7 text-gray-600 mt-5">
+                  <div className="mt-5 text-base leading-7 text-gray-600">
                     Outstanding! The easy-to-follow workouts, nutritional tips,
                     and progress tracking make this site a game-changer. It's
                     like having a personal trainer at my fingertips. Love the
@@ -134,7 +133,7 @@ const Review = () => {
           </SwiperSlide>
         </Swiper>
       </div>
-    </>
+    </section>
   );
 };
 

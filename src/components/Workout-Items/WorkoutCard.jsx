@@ -19,22 +19,24 @@ const WorkoutCard = ({ workoutItem }) => {
     trainer_name,
     average_rating,
     category,
+    workout_cover,
   } = workoutItem;
   return (
-    <Card isFooterBlurred className="w-[300px] h-[300px]">
-      <CardHeader className="absolute z-10 flex-col items-start top-1">
-        <p className="font-bold uppercase text-tiny text-white/60">
+    <Card
+      isFooterBlurred
+      className="lg:w-[300px] lg:h-[300px] w-[400px] h-[400px]"
+    >
+      <CardHeader className="absolute top-0 z-10 flex-col items-start bg-black/40">
+        <p className="font-bold uppercase text-tiny text-white/70">
           {category}
         </p>
         <h4 className="text-xl font-medium text-white/90">{workout_name}</h4>
       </CardHeader>
       <Image
         removeWrapper
-        alt="Relaxing app background"
+        alt="workout_cover"
         className="z-0 object-cover w-full h-full"
-        src={
-          "https://images.unsplash.com/flagged/photo-1556746834-cbb4a38ee593?q=80&w=2972&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        }
+        src={workout_cover}
       />
       <CardFooter className="absolute bottom-0 z-10 bg-black/40 border-t-1 border-default-600 dark:border-default-100">
         <div className="flex items-center flex-grow gap-2">

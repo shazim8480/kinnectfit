@@ -25,6 +25,7 @@
   height: 100%;
   object-fit: cover;
 }
+
 .swiper-pagination-bullet {
   background: #5c469c !important;
   width: 20px !important;
@@ -40,21 +41,11 @@
 header {
   max-width: 1280px !important;
 }
+
 header ul {
   gap: 2rem !important;
 }
+
 header ul:last-child {
   gap: 1rem !important;
 }
-
- /* footer */
-@media (min-width: 1536px) {
-  footer > div {
-    padding-left: 13.5rem !important;
-  }
-  .privacy-container {
-    padding-right: 11rem !important;
-  }
-}
-
-

@@ -13,14 +13,14 @@ import DownloadApp from "@/components/DownloadApp/DownloadApp";
 
 export default function HomePage() {
   return (
-    <section>
+    <>
       <Hero />
       <FeaturedWorkouts />
       <FeatureMealPlans />
       <Review />
       <DownloadApp />
       <FAQ />
-    </section>
+    </>
   );
 }
 

@@ -1,40 +1,39 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# KinnectFit - Fitness Tracking Platform
+## Team: **`Fitlab`**
 
-## Getting Started
+ ## 📌 Team Lead
+- [**`Adnan Sami Shazim`**](https://github.com/shazim8480)  (Github Manager)
 
-First, run the development server:
+## 📌 Team Co-lead
+- [**`Rafiuzzaman Bhuiyan Afridi`**](https://github.com/whoafridi) (SQA)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 📌 Members
+- [**`Maruf Hossain`**](https://github.com/Marufhossain112) - Front-end Developer
+- [**`Rafiuzzaman Bhuiyan Afridi`**](https://github.com/whoafridi) - Front-end Developer
+- [**`Adnan Sami Shazim`**](https://github.com/shazim8480) - Front-end Developer
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📌 Project Overview
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+### Project Goal
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+The primary objective of the KinnectFit project is to create a user-centric fitness tracking platform, fostering user engagement and providing a secure environment for tracking fitness activities. The project aims to enhance user retention by offering a user-friendly interface and compelling features. Key business objectives include:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### Project Features
+* User Profile
+* Activity Tracking Database (User Dashboard)
+* Nutritional Database (Meal / Diet Plans)
+* Calorie Counter (Dashboard)
+* Workout Plans
+* Progress Tracking and Analytics (Admin Dashboard)
+* Mobile Responsiveness
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 📌 Technology:
+### Frontend:
+ *   NextJs
+  *  Redux | Redux Toolkit
+   * Axios
+*    React Hook Form । Hook Form Resolvers
+ *   Tailwind
+  *  NextUi
+   * ESLint

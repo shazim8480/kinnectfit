@@ -1,15 +1,9 @@
 import React from "react";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Image,
-  Button,
-} from "@nextui-org/react";
+import { Card, CardHeader, CardFooter, Image, Button } from "@nextui-org/react";
 import { UserIcon } from "@/assets/icons/UserIcon";
 import Clock from "@/assets/icons/Clock";
 import Star from "@/assets/icons/Star";
+import Link from "next/link";
 
 const WorkoutCard = ({ workoutItem }) => {
   // destructure workout item data //
@@ -35,7 +29,7 @@ const WorkoutCard = ({ workoutItem }) => {
       <Image
         removeWrapper
         alt="workout_cover"
-        className="z-0 object-cover w-full h-full"
+        className="z-0 object-cover w-full h-full rounded-lg"
         src={workout_cover}
       />
       <CardFooter className="absolute bottom-0 z-10 bg-black/40 border-t-1 border-default-600 dark:border-default-100">
@@ -62,7 +56,7 @@ const WorkoutCard = ({ workoutItem }) => {
           </div>
         </div>
         <Button radius="full" size="sm">
-          Start Now
+          <Link href={`/workouts/${workout_name}`}>Start Now</Link>
         </Button>
       </CardFooter>
     </Card>

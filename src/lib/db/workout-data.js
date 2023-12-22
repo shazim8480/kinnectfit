@@ -47,6 +47,8 @@ export const workout_data = [
     total_workout_time: 52,
     average_rating: 4.5,
     trainer_name: "Sarah Jones",
+    description:
+      "The primary benefit of the generateStaticParams function is its smart retrieval of data. If content is fetched within the generateStaticParams function using a fetch request, the requests are automatically memoized. This means a fetch request with the same arguments across multiple generateStaticParams, Layouts, and Pages will only be made once, which decreases build times.",
   },
   {
     workout_name: "HIIT Burn",
@@ -92,6 +94,8 @@ export const workout_data = [
     average_rating: 4.8,
     category: "HIIT",
     trainer_name: "Mark Smith",
+    description:
+      "The primary benefit of the generateStaticParams function is its smart retrieval of data. If content is fetched within the generateStaticParams function using a fetch request, the requests are automatically memoized. This means a fetch request with the same arguments across multiple generateStaticParams, Layouts, and Pages will only be made once, which decreases build times.",
   },
   {
     workout_name: "Yoga Flow",
@@ -133,6 +137,8 @@ export const workout_data = [
     average_rating: 4.2,
     trainer_name: "Emily Brown",
     category: "Yoga",
+    description:
+      "The primary benefit of the generateStaticParams function is its smart retrieval of data. If content is fetched within the generateStaticParams function using a fetch request, the requests are automatically memoized. This means a fetch request with the same arguments across multiple generateStaticParams, Layouts, and Pages will only be made once, which decreases build times.",
   },
   {
     workout_name: "Core Blast",
@@ -172,5 +178,7 @@ export const workout_data = [
     average_rating: 4.6,
     trainer_name: "Alex Johnson",
     category: "Core Strengthening",
+    description:
+      "The primary benefit of the generateStaticParams function is its smart retrieval of data. If content is fetched within the generateStaticParams function using a fetch request, the requests are automatically memoized. This means a fetch request with the same arguments across multiple generateStaticParams, Layouts, and Pages will only be made once, which decreases build times.",
   },
 ];

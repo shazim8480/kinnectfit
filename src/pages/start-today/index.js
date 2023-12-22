@@ -64,7 +64,7 @@ const StartToday = () => {
                         variant="shadow"
                         size="xl"
                         className="my-4 "
-                        href="start-today"
+                        href="start-today/basic-info"
                     >
                         Continue <RightArrowIcon />
                     </KFButton>

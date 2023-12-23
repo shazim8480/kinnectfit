@@ -6,6 +6,7 @@ export const UserIcon = (props) => {
       viewBox="0 0 24 24"
       fill="white"
       className="w-4 h-4"
+      {...props}
     >
       <path
         fillRule="evenodd"

@@ -1,9 +1,9 @@
-import React from "react";
 import WorkoutCard from "../Workout-Items/WorkoutCard";
 import { workout_data } from "@/lib/db/workout-data";
 import HeadingText from "../UI/HeadingText";
 import { KFButton } from "../UI/KFButton";
 import RightArrowIcon from "@/assets/icons/RightArrowIcon";
+import Link from "next/link";
 
 const FeaturedWorkouts = () => {
   return (
@@ -15,9 +15,11 @@ const FeaturedWorkouts = () => {
         ))}
       </div>
       <div className="flex justify-center">
-        <KFButton type="submit" color="secondary" size="lg" className="mt-4">
-          Explore All Workouts
-          {/* <RightArrowIcon /> */}
+        <KFButton color="secondary" size="lg" className="mt-4">
+          <Link href="/workouts">
+            Explore All Workouts
+            {/* <RightArrowIcon /> */}
+          </Link>
         </KFButton>
       </div>
     </section>

@@ -1,12 +1,13 @@
 import React from "react";
 
-const Star = () => {
+const Star = (props) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill="white"
       className="w-4 h-4"
+      {...props}
     >
       <path
         fillRule="evenodd"

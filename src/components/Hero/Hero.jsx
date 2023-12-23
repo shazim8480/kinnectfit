@@ -3,6 +3,7 @@ import Image from "next/image";
 import { KFButton } from "../UI/KFButton";
 import hero_img from "@/assets/images/hero-img.webp";
 import RightArrowIcon from "@/assets/icons/RightArrowIcon";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -24,11 +25,13 @@ const Hero = () => {
           </p>
 
           <KFButton
+            as={Link}
             type="submit"
             color="primary"
             variant="shadow"
             size="xl"
             className="my-4"
+            href="start-today"
           >
             Start today <RightArrowIcon />
           </KFButton>

@@ -30,6 +30,9 @@ const MealPlansPage = () => {
     return (
         <>
             <section className="max-w-screen-xl mx-auto py-10 px-4">
+                <h5 className="my-4 text-xl font-medium leading-tight text-neutral-800">
+                    Meal Plans
+                </h5>
                 <KFInput
                     id="search"
                     name="search"
@@ -43,9 +46,6 @@ const MealPlansPage = () => {
                 />
                 <hr></hr>
                 <hr className="mt-5" />
-                <h5 className="my-4 text-xl font-medium leading-tight text-neutral-800">
-                    Meal Plans
-                </h5>
                 <h5 className="my-3 text-xl font-medium leading-tight text-neutral-800">
                     Popular searches
                 </h5>

@@ -1,4 +1,5 @@
 import { Card, CardBody, Image, CardFooter, Button } from "@nextui-org/react";
+import Link from "next/link";
 
 const MealPlanCard = ({ mealItem }) => {
   const { name, image } = mealItem;
@@ -16,7 +17,7 @@ const MealPlanCard = ({ mealItem }) => {
       </CardBody>
       <CardFooter className="justify-center">
         <Button radius="full" size="md" color="secondary">
-          More info
+          <Link href={`/meal-plans/${name}`}>More info</Link>
         </Button>
       </CardFooter>
     </Card>

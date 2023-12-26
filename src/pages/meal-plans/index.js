@@ -17,8 +17,14 @@ const MealPlansPage = () => {
         const searchMatch = item?.name
             .toLowerCase()
             .includes(searchMealPlan.toLowerCase());
-        return searchMatch;
+        const categoryMatch =
+            groupSelected.length === 0 || groupSelected.includes(item.category);
+
+        return searchMatch && categoryMatch;
     });
+
+    const uniqueCategories = Array.from(new Set(mealData?.map(item => item.category)));
+    console.log({ uniqueCategories });
 
 
     return (
@@ -61,10 +67,10 @@ const MealPlansPage = () => {
                     value={groupSelected}
                     onChange={setGroupSelected}
                 >
-                    {mealData?.map((item) => {
+                    {uniqueCategories?.map((item) => {
                         return (
-                            <Checkbox key={item.category} value={item.category}>
-                                {item.category}
+                            <Checkbox key={item} value={item}>
+                                {item}
                             </Checkbox>
                         );
                     })}

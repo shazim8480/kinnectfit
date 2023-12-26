@@ -90,6 +90,6 @@ function WorkoutPage() {
 }
 export default WorkoutPage;
 
-// WorkoutPage.getLayout = function getLayout(page) {
-//     return <MainLayout>{page}</MainLayout>;
-// };
+WorkoutPage.getLayout = function getLayout(page) {
+    return <MainLayout>{page}</MainLayout>;
+};

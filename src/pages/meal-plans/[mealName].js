@@ -1,14 +1,11 @@
 import { useRouter } from "next/router";
 import Image from "next/image";
 import MainLayout from "@/layouts/mainLayout";
-import Clock from "@/assets/icons/Clock";
-import Star from "@/assets/icons/Star";
-import { UserIcon } from "@/assets/icons/UserIcon";
 import { Checkbox } from "@nextui-org/react";
 import { KFButton } from "@/components/UI/KFButton";
 import { mealData } from "@/lib/db/meal-data";
 
-function WorkoutPage() {
+function MealDetailsPage() {
     const router = useRouter();
     const { mealName } = router.query;
     const meal_details = mealData.find(
@@ -59,9 +56,7 @@ function WorkoutPage() {
                                                 <div key={meal?.name} className="flex flex-col mt-4">
                                                     <div className="flex justify-between">
                                                         <span className="text-lg font-medium">{meal?.name}</span>
-                                                        <Checkbox color="secondary" />
                                                     </div>
-                                                    {/* <p className="text-neutral-800 leading-tight">Ingredients: <span>{meal?.ingredients.join(", ")}</span></p> */}
                                                     <div className="flex justify-between"><div>
                                                         <p className="text-neutral-800 leading-normal">
                                                             <span>Protein:</span> {meal?.nutrients?.protein}
@@ -82,14 +77,13 @@ function WorkoutPage() {
                             );
                         })}
                     </div>
-                    <KFButton color="primary">Start Meal</KFButton>
                 </div>
             </div>
         </section>
     );
 }
-export default WorkoutPage;
+export default MealDetailsPage;
 
-WorkoutPage.getLayout = function getLayout(page) {
+MealDetailsPage.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };

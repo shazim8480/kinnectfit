@@ -5,6 +5,7 @@ export const mealData = [
       "High-protein and nutrient-dense meals to fuel your workouts and build muscle.",
     image:
       "https://yourfakeaway.com/wp-content/uploads/2023/04/YFA_Feb23_menu_dishes-9-300x300.jpg",
+    category: "Dietary Goals",
     categories: [
       {
         name: "Breakfast",
@@ -129,6 +130,7 @@ export const mealData = [
       "Healthy meals to support fat loss and maintain energy levels.",
     image:
       "https://yourfakeaway.com/wp-content/uploads/2023/04/YFA_April_2023_dishes-43-300x300.jpg",
+    category: "Dietary Goals",
     categories: [
       {
         name: "Breakfast",
@@ -228,6 +230,7 @@ export const mealData = [
     description: "Plant-based meals suitable for vegans.",
     image:
       "https://yourfakeaway.com/wp-content/uploads/2023/04/YFA_April_2023_dishes-44-300x300.jpg",
+    category: "Dietary Restrictions",
     categories: [
       {
         name: "Breakfast",
@@ -334,6 +337,7 @@ export const mealData = [
       "A seafood-based meal plan for those following a pescatarian diet.",
     image:
       "https://yourfakeaway.com/wp-content/uploads/2022/11/EnglishMuffin-300x300.jpg",
+    category: "Dietary Restrictions",
     categories: [
       {
         name: "Breakfast",
@@ -453,6 +457,7 @@ export const mealData = [
       "Delicious vegetarian meals for a balanced and satisfying diet.",
     image:
       "https://yourfakeaway.com/wp-content/uploads/2022/11/BreakfastWrap-300x300.jpg",
+    category: "Dietary Restrictions",
     categories: [
       {
         name: "Breakfast",

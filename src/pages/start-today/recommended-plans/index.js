@@ -2,9 +2,9 @@ import { useState } from "react";
 import MainLayout from "@/layouts/mainLayout";
 import { KFInput } from "@/components/UI/KFInput";
 import { mealData } from "@/lib/db/meal-data";
-import RecommendedPlanCard from "@/components/StartToday/RecommendedPlan/RecommendedPlanCard";
-import WorkoutPlanCard from "@/components/StartToday/WorkoutPlan/WorkoutPlanCard";
 import { workout_data } from "@/lib/db/workout-data";
+import MealPlanCard from "@/components/MealPlanCard/MealPlanCard";
+import WorkoutCard from "@/components/Workout-Items/WorkoutCard";
 
 const RecommendedPlanPage = () => {
     const [searchMealPlan, setSearchMealPlan] = useState('');
@@ -13,12 +13,14 @@ const RecommendedPlanPage = () => {
         setSearchMealPlan(value);
     };
 
-    const filteredProducts = mealData?.filter((item) => {
+    const filteredMealsData = mealData?.filter((item) => {
         const searchMatch = item?.name
             .toLowerCase()
             .includes(searchMealPlan.toLowerCase());
         return searchMatch;
     });
+    console.log({ filteredMealsData });
+
     const filteredWorkoutData = workout_data?.filter((item) => {
         const searchMatch = item?.workout_name
             .toLowerCase()
@@ -42,20 +44,25 @@ const RecommendedPlanPage = () => {
                 />
                 <hr></hr>
                 <hr className="mt-5" />
-                <h5 className="mt-8 mb-4 text-xl font-medium leading-tight text-neutral-800">
-                    Workout Plans
-                </h5>
+                {
+                    filteredWorkoutData.length !== 0 && <h5 className="mt-8 mb-4 text-xl font-medium leading-tight text-neutral-800">
+                        Workout Plans
+                    </h5>
+                }
                 <div className="grid max-w-screen-xl grid-cols-1 gap-6  mx-auto lg:place-items-center lg:place-content-center lg:gap-8 xl:gap-8 lg:py-8 lg:grid-cols-4">
                     {filteredWorkoutData?.map((item) => {
-                        return <WorkoutPlanCard key={item.workout_name} workoutItem={item} />;
+                        return <WorkoutCard key={item.workout_name} workoutItem={item} />;
                     })}
                 </div>
-                <h5 className="my-4 text-xl font-medium leading-tight text-neutral-800">
-                    Recommended Plans
-                </h5>
+                {
+                    filteredMealsData.length !== 0 && <h5 className="my-4 text-xl font-medium leading-tight text-neutral-800">
+                        Recommended Plans
+                    </h5>
+                }
+
                 <div className="grid max-w-screen-xl grid-cols-2 gap-6  mx-auto place-items-center lg:place-content-center lg:gap-8 xl:gap-8 lg:py-8 lg:grid-cols-4">
-                    {filteredProducts?.map((item) => {
-                        return <RecommendedPlanCard key={item.name} mealItem={item} />;
+                    {filteredMealsData?.slice(0, 4).map((item) => {
+                        return <MealPlanCard key={item.name} mealItem={item} />;
                     })}
                 </div>
             </section>

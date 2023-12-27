@@ -5,11 +5,11 @@ const initialState = {
     height: "",
     weight: "",
     goalWeight: "",
-    selectedGender: "",
+    gender: "",
     country: "",
     age: "",
     goal: "",
-    setPlan: ""
+    plan: ""
 };
 
 export const userFormSlice = createSlice({

@@ -24,12 +24,15 @@ const MoreInfoPage = () => {
     } = useForm();
     const onSubmit = (data) => {
         if (Object.keys(errors).length === 0) {
-            const moreInfoData = { ...data, selectedGender };
-            // const datainput = { ...data };
-            // console.log("datainiput", datainput);
+            console.log({ data });
 
-            dispatch(setFormValues(formData, { age: data.age, country: data.country, gender: selectedGender }));
-            router.push("set-goals"); // Assuming router is properly set up in your component
+            const moreInfoData = {
+                age: data.age,
+                country: data.country,
+                gender: selectedGender
+            };
+            dispatch(setFormValues(moreInfoData));
+            router.push("set-goals");
         }
     };
     const prev = () => {

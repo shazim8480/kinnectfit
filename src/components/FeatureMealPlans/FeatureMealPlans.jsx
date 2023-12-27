@@ -3,6 +3,7 @@ import MealPlanCard from "../MealPlanCard/MealPlanCard";
 import HeadingText from "../UI/HeadingText";
 import { KFButton } from "../UI/KFButton";
 import { mealData } from "@/lib/db/meal-data";
+import Link from "next/link";
 
 const FeatureMealPlans = () => {
   return (
@@ -20,7 +21,7 @@ const FeatureMealPlans = () => {
           size="lg"
           className="font-semibold text-blue-800 border-2 border-blue-500 bg-indigo-50"
         >
-          Find your Plan
+          <Link href={"meal-plans"}>Find your Plan</Link>
           <RightArrowIcon />
         </KFButton>
       </div>

@@ -34,13 +34,17 @@ export default function KFNavbar() {
 
       <NavbarContent className="pr-3 sm:hidden" justify="center">
         <NavbarBrand>
-          <p className="font-bold text-inherit brand-name">KinnectFit</p>
+          <Link href="/" className="font-bold text-inherit brand-name">
+            KinnectFit
+          </Link>
         </NavbarBrand>
       </NavbarContent>
 
       <NavbarContent className="hidden gap-4 sm:flex" justify="end">
         <NavbarBrand>
-          <p className={`font-bold text-inherit  text-[18px]`}>KinnectFit</p>
+          <Link href="/" className={`font-bold text-inherit  text-[18px]`}>
+            KinnectFit
+          </Link>
         </NavbarBrand>
         <NavbarItem>
           <Link href="#">Features</Link>

@@ -9,6 +9,10 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "yourfakeaway.com",
+      },
+      {
+        protocol: "https",
         hostname: "plus.unsplash.com",
       },
     ],

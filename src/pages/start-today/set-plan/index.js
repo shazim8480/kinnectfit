@@ -4,14 +4,18 @@ import { useRouter } from "next/router";
 import SelectableItem from "@/components/StartToday/SelectableItems/SelectableItems";
 import { KFButton } from "@/components/UI/KFButton";
 import { Progress } from "@nextui-org/react";
+import { useSelector } from "react-redux";
 
 const SetPlanPage = () => {
+    const formData = useSelector((state) => state.surveyForm);
+    console.log("formData setPlan", formData);
+
+
     const items = ["7 days", "15 days", "30 days", "60 days"];
     const router = useRouter();
     const [selectedItems, setSelectedItems] = useState([]);
     const handleSelect = (item) => {
         setSelectedItems([item]);
-        console.log({ item });
     };
 
     const prev = () => {

@@ -19,7 +19,6 @@ const RecommendedPlanPage = () => {
             .includes(searchMealPlan.toLowerCase());
         return searchMatch;
     });
-    console.log({ filteredMealsData });
 
     const filteredWorkoutData = workout_data?.filter((item) => {
         const searchMatch = item?.workout_name

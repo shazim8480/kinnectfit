@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import { KFButton } from "@/components/UI/KFButton";
 import MainLayout from "@/layouts/mainLayout";
 import { KFInput } from "@/components/UI/KFInput";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { Progress, Radio, RadioGroup } from "@nextui-org/react";
+import { useDispatch } from "react-redux";
+import { setFormValues } from "@/redux/feature/survey/surveySlice";
 
 const BasicInfoPage = () => {
+    const dispatch = useDispatch();
     const [weightUnit, setWeightUnit] = useState("kg");
     const [goalWeightUnit, setGoalWeightUnit] = useState("kg");
     const router = useRouter();
@@ -22,8 +25,8 @@ const BasicInfoPage = () => {
                 weight: `${data.weight} ${weightUnit}`,
                 goalWeight: `${data.goalWeight} ${goalWeightUnit}`,
             };
-
-            console.log(userData);
+            // ({ userData });
+            dispatch(setFormValues(userData));
             router.push("more-info");
         }
     };

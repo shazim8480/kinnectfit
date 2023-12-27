@@ -6,11 +6,15 @@ import { Progress, Radio, RadioGroup, Select, SelectItem } from "@nextui-org/rea
 import { countries } from "@/lib/db/country-data";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { setFormValues } from "@/redux/feature/survey/surveySlice";
 
 const MoreInfoPage = () => {
-    const [selectedGender, setSelectedGender] = useState("male");
-    console.log({ selectedGender });
+    // useSelector();
+    const dispatch = useDispatch();
 
+    const formData = useSelector((state) => state.surveyForm);
+    const [selectedGender, setSelectedGender] = useState("male");
     const router = useRouter();
     const {
         register,
@@ -19,10 +23,13 @@ const MoreInfoPage = () => {
         formState: { errors },
     } = useForm();
     const onSubmit = (data) => {
-        // Check if there are no errors before navigating
         if (Object.keys(errors).length === 0) {
-            console.log(data);
-            router.push("set-goals");
+            const moreInfoData = { ...data, selectedGender };
+            // const datainput = { ...data };
+            // console.log("datainiput", datainput);
+
+            dispatch(setFormValues(formData, { age: data.age, country: data.country, gender: selectedGender }));
+            router.push("set-goals"); // Assuming router is properly set up in your component
         }
     };
     const prev = () => {
@@ -56,7 +63,6 @@ const MoreInfoPage = () => {
                                                         <span className="text-gray-500 text-sm">Female</span>
                                                     </Radio>
                                                 </RadioGroup>
-
                                             </div>
                                             <div className="text-left mt-4 text-base">
                                                 <label>Where do you live?</label>

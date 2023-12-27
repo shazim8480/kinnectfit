@@ -17,6 +17,13 @@ const BasicInfoPage = () => {
     } = useForm();
     const onSubmit = (data) => {
         if (Object.keys(errors).length === 0) {
+            const userData = {
+                height: data.height,
+                weight: `${data.weight} ${weightUnit}`,
+                goalWeight: `${data.goalWeight} ${goalWeightUnit}`,
+            };
+
+            console.log(userData);
             router.push("more-info");
         }
     };
@@ -49,7 +56,7 @@ const BasicInfoPage = () => {
                                                 label="height"
                                                 variant="bordered"
                                                 size="xl"
-                                                placeholder="ft"
+                                                placeholder="cm"
                                                 {...register('height', {
                                                     required: 'Please enter your height',
                                                     pattern: {

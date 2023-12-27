@@ -8,6 +8,9 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
 const MoreInfoPage = () => {
+    const [selectedGender, setSelectedGender] = useState("male");
+    console.log({ selectedGender });
+
     const router = useRouter();
     const {
         register,
@@ -18,6 +21,7 @@ const MoreInfoPage = () => {
     const onSubmit = (data) => {
         // Check if there are no errors before navigating
         if (Object.keys(errors).length === 0) {
+            console.log(data);
             router.push("set-goals");
         }
     };
@@ -44,22 +48,15 @@ const MoreInfoPage = () => {
                                                 <div className="text-left text-base mb-2">
                                                     <label>Select your gender</label>
                                                 </div>
-                                                <RadioGroup
-                                                    className="text-left mt-2 text-base"
-                                                    orientation="horizontal"
-                                                >
-                                                    <Radio value="male"  {...register("gender", {
-                                                        required: "Gender is required",
-                                                    })} >  <span className="text-gray-500 text-sm">Male</span></Radio>
-                                                    <Radio value="female" {...register("gender", {
-                                                        required: "Please select your gender",
-                                                    })} >
+                                                <RadioGroup className="text-left mt-2 text-base" orientation="horizontal" value={selectedGender} onValueChange={setSelectedGender}>
+                                                    <Radio value="male">
+                                                        <span className="text-gray-500 text-sm">Male</span>
+                                                    </Radio>
+                                                    <Radio value="female" >
                                                         <span className="text-gray-500 text-sm">Female</span>
                                                     </Radio>
                                                 </RadioGroup>
-                                                {errors.gender && (
-                                                    <p className="text-red-500 text-left mt-1">{errors.gender.message}</p>
-                                                )}
+
                                             </div>
                                             <div className="text-left mt-4 text-base">
                                                 <label>Where do you live?</label>

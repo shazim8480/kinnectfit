@@ -11,12 +11,9 @@ const SetPlanPage = () => {
     const [selectedItems, setSelectedItems] = useState([]);
     const handleSelect = (item) => {
         setSelectedItems([item]);
+        console.log({ item });
     };
-    const onSubmit = (data) => {
-        if (Object.keys(errors).length === 0) {
-            router.push("recommended-plans");
-        }
-    };
+
     const prev = () => {
         router.push("set-goals");
     };

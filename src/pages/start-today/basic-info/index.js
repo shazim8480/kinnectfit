@@ -1,21 +1,32 @@
-import React from "react";
+import React, { useReducer, useState } from "react";
 import { KFButton } from "@/components/UI/KFButton";
 import MainLayout from "@/layouts/mainLayout";
 import { KFInput } from "@/components/UI/KFInput";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
-import { Progress } from "@nextui-org/react";
+import { Progress, Radio, RadioGroup } from "@nextui-org/react";
+import { useDispatch } from "react-redux";
+import { setFormValues } from "@/redux/feature/survey/surveySlice";
 
 const BasicInfoPage = () => {
+    const dispatch = useDispatch();
+    const [weightUnit, setWeightUnit] = useState("kg");
+    const [goalWeightUnit, setGoalWeightUnit] = useState("kg");
     const router = useRouter();
     const {
         register,
         handleSubmit,
-        watch,
         formState: { errors },
     } = useForm();
     const onSubmit = (data) => {
         if (Object.keys(errors).length === 0) {
+            const userData = {
+                height: data.height,
+                weight: `${data.weight} ${weightUnit}`,
+                goalWeight: `${data.goalWeight} ${goalWeightUnit}`,
+            };
+            // ({ userData });
+            dispatch(setFormValues(userData));
             router.push("more-info");
         }
     };
@@ -37,9 +48,10 @@ const BasicInfoPage = () => {
                                     <div className="flex items-center justify-center py-5 bg-white ">
 
                                         <form onSubmit={handleSubmit(onSubmit)} className="w-full" action="#" method="POST">
-                                            <div className="text-left mb-2  text-lg">
+                                            <div className="text-left mb-2  text-base">
                                                 <label>How tall are you ?</label>
                                             </div>
+
                                             <KFInput
                                                 id="height"
                                                 name="height"
@@ -47,7 +59,7 @@ const BasicInfoPage = () => {
                                                 label="height"
                                                 variant="bordered"
                                                 size="xl"
-                                                placeholder="ft"
+                                                placeholder="cm"
                                                 {...register('height', {
                                                     required: 'Please enter your height',
                                                     pattern: {
@@ -56,9 +68,25 @@ const BasicInfoPage = () => {
                                                     },
                                                 })}
                                             />
-                                            {errors.height && <p className="text-red-600 text-left mt-1">{errors.height.message}</p>}
-                                            <div className="text-left mt-4 text-lg">
-                                                <label>How much do you weight?</label>
+                                            {errors.height && <p className="text-red-500 text-left mt-1">{errors.height.message}</p>}
+                                            <div className="flex justify-between items-center">
+                                                <div className="text-left mt-4 text-base">
+                                                    <label>How much do you weight?</label>
+                                                </div>
+                                                <div>
+                                                    <div>
+                                                        <RadioGroup
+                                                            className="text-left mt-2 text-base"
+                                                            orientation="horizontal"
+                                                            defaultValue="kg"
+                                                        >
+                                                            <Radio value="kg" onClick={() => setWeightUnit('kg')}>  <span className="text-gray-500 text-sm">kg</span></Radio>
+                                                            <Radio value="lbs" onClick={() => setWeightUnit('lbs')} >
+                                                                <span className="text-gray-500 text-sm">lbs</span>
+                                                            </Radio>
+                                                        </RadioGroup>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <KFInput
                                                 id="weight"
@@ -67,7 +95,7 @@ const BasicInfoPage = () => {
                                                 label="weight"
                                                 variant="bordered"
                                                 size="xl"
-                                                placeholder="lbs"
+                                                placeholder={weightUnit}
                                                 className="mt-2"
                                                 {...register('weight', {
                                                     required: 'Please enter your weight',
@@ -77,10 +105,25 @@ const BasicInfoPage = () => {
                                                     },
                                                 })}
                                             />
-                                            {errors.weight && <p className="text-red-600 text-left mt-1">{errors.weight.message}</p>}
-                                            <div className="text-left mt-4 text-lg">
-                                                <label>What is your goal weight?</label>
+                                            {errors.weight && <p className="text-red-500 text-left mt-1">{errors.weight.message}</p>}
+                                            <div className="flex justify-between items-center">
+                                                <div className="text-left mt-4 text-base">
+                                                    <label>What is your goal weight?</label>
+                                                </div>
+                                                <div>
+                                                    <RadioGroup
+                                                        className="text-left mt-2 text-base"
+                                                        orientation="horizontal"
+                                                        defaultValue="kg"
+                                                    >
+                                                        <Radio value="kg" onClick={() => setGoalWeightUnit('kg')}>  <span className="text-gray-500 text-sm">kg</span></Radio>
+                                                        <Radio value="lbs" onClick={() => setGoalWeightUnit('lbs')} >
+                                                            <span className="text-gray-500 text-sm">lbs</span>
+                                                        </Radio>
+                                                    </RadioGroup>
+                                                </div>
                                             </div>
+
                                             <KFInput
                                                 id="goalWeight"
                                                 name="goalWeight"
@@ -88,7 +131,7 @@ const BasicInfoPage = () => {
                                                 label="goalWeight"
                                                 variant="bordered"
                                                 size="xl"
-                                                placeholder="lbs"
+                                                placeholder={goalWeightUnit}
                                                 className="mt-2"
                                                 {...register('goalWeight', {
                                                     required: 'Please enter your goal weight',
@@ -98,7 +141,7 @@ const BasicInfoPage = () => {
                                                     },
                                                 })}
                                             />
-                                            {errors.goalWeight && <p className="text-red-600 text-left mt-1">{errors.goalWeight.message}</p>}
+                                            {errors.goalWeight && <p className="text-red-500 text-left mt-1">{errors.goalWeight.message}</p>}
                                             <div className="mx-auto space-y-4 pt-6 text-center">
                                                 <KFButton type="submit">Next</KFButton>
                                             </div>

@@ -24,7 +24,6 @@ const MealPlansPage = () => {
     });
 
     const uniqueCategories = Array.from(new Set(mealData?.map(item => item.category)));
-    console.log({ uniqueCategories });
 
 
     return (

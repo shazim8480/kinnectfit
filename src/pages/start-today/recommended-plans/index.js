@@ -19,7 +19,6 @@ const RecommendedPlanPage = () => {
             .includes(searchMealPlan.toLowerCase());
         return searchMatch;
     });
-    console.log({ filteredMealsData });
 
     const filteredWorkoutData = workout_data?.filter((item) => {
         const searchMatch = item?.workout_name
@@ -31,19 +30,6 @@ const RecommendedPlanPage = () => {
     return (
         <>
             <section className="max-w-screen-xl mx-auto py-10 px-4">
-                <KFInput
-                    id="search"
-                    name="search"
-                    isRequired
-                    variant="bordered"
-                    placeholder="Search Here ..."
-                    value={searchMealPlan}
-                    onChange={handleInputSearch}
-                    type="text"
-                    className="mb-4 md:w-1/2 w-full"
-                />
-                <hr></hr>
-                <hr className="mt-5" />
                 {
                     filteredWorkoutData.length !== 0 && <h5 className="mt-8 mb-4 text-xl font-medium leading-tight text-neutral-800">
                         Workout Plans

@@ -41,27 +41,27 @@ const MoreInfoPage = () => {
                                     <div className="flex items-center justify-center py-5 bg-white ">
                                         <form onSubmit={handleSubmit(onSubmit)} className="w-full" action="#" method="POST">
                                             <div>
-                                                <div className="text-left text-lg mb-2">
+                                                <div className="text-left text-base mb-2">
                                                     <label>Select your gender</label>
                                                 </div>
                                                 <RadioGroup
-                                                    className="text-left mt-2 text-lg"
+                                                    className="text-left mt-2 text-base"
                                                     orientation="horizontal"
                                                 >
                                                     <Radio value="male"  {...register("gender", {
                                                         required: "Gender is required",
-                                                    })} >  <span className="text-gray-600">Male</span></Radio>
+                                                    })} >  <span className="text-gray-500 text-sm">Male</span></Radio>
                                                     <Radio value="female" {...register("gender", {
                                                         required: "Please select your gender",
                                                     })} >
-                                                        <span className="text-gray-600">Female</span>
+                                                        <span className="text-gray-500 text-sm">Female</span>
                                                     </Radio>
                                                 </RadioGroup>
                                                 {errors.gender && (
-                                                    <p className="text-red-600 text-left mt-1">{errors.gender.message}</p>
+                                                    <p className="text-red-500 text-left mt-1">{errors.gender.message}</p>
                                                 )}
                                             </div>
-                                            <div className="text-left mt-4 text-lg">
+                                            <div className="text-left mt-4 text-base">
                                                 <label>Where do you live?</label>
                                             </div>
                                             <Select
@@ -77,9 +77,9 @@ const MoreInfoPage = () => {
                                                 )}
                                             </Select>
                                             {errors.country && (
-                                                <p className="text-red-600 text-left mt-1">{errors.country.message}</p>
+                                                <p className="text-red-500 text-left mt-1">{errors.country.message}</p>
                                             )}
-                                            <div className="text-left mt-4 text-lg">
+                                            <div className="text-left mt-4 text-base">
                                                 <label>How old are you?</label>
                                             </div>
                                             <KFInput
@@ -98,7 +98,7 @@ const MoreInfoPage = () => {
                                                     },
                                                 })}
                                             />
-                                            {errors.age && <p className="text-red-600 text-left mt-1">{errors.age.message}</p>}
+                                            {errors.age && <p className="text-red-500 text-left mt-1">{errors.age.message}</p>}
                                             <div className="mx-auto space-y-4 text-center mt-3">
                                                 <KFButton type="button" onClick={prev} className="mr-4" size="md">
                                                     Previous

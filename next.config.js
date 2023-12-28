@@ -11,6 +11,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "yourfakeaway.com",
       },
+      {
+        protocol: "https",
+        hostname: "media.istockphoto.com",
+      },
     ],
   },
 };

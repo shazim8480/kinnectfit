@@ -1,7 +1,7 @@
 import React from "react";
-import gymImg from "@/assets/images/gym.png";
+import gymImg from "@/assets/images/gym.webp";
 import appImg from "@/assets/images/app.png";
-import timeImg from "@/assets/images/time.png";
+import bodyImg from "@/assets/images/body.jpeg";
 import Image from "next/image";
 import RightArrowIcon from "@/assets/icons/RightArrowIcon";
 import { KFButton } from "@/components/UI/KFButton";
@@ -15,7 +15,7 @@ const StartTodayPage = () => {
       description: "Turn workouts into a blockbuster with KinnectFit",
     },
     {
-      img: timeImg,
+      img: bodyImg,
       description: "Download now, your coach awaits in KinnectFit",
     },
     {
@@ -43,7 +43,7 @@ const StartTodayPage = () => {
                 <Image
                   src={item.img}
                   alt={`Welcome Image ${index + 1}`}
-                  className="py-2 rounded-2xl h-72 w-60"
+                  className="py-2 rounded-2xl h-72 w-60 object-cover"
                 />
                 <div className="">
                   <p className="ml-4 text-center text-md">{item.description}</p>

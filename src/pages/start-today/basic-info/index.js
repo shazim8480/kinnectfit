@@ -22,8 +22,8 @@ const BasicInfoPage = () => {
     if (Object.keys(errors).length === 0) {
       const userData = {
         height: data.height,
-        weight: `${data.weight} ${weightUnit}`,
-        goalWeight: `${data.goalWeight} ${goalWeightUnit}`,
+        weight: data.weight,
+        goalWeight: data.goalWeight,
       };
       // ({ userData });
       dispatch(setFormValues(userData));
@@ -86,7 +86,7 @@ const BasicInfoPage = () => {
                           <label>How much do you weight?</label>
                         </div>
                         <div>
-                          <div>
+                          {/* <div>
                             <RadioGroup
                               className="mt-2 text-base text-left"
                               orientation="horizontal"
@@ -110,7 +110,7 @@ const BasicInfoPage = () => {
                                 </span>
                               </Radio>
                             </RadioGroup>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                       <KFInput
@@ -139,7 +139,7 @@ const BasicInfoPage = () => {
                         <div className="mt-4 text-base text-left">
                           <label>What is your goal weight?</label>
                         </div>
-                        <div>
+                        {/* <div>
                           <RadioGroup
                             className="mt-2 text-base text-left"
                             orientation="horizontal"
@@ -159,7 +159,7 @@ const BasicInfoPage = () => {
                               <span className="text-sm text-gray-500">lbs</span>
                             </Radio>
                           </RadioGroup>
-                        </div>
+                        </div> */}
                       </div>
 
                       <KFInput

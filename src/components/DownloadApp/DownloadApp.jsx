@@ -2,8 +2,8 @@ import React from "react";
 
 const DownloadApp = () => {
   return (
-    <section className="mx-auto text-gray-600 bg-gradient-to-l from-black to-blue-900 max-w-screen body-font lg:my-16">
-      <div className="container flex flex-col items-center px-5 py-32 mx-auto md:flex-row">
+    <section className=" text-gray-600 bg-gradient-to-l from-black to-blue-900 body-font lg:my-16">
+      <div className="container flex flex-col items-center px-5 py-32 mx-auto md:flex-row max-w-screen-xl">
         <div className="flex flex-col w-full pr-0 mb-6 text-center md:pr-10 md:mb-0 md:w-auto md:text-left">
           <h4 className="text-sm text-[#abbdff] tracking-widest font-medium title-font mb-1">
             NOW AVAILABLE

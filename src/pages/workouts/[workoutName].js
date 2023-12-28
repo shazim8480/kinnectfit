@@ -7,7 +7,7 @@ import Star from "@/assets/icons/Star";
 import { UserIcon } from "@/assets/icons/UserIcon";
 import { Checkbox } from "@nextui-org/react";
 import { KFButton } from "@/components/UI/KFButton";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function WorkoutPage() {
   const router = useRouter();

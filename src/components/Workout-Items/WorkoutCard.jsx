@@ -4,8 +4,19 @@ import { UserIcon } from "@/assets/icons/UserIcon";
 import Clock from "@/assets/icons/Clock";
 import Star from "@/assets/icons/Star";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 
 const WorkoutCard = ({ workoutItem }) => {
+  const router = useRouter();
+  const { isAuthenticated } = useSelector((state) => state.user);
+  const handleStart = () => {
+    if (isAuthenticated) {
+      router.push(`/workouts/${workout_name}`);
+    } else {
+      router.replace(`/workouts/${workout_name}`, "sign-in");
+    }
+  };
   // destructure workout item data //
   const {
     workout_name,
@@ -55,7 +66,7 @@ const WorkoutCard = ({ workoutItem }) => {
             </div>
           </div>
         </div>
-        <Button radius="full" size="sm">
+        <Button radius="full" size="sm" onClick={handleStart}>
           <Link href={`/workouts/${workout_name}`}>Start Now</Link>
         </Button>
       </CardFooter>

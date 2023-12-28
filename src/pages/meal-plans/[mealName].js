@@ -14,14 +14,16 @@ function MealDetailsPage() {
         <section className="grid max-w-screen-xl mx-auto grid-cols-1 grid-rows-1 md:grid-cols-1 py-10">
             <div className="block rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]">
                 <div>
-                    <Image
-                        removewrapper
-                        alt="meal_cover"
-                        src={meal_details?.image}
-                        width={1400}
-                        height={300}
-                        style={{ objectFit: "cover" }}
-                    />
+                    <div className="flex justify-center w-full ">
+                        <Image
+                            removewrapper
+                            alt="meal_cover"
+                            src={meal_details?.image}
+                            width={1400}
+                            height={300}
+                            style={{ objectFit: "cover" }}
+                        />
+                    </div>
                     <h5 className="my-3 pl-5 text-xl font-medium leading-tight text-neutral-800">
                         {meal_details?.name}
                     </h5>

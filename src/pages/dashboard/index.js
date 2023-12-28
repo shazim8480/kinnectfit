@@ -79,11 +79,11 @@ const DashboardPage = () => {
           </Link>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button className="text-blue-50" size="icon" variant="ghost">
+              <Button className="justify-end bg-transparent text-blue-50">
                 {"Admin 1"}
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="center">
+            <DropdownMenuContent className="bg-white" align="center">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>Logout</DropdownMenuItem>

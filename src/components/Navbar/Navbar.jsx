@@ -96,11 +96,7 @@ export default function KFNavbar() {
                   base: "gap-4",
                 }}
               >
-                <DropdownItem
-                  key="dashboard"
-                  // description="ACME scales apps to meet user demand, automagically, based on load."
-                  // startContent={icons.scale}
-                >
+                <DropdownItem key="dashboard">
                   <Link href="/dashboard">Dashboard</Link>
                 </DropdownItem>
               </DropdownMenu>

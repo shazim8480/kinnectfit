@@ -3,6 +3,7 @@ export const mealData = [
     name: "Muscle Gain Meal Plan",
     description:
       "High-protein and nutrient-dense meals to fuel your workouts and build muscle.",
+    cover_img: "https://media.istockphoto.com/id/178452025/photo/basket-with-several-fruits-and-vegetables.jpg?s=612x612&w=0&k=20&c=bMr0UomQEP2-HE_7gqFfqEleRsPkIvbbK3CjJR18a4Y=",
     image:
       "https://yourfakeaway.com/wp-content/uploads/2023/04/YFA_Feb23_menu_dishes-9-300x300.jpg",
     category: "Dietary Goals",
@@ -139,6 +140,7 @@ export const mealData = [
     image:
       "https://yourfakeaway.com/wp-content/uploads/2023/04/YFA_April_2023_dishes-43-300x300.jpg",
     category: "Dietary Goals",
+    cover_img: "https://media.istockphoto.com/id/927883342/photo/selection-of-healthy-food-sources-healthy-eating-concept-ketogenic-diet-concept.jpg?s=612x612&w=0&k=20&c=7WboczTybv0DjzzN0emB77rXZsg9Sl_DpP5yA24JXPY=",
     categories: [
       {
         name: "Breakfast",
@@ -247,6 +249,7 @@ export const mealData = [
     image:
       "https://yourfakeaway.com/wp-content/uploads/2023/04/YFA_April_2023_dishes-44-300x300.jpg",
     category: "Dietary Restrictions",
+    cover_img: "https://media.istockphoto.com/id/1223154829/photo/blank-notebook-with-fresh-vegetables-herbs-legumes-and-nuts-top-view-veggie-cooking-concept.jpg?s=612x612&w=0&k=20&c=SyGpDemmC01ANERPULUPIoAtJOM2zbdc2yb4ayE2Xh4=",
     categories: [
       {
         name: "Breakfast",
@@ -362,6 +365,7 @@ export const mealData = [
     image:
       "https://yourfakeaway.com/wp-content/uploads/2022/11/EnglishMuffin-300x300.jpg",
     category: "Dietary Restrictions",
+    cover_img: "https://media.istockphoto.com/id/1184919744/photo/products-with-low-glycemic-index.jpg?s=612x612&w=0&k=20&c=BWrOCqlgt8R11XOmJa6IreX9-akKO3q59BBv5BgNk6E=",
     categories: [
       {
         name: "Breakfast",
@@ -490,6 +494,7 @@ export const mealData = [
     image:
       "https://yourfakeaway.com/wp-content/uploads/2022/11/BreakfastWrap-300x300.jpg",
     category: "Dietary Restrictions",
+    cover_img: "https://media.istockphoto.com/id/1089759056/photo/background-healthy-food-fresh-fruits-vegetables-fish-berries-and-cereals-healthy-food-diet.jpg?s=612x612&w=0&k=20&c=EiDNX-l2pzeiLYYVUcFNzqMf3kULfs5lyZtswjNA3wo=",
     categories: [
       {
         name: "Breakfast",

@@ -4,9 +4,9 @@ import { useRouter } from "next/router";
 import SelectableItem from "@/components/StartToday/SelectableItems/SelectableItems";
 import { KFButton } from "@/components/UI/KFButton";
 import { Progress } from "@nextui-org/react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setFormValues } from "@/redux/feature/survey/surveySlice";
-import { useForm } from "react-hook-form";
+
 const SetGoalsPage = () => {
   const {
     register,
@@ -60,7 +60,7 @@ const SetGoalsPage = () => {
                 className="text-sm font-semibold text-gray-700"
               >
                 <form onSubmit={handleSubmit(onSubmit)}>
-                  <div className="text-left mt-4 text-lg">
+                  <div className="mt-4 text-lg text-left">
                     <label>Choose your goals</label>
                   </div>
                   {items.map((item) => (
@@ -72,7 +72,7 @@ const SetGoalsPage = () => {
                       isSelected={selectedItems.includes(item)}
                     />
                   ))}
-                  <div className="mx-auto space-y-4 text-center mt-3">
+                  <div className="mx-auto mt-3 space-y-4 text-center">
                     <KFButton
                       type="button"
                       onClick={prev}

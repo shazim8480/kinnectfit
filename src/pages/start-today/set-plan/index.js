@@ -55,7 +55,7 @@ const SetPlanPage = () => {
                   id="progressLabel"
                   className="text-sm font-semibold text-gray-700"
                 >
-                  <div className="text-left mt-4 text-lg">
+                  <div className="mt-4 text-lg text-left">
                     <label>Choose your plan</label>
                   </div>
                   {items.map((item) => (
@@ -68,7 +68,7 @@ const SetPlanPage = () => {
                   ))}
                 </span>
 
-                <div className="mx-auto space-y-4 text-center mt-3">
+                <div className="mx-auto mt-3 space-y-4 text-center">
                   <KFButton
                     type="button"
                     onClick={prev}

@@ -30,13 +30,6 @@ const MoreInfoPage = () => {
   } = useForm();
   const onSubmit = (data) => {
     if (Object.keys(errors).length === 0) {
-      const moreInfoData = { ...data, selectedGender };
-      const userData = {
-        age: data.age,
-        country: data.country,
-        gender: selectedGender,
-      };
-
       dispatch(setFormValues({ ...formData, ...data, selectedGender }));
       router.push("set-goals"); // Assuming router is properly set up in your component
     }

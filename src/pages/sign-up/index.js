@@ -10,28 +10,59 @@ import { EyeSlashFilledIcon } from "@/assets/icons/EyeSlashFilledIcon";
 import { MailIcon } from "@/assets/icons/MailIcon";
 import { NameIcon } from "@/assets/icons/NameIcon";
 
+//
+import { useForm } from "react-hook-form";
+import { useSignUpMutation } from "@/redux/feature/auth/auth-api";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/redux/feature/user/userSlice";
+
 const montserrat = Montserrat({
   weight: ["400", "500", "700", "800", "900"],
   subsets: ["latin"],
 });
 
 const SignUpPage = () => {
+  const dispatch = useDispatch();
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm();
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
+  // sign up query
+  const [signUp] = useSignUpMutation();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // const [formData, setFormData] = useState({
+  //   name: "",
+  //   email: "",
+  //   password: "",
+  // });
+
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prevData) => ({ ...prevData, [name]: value }));
+  // };
+
+  const onSubmit = async (data) => {
+    // e.preventDefault();
+    // console.log(data);
+    if (Object.keys(errors).length === 0) {
+      let signUpResponse = await signUp(data);
+      // console.log("sign up response", signUpResponse);
+      if (signUpResponse?.data?.status === 200) {
+        dispatch(setUser(data));
+        router.push("/");
+      } else if (signUpResponse?.error) {
+        console.log("err msg", signUpResponse?.error);
+        setError("email", {
+          message: signUpResponse?.error?.data?.message,
+        });
+      }
+    }
   };
 
   return (
@@ -61,47 +92,82 @@ const SignUpPage = () => {
       <div className="flex items-center justify-center py-10 bg-white md:w-1/2">
         <form
           className="w-1/2 bg-white"
-          onSubmit={handleSubmit}
-          action="#"
-          method="POST"
+          onSubmit={handleSubmit(onSubmit)}
+          // action="#"
+          // method="POST"
         >
           <h1 className="mb-1 text-2xl font-bold text-gray-800">
             Hello Again!
           </h1>
           <p className="text-sm font-normal text-gray-600 mb-7">Welcome Back</p>
+
+          {/* Name */}
           <KFInput
             id="name"
             type="text"
             name="name"
-            isRequired
-            value={formData.name}
-            onChange={handleInputChange}
+            {...register("name", {
+              required: "*Name is required",
+            })}
+            // value={formData.name}
+            // onChange={handleInputChange}
             variant="bordered"
             fullWidth
             placeholder="Enter you full name"
             endContent={<NameIcon />}
-            className="mb-4"
+            // className="mb-4"
           />
+
+          <div className="h-[25px] my-1">
+            {errors.name && (
+              <p className="mb-4 ml-1 text-sm text-left text-red-500">
+                {errors.name.message}
+              </p>
+            )}
+          </div>
+
+          {/* email */}
           <KFInput
             id="email"
             type="email"
             name="email"
-            isRequired
-            value={formData.email}
-            onChange={handleInputChange}
+            {...register("email", {
+              required: "*Email is required.",
+              pattern: {
+                value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
+                message: "Email is not valid!",
+              },
+            })}
+            // value={formData.email}
+            // onChange={handleInputChange}
             variant="bordered"
             placeholder="Enter your email"
             endContent={
               <MailIcon className="flex-shrink-0 text-2xl pointer-events-none text-default-400" />
             }
-            className="mb-4"
           />
+
+          <div className="h-[25px] my-1">
+            {errors.email && (
+              <p className="mb-4 ml-1 text-sm text-left text-red-500">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
+
+          {/* password */}
           <KFInput
             id="password"
             name="password"
-            isRequired
-            value={formData.password}
-            onChange={handleInputChange}
+            {...register("password", {
+              required: "*Password is required",
+              minLength: {
+                value: 4,
+                message: "Password should be at least 4 characters.",
+              },
+            })}
+            // value={formData.password}
+            // onChange={handleInputChange}
             variant="bordered"
             placeholder="Enter your password"
             endContent={
@@ -119,13 +185,21 @@ const SignUpPage = () => {
             }
             type={isVisible ? "text" : "password"}
           />
+          <div className="h-[25px] my-1">
+            {errors.password && (
+              <p className="ml-1 text-sm text-left text-red-500">
+                {errors.password.message}
+              </p>
+            )}
+          </div>
+
           <KFButton
             type="submit"
             color="primary"
             variant="shadow"
             className="w-full my-4"
           >
-            Sign in
+            Create Account
           </KFButton>
           <span className="ml-2 text-sm">
             Already have an account ?

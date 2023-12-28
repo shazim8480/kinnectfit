@@ -101,7 +101,7 @@ export default function KFNavbar() {
                   // description="ACME scales apps to meet user demand, automagically, based on load."
                   // startContent={icons.scale}
                 >
-                  Dashboard
+                  <Link href="/dashboard">Dashboard</Link>
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>

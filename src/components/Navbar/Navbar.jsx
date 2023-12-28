@@ -47,7 +47,7 @@ export default function KFNavbar() {
         />
       </NavbarContent>
 
-      <NavbarContent className="pr-3 sm:hidden" justify="center">
+      <NavbarContent className="pr-3 sm:hidden" justify="start">
         <NavbarBrand>
           <Link
             href="/"
@@ -74,7 +74,7 @@ export default function KFNavbar() {
 
       <NavbarContent justify="end">
         {userProfile?.isAuthenticated === true && (
-          <NavbarContent className="hidden gap-4 sm:flex" justify="center">
+          <NavbarContent className="flex gap-4" justify="center">
             <Dropdown>
               <NavbarItem>
                 <DropdownTrigger>
@@ -85,7 +85,7 @@ export default function KFNavbar() {
                     // radius="sm"
                     variant="secondary"
                   >
-                    Hi, Admin
+                    Hi, {userName}
                   </Button>
                 </DropdownTrigger>
               </NavbarItem>

@@ -1,4 +1,5 @@
-export const PROTOCOL_HOST = "http://localhost:8000/api/kv1";
+// export const PROTOCOL_HOST = "http://localhost:8000/api/kv1";
+export const PROTOCOL_HOST = "https://kinnectfit-backend.onrender.com/api/kv1";
 
 // USER AUTH URL
 export const USER_LOGIN = "/sign-in";

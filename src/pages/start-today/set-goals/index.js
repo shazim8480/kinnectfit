@@ -4,8 +4,9 @@ import { useRouter } from "next/router";
 import SelectableItem from "@/components/StartToday/SelectableItems/SelectableItems";
 import { KFButton } from "@/components/UI/KFButton";
 import { Progress } from "@nextui-org/react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setFormValues } from "@/redux/feature/survey/surveySlice";
+import { useForm } from "react-hook-form";
 
 const SetGoalsPage = () => {
   const {

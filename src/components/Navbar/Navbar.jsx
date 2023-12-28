@@ -65,10 +65,10 @@ export default function KFNavbar() {
           </Link>
         </NavbarBrand>
         <NavbarItem>
-          <Link href="#">Workout Plans</Link>
+          <Link href="/workouts">Workout Plans</Link>
         </NavbarItem>
         <NavbarItem>
-          <Link href="#">Find your Meal</Link>
+          <Link href="/meal-plans">Find your Meal</Link>
         </NavbarItem>
       </NavbarContent>
 

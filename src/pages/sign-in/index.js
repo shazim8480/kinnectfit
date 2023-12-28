@@ -9,64 +9,98 @@ import { EyeFilledIcon } from "@/assets/icons/EyeFilledIcon";
 import { EyeSlashFilledIcon } from "@/assets/icons/EyeSlashFilledIcon";
 import { MailIcon } from "@/assets/icons/MailIcon";
 
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { useSignInMutation } from "@/redux/feature/auth/auth-api";
+import { setUser } from "@/redux/feature/user/userSlice";
+import { useRouter } from "next/navigation";
+
 const montserrat = Montserrat({
   weight: ["400", "500", "700", "800", "900"],
   subsets: ["latin"],
 });
 
 const SignInPage = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
 
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm();
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
+  // sign in query
+  const [signIn] = useSignInMutation();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
+    // e.preventDefault();
+    // console.log(data);
+    if (Object.keys(errors).length === 0) {
+      let signInResponse = await signIn(data);
+      // console.log("sign in response", signInResponse);
+      if (signInResponse?.data?.status === 200) {
+        dispatch(setUser(signInResponse?.data?.user));
+        router.push("/");
+      } else if (signInResponse?.error) {
+        console.log("err msg", signInResponse?.error);
+        setError("email", {
+          message: signInResponse?.error?.data?.message,
+        });
+      }
+    }
   };
 
   return (
     <div className={`h-screen md:flex ${montserrat.className}`}>
       <div className="flex items-center justify-center py-10 bg-white md:w-1/2">
-        <form
-          className="w-1/2 "
-          onSubmit={handleSubmit}
-          action="#"
-          method="POST"
-        >
+        <form className="w-1/2 " onSubmit={handleSubmit(onSubmit)}>
           <h1 className="mb-1 text-2xl font-bold text-gray-800">
             Hello Again!
           </h1>
           <p className="text-sm font-normal text-gray-600 mb-7">Welcome Back</p>
+          {/* email */}
           <KFInput
             id="email"
             type="email"
             name="email"
-            isRequired
-            value={formData.email}
-            onChange={handleInputChange}
+            {...register("email", {
+              required: "*Email is required.",
+              pattern: {
+                value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
+                message: "Email is not valid!",
+              },
+            })}
             variant="bordered"
             placeholder="Enter your email"
             endContent={
               <MailIcon className="flex-shrink-0 text-2xl pointer-events-none text-default-400" />
             }
-            className="mb-4"
           />
+          <div className="h-[25px] my-1">
+            {errors.email && (
+              <p className="mb-4 ml-1 text-sm text-left text-red-500">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
+
+          {/* password */}
           <KFInput
             id="password"
             name="password"
-            required
-            value={formData.password}
-            onChange={handleInputChange}
             label="Password"
             variant="bordered"
+            {...register("password", {
+              required: "*Password is required",
+              minLength: {
+                value: 4,
+                message: "Password should be at least 4 characters.",
+              },
+            })}
             size="xl"
             placeholder="Enter your password"
             endContent={

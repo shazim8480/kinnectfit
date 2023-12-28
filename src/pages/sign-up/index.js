@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { useSignUpMutation } from "@/redux/feature/auth/auth-api";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/feature/user/userSlice";
+import { useRouter } from "next/navigation";
 
 const montserrat = Montserrat({
   weight: ["400", "500", "700", "800", "900"],
@@ -23,6 +24,7 @@ const montserrat = Montserrat({
 
 const SignUpPage = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -138,8 +140,6 @@ const SignUpPage = () => {
                 message: "Email is not valid!",
               },
             })}
-            // value={formData.email}
-            // onChange={handleInputChange}
             variant="bordered"
             placeholder="Enter your email"
             endContent={

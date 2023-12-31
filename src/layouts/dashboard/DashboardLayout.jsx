@@ -1,12 +1,18 @@
 import Header from "@/components/dashboard/Header";
 import Sidebar from "@/components/dashboard/Sidebar/Sidebar";
 import React, { useState } from "react";
+import { Montserrat } from "next/font/google";
+
+const montserrat = Montserrat({
+  weight: ["400", "500", "700", "800", "900"],
+  subsets: ["latin"],
+});
 
 const DashboardLayout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="bg-[#f1f5f9]">
+    <div className={`bg-[#f1f5f9] ${montserrat.className}`}>
       <div className="flex h-screen overflow-hidden">
         {/* <!-- ===== Sidebar Start ===== --> */}
         <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />

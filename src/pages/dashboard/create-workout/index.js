@@ -3,14 +3,16 @@ import WorkoutModules from '@/components/CreateWorkout/WorkoutModules';
 import { KFButton } from '@/components/UI/KFButton';
 
 import DashboardLayout from '@/layouts/dashboard/DashboardLayout';
+import { setWorkoutValues } from '@/redux/feature/workout/workoutSlice';
 import React, { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 const CreateWorkoutPage = () => {
+    const dispatch = useDispatch();
     const [formSteps, setFormSteps] = useState(0);
     const {
         register,
         handleSubmit,
-        watch,
         reset,
         control,
         formState: { errors },
@@ -23,8 +25,10 @@ const CreateWorkoutPage = () => {
         control,
         name: "workoutModules",
     });
+
     const onSubmit = (data) => {
-        console.log(data);
+        // console.log(data);
+        dispatch(setWorkoutValues(data));
         setFormSteps(formSteps + 1);
         reset();
     };
@@ -34,16 +38,16 @@ const CreateWorkoutPage = () => {
     return (
         <div>
             <form action="" onSubmit={handleSubmit(onSubmit)} >
-                {/* {
+                {
                     formSteps === 0 && <CreateWorkout register={register} errors={errors} />
                 }
                 {
-                    formSteps === 1 && <WorkoutModules register={register} errors={errors} />
-                } */}
-
-                {
-                    <WorkoutModules register={register} errors={errors} fields={fields} append={append} remove={remove} />
+                    formSteps === 1 && <WorkoutModules register={register} errors={errors} fields={fields} append={append} remove={remove} />
                 }
+
+                {/* {
+                    <WorkoutModules register={register} errors={errors} fields={fields} append={append} remove={remove} />
+                } */}
 
                 <div className='text-center flex gap-4 justify-center'>
                     {

@@ -74,7 +74,7 @@ const CreateWorkout = ({ register, errors }) => {
         {/* ends name & category */}
 
         {/* starts time & rating */}
-        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-10">
+        <div className="grid grid-cols-1  md:gap-10">
           {/*starts workout time */}
           <div>
             <div className="text-left mt-4 text-base mb-3">
@@ -95,30 +95,6 @@ const CreateWorkout = ({ register, errors }) => {
             {errors.workoutTime && (
               <p className="text-red-500 text-left mt-1">
                 {errors.workoutTime.message}
-              </p>
-            )}
-          </div>
-          {/*ends workout time */}
-
-          {/*starts workout rating */}
-          <div>
-            <div className="text-left mt-4 text-base mb-3">
-              <label htmlFor="workoutRating">Workout Rating</label>
-            </div>
-            <KFInput
-              name="workoutRating"
-              size="xl"
-              placeholder="Rate within 1 to 5"
-              {...register("workoutRating", {
-                pattern: {
-                  value: /^[1-5]$/,
-                  message: "You have to rate within 1 to 5",
-                },
-              })}
-            />
-            {errors.workoutRating && (
-              <p className="text-red-500 text-left mt-1">
-                {errors.workoutRating.message}
               </p>
             )}
           </div>

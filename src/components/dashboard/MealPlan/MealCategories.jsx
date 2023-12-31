@@ -1,26 +1,19 @@
 import { KFButton } from "@/components/UI/KFButton";
 import { KFInput } from "@/components/UI/KFInput";
 import { Select, SelectItem } from "@nextui-org/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
-const MealCategories = ({
-  register,
-  errors,
-  remove,
-  fields,
-  append,
-  Controller,
-  control,
-}) => {
-  const [savedTexts, setSavedTexts] = useState([]);
-  console.log(savedTexts);
+const MealCategories = ({ register, errors, remove, fields, append }) => {
+  const [ingredients, setIngredients] = useState([]);
+  console.log(ingredients);
   const handleEnterPress = (event) => {
     if (event.key === "Tab") {
       const enteredText = event.target.value;
-      setSavedTexts((prevTexts) => [...prevTexts, enteredText]);
-      event.target.value = ""; // Clear input field
+      setIngredients((prevTexts) => [...prevTexts, enteredText]);
+      event.target.value = "";
     }
   };
+
   const categories = [
     {
       label: "Breakfast",
@@ -115,7 +108,7 @@ const MealCategories = ({
                       required: "enter ingredients",
                     })}
                   />
-                  <p>Saved texts: {savedTexts.join(", ")}</p>
+                  <p>Saved texts: {ingredients.join(", ")}</p>
                 </div>
 
                 <div>
@@ -134,17 +127,17 @@ const MealCategories = ({
 
                 <div>
                   <div className="text-left mt-4 text-base mb-3">
-                    <label htmlFor="mealImgCover">Meal Image Cover</label>
+                    <label htmlFor="img">Meal Image Cover</label>
                   </div>
                   <KFInput
                     type="file"
-                    name="mealImgCover"
+                    name="img"
                     placeholder="Upload a meal image cover"
-                    {...register(`categories.${index}.mealImgCover`)}
+                    {...register(`categories.${index}.img`)}
                   />
                   {errors.mealImgCover && (
                     <p className="text-red-500 text-left mt-1">
-                      {errors.mealImgCover.message}
+                      {errors.img.message}
                     </p>
                   )}
                 </div>

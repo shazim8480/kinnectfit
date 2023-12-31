@@ -3,9 +3,11 @@ import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./feature/user/userSlice";
 import { api } from "./api/apiSlice";
 import surveyFormReducer from "./feature/survey/surveySlice";
+import mealPlanReducer from "./feature/meal/mealSlice";
 
 const store = configureStore({
   reducer: {
+    mealplan: mealPlanReducer,
     user: userReducer,
     surveyForm: surveyFormReducer,
     [api.reducerPath]: api.reducer,

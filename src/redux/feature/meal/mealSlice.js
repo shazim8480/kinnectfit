@@ -4,20 +4,14 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   mealPlanName: "",
   category: "",
-  mealCoverImg: "",
   mealDescription: "",
   categories: [
     {
       mealCategory: "",
-      meals: [
-        {
-          mealName: "",
-          ingredients: [],
-          nutrients: {},
-          prep_time: "",
-          img: "",
-        },
-      ],
+      mealName: "",
+      ingredients: [],
+      neutrients: {},
+      prep_time: "",
     },
   ],
 };

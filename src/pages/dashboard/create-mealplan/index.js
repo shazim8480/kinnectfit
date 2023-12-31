@@ -5,15 +5,11 @@ import MealCategories from "@/components/dashboard/MealPlan/MealCategories";
 import DashboardLayout from "@/layouts/dashboard/DashboardLayout";
 import { useState } from "react";
 import { useFieldArray, useForm, Controller } from "react-hook-form";
+import { setMealValues } from "@/redux/feature/meal/mealSlice";
+import { useDispatch } from "react-redux";
 
 const CreateMealPlanPage = () => {
-  const handleEnterPress = (event) => {
-    if (event.key === "Enter") {
-      const enteredText = event.target.value;
-      setSavedTexts((prevTexts) => [...prevTexts, enteredText]);
-      event.target.value = ""; // Clear input field
-    }
-  };
+  const dispatch = useDispatch();
 
   const [formSteps, setFormSteps] = useState(0);
   const {
@@ -30,7 +26,7 @@ const CreateMealPlanPage = () => {
           name: "",
           ingredients: [],
           prepTime: "",
-          nutrients: {},
+          neutrients: {},
           img: "",
         },
       ],
@@ -38,6 +34,7 @@ const CreateMealPlanPage = () => {
   });
   const onSubmit = (data) => {
     console.log(data);
+    dispatch(setMealValues(data));
     setFormSteps(formSteps + 1);
     reset();
   };

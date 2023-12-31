@@ -4,7 +4,7 @@ import { KFButton } from '@/components/UI/KFButton';
 
 import DashboardLayout from '@/layouts/dashboard/DashboardLayout';
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 const CreateWorkoutPage = () => {
     const [formSteps, setFormSteps] = useState(0);
     const {
@@ -12,8 +12,17 @@ const CreateWorkoutPage = () => {
         handleSubmit,
         watch,
         reset,
+        control,
         formState: { errors },
-    } = useForm();
+    } = useForm({
+        defaultValues: {
+            workoutModules: [{ moduleName: "", moduleTime: "" }],
+        },
+    });
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: "workoutModules",
+    });
     const onSubmit = (data) => {
         console.log(data);
         setFormSteps(formSteps + 1);
@@ -25,11 +34,15 @@ const CreateWorkoutPage = () => {
     return (
         <div>
             <form action="" onSubmit={handleSubmit(onSubmit)} >
-                {
+                {/* {
                     formSteps === 0 && <CreateWorkout register={register} errors={errors} />
                 }
                 {
                     formSteps === 1 && <WorkoutModules register={register} errors={errors} />
+                } */}
+
+                {
+                    <WorkoutModules register={register} errors={errors} fields={fields} append={append} remove={remove} />
                 }
 
                 <div className='text-center flex gap-4 justify-center'>

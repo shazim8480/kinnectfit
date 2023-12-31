@@ -156,17 +156,8 @@ const CreateWorkout = ({ register, errors }) => {
           <KFInput
             type="file"
             name="workoutCover"
-            // size="xl"
             placeholder="Upload a workout cover"
-            {...register("workoutCover", {
-              required: "You must need to upload a workout cover image",
-            })}
           />
-          {errors.workoutCover && (
-            <p className="text-red-500 text-left mt-1">
-              {errors.workoutCover.message}
-            </p>
-          )}
         </div>
         {/*ends workout cover */}
       </div>

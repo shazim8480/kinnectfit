@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { KFInput } from "@/components/UI/KFInput";
 import { PlusIcon } from "@/assets/icons/PlusIcon";
 import { MinusIcon } from "@/assets/icons/MinusIcon";
+import { KFButton } from "../UI/KFButton";
 const WorkoutModules = ({ register, errors, fields, append, remove }) => {
   const [isDeleteButtonVisible, setDeleteButtonVisible] = useState(false);
   const handleAppend = () => {
@@ -18,7 +19,7 @@ const WorkoutModules = ({ register, errors, fields, append, remove }) => {
           const isLastItem = index === fields.length - 1;
           return (
             <div key={item.id}>
-              <div className="grid grid-cols-1  md:grid-cols-2 md:gap-10">
+              <div className="grid grid-cols-1  md:grid-cols-2 md:gap-4">
                 {/* start module name */}
                 <div>
                   <div className="text-left mt-4 text-base mb-3">
@@ -41,40 +42,55 @@ const WorkoutModules = ({ register, errors, fields, append, remove }) => {
                 {/* end module name */}
 
                 {/* start module time  */}
-                <div>
-                  <div className="text-left mt-4 text-base mb-3">
-                    <label htmlFor="moduleTime">Module Time</label>
-                  </div>
+                <div className="grid grid-cols-1 gap-3">
                   <div>
+                    <div className="text-left mt-4 text-base mb-3">
+                      <label htmlFor="moduleTime">Module Time</label>
+                    </div>
                     <div>
-                      <KFInput
-                        name={`workoutModules[${index}].moduleTime`}
-                        type="text"
-                        placeholder="Give a workout name"
-                        {...register(`workoutModules[${index}].moduleTime`, {
-                          required: "You must need to give a module time",
-                        })}
-                      />
-                      {errors?.[`workoutModules.${index}.moduleTime`] && (
-                        <p className="text-red-500 text-left mt-1">
-                          {errors[`workoutModules.${index}.moduleTime`].message}
-                        </p>
-                      )}
+                      <div>
+                        <KFInput
+                          name={`workoutModules[${index}].moduleTime`}
+                          type="text"
+                          placeholder="Give a workout name"
+                          {...register(`workoutModules[${index}].moduleTime`, {
+                            required: "You must need to give a module time",
+                          })}
+                        />
+                        {errors?.[`workoutModules.${index}.moduleTime`] && (
+                          <p className="text-red-500 text-left mt-1">
+                            {
+                              errors[`workoutModules.${index}.moduleTime`]
+                                .message
+                            }
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
+                  <div className="place-self-end">
+                    {!isLastItem && isDeleteButtonVisible && (
+                      <KFButton
+                        type="button"
+                        size="sm"
+                        className="text-red-600"
+                        onClick={() => remove(index)}
+                      >
+                        {/* <MinusIcon /> */}
+                        Remove
+                      </KFButton>
+                    )}
+                  </div>
                 </div>
+
                 {/* end module time  */}
               </div>
-              <div className="mt-3">
+
+              <div className="">
                 {isLastItem && (
-                  <button type="button" onClick={handleAppend}>
-                    <PlusIcon />
-                  </button>
-                )}
-                {index > 0 && isDeleteButtonVisible && (
-                  <button type="button" onClick={() => remove(index)}>
-                    <MinusIcon />
-                  </button>
+                  <KFButton size="sm" color="secondary" onClick={handleAppend}>
+                    Add
+                  </KFButton>
                 )}
               </div>
             </div>

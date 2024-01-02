@@ -13,14 +13,14 @@ const MealPlanDetails = ({ register, errors }) => {
     },
   ];
   return (
-    <div className="max-w-xs md:max-w-3xl mx-auto">
-      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <div className="max-w-xs md:max-w-5xl mx-auto">
+      <div className="bg-white  rounded px-8 pt-6 pb-8 mb-4">
         {/* starts name & category */}
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-10">
           {/*starts meal name */}
           <div>
             <div className="text-left mt-4 text-base mb-3">
-              <label htmlFor="mealplanName">Meal plan name</label>
+              <label htmlFor="mealPlanName">Meal plan name</label>
             </div>
             <KFInput
               name="mealPlanName"
@@ -90,20 +90,16 @@ const MealPlanDetails = ({ register, errors }) => {
         {/*starts meal cover */}
         <div>
           <div className="text-left mt-4 text-base mb-3">
-            <label htmlFor="mealCoverImg">Meal plan Cover</label>
+            <label htmlFor="mealPlanCoverImg">Meal plan Cover</label>
           </div>
           <KFInput
             type="file"
-            name="mealCoverImg"
+            name="mealPlanCoverImg"
             // size="xl"
             placeholder="Upload a meal plan cover"
-            {...register("mealCoverImg")}
+            {...register("mealPlanCoverImg")}
           />
-          {errors.mealCoverImg && (
-            <p className="text-red-500 text-left mt-1">
-              {errors.mealCoverImg.message}
-            </p>
-          )}
+
         </div>
         {/*ends meal cover */}
       </div>

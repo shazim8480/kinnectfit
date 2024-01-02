@@ -47,7 +47,7 @@ const MealPlanDetails = ({ register, errors }) => {
               items={categories}
               label="Select meal plan category"
               className="max-w-l"
-              {...register("category", {
+              {...register("mealPlanCategory", {
                 required: "Please select meal plan category",
               })}
             >
@@ -68,7 +68,7 @@ const MealPlanDetails = ({ register, errors }) => {
         {/*starts meal description */}
         <div>
           <div className="text-left mt-4 text-base mb-3">
-            <label htmlFor="mealDescription">Meal plan description</label>
+            <label htmlFor="mealPlanDescription">Meal plan description</label>
           </div>
           <Textarea
             minRows={5}

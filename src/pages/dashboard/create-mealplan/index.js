@@ -1,14 +1,14 @@
 import { KFButton } from "@/components/UI/KFButton";
-import MealPlanDetails from "@/components/dashboard/MealPlan/MealPlanDetails";
 import MealCategories from "@/components/dashboard/MealPlan/MealCategories";
-
 import DashboardLayout from "@/layouts/dashboard/DashboardLayout";
+import { setMealValues } from "@/redux/feature/meal/mealSlice";
 import { useState } from "react";
 import { useFieldArray, useForm, Controller } from "react-hook-form";
-import { setMealValues } from "@/redux/feature/meal/mealSlice";
 import { useDispatch } from "react-redux";
 
 const CreateMealPlanPage = () => {
+  const [items, setItems] = useState([]);
+
   const dispatch = useDispatch();
 
   const [formSteps, setFormSteps] = useState(0);
@@ -18,6 +18,10 @@ const CreateMealPlanPage = () => {
     reset,
     control,
     formState: { errors },
+    getValues,
+    setValue,
+    watch,
+
   } = useForm({
     defaultValues: {
       categories: [
@@ -33,10 +37,15 @@ const CreateMealPlanPage = () => {
     },
   });
   const onSubmit = (data) => {
-    console.log(data);
-    dispatch(setMealValues(data));
-    setFormSteps(formSteps + 1);
-    reset();
+    const categoryData = {
+      ...data,
+      categories: data.categories.map((category, index) => ({
+        ...category,
+        ingredients: items || []
+      })),
+    };
+    console.log(categoryData);
+    dispatch(setMealValues(categoryData));
   };
   const prev = () => {
     setFormSteps(formSteps - 1);
@@ -48,7 +57,7 @@ const CreateMealPlanPage = () => {
   return (
     <div>
       <form action="" onSubmit={handleSubmit(onSubmit)}>
-        {formSteps === 0 && (
+        {/* {formSteps === 0 && (
           <MealPlanDetails register={register} errors={errors} />
         )}
         {formSteps === 1 && (
@@ -61,7 +70,26 @@ const CreateMealPlanPage = () => {
             remove={remove}
             control={control}
           />
+        )} */}
+
+        {(
+          <MealCategories
+            register={register}
+            Controller={Controller}
+            errors={errors}
+            fields={fields}
+            append={append}
+            remove={remove}
+            control={control}
+            getValues={getValues}
+            reset={reset}
+            setValue={setValue}
+            watch={watch}
+            items={items}
+            setItems={setItems}
+          />
         )}
+
 
         <div className="text-center flex gap-4 justify-center">
           {formSteps === 1 && (

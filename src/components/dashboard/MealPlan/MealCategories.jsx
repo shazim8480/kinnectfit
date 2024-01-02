@@ -2,15 +2,25 @@ import { KFButton } from "@/components/UI/KFButton";
 import { KFInput } from "@/components/UI/KFInput";
 import { Select, SelectItem } from "@nextui-org/react";
 import { useRef, useState } from "react";
+import MealList from "./MealList";
 
-const MealCategories = ({ register, errors, remove, fields, append }) => {
+const MealCategories = ({ register, errors, remove, fields, append, items, setItems }) => {
+  // console.log("it3ems", items);
+  const [inputValue, setInputValue] = useState("");
   const [ingredients, setIngredients] = useState([]);
-  console.log(ingredients);
+  // console.log(ingredients);
   const handleEnterPress = (event) => {
     if (event.key === "Tab") {
       const enteredText = event.target.value;
       setIngredients((prevTexts) => [...prevTexts, enteredText]);
       event.target.value = "";
+    }
+  };
+
+  const handleAddItem = () => {
+    if (inputValue.trim()) {
+      setItems([...items, inputValue]);
+      setInputValue("");
     }
   };
 
@@ -95,7 +105,7 @@ const MealCategories = ({ register, errors, remove, fields, append }) => {
                   </p>
                 )}
 
-                <div>
+                {/* <div>
                   <div className="text-left mt-4 text-base mb-3">
                     <label htmlFor="ingredients">Ingredients</label>
                   </div>
@@ -109,6 +119,35 @@ const MealCategories = ({ register, errors, remove, fields, append }) => {
                     })}
                   />
                   <p>Saved texts: {ingredients.join(", ")}</p>
+                </div> */}
+
+                <div>
+                  <div className="text-left mt-4 text-base mb-3">
+                    <label htmlFor="ingredients">Ingredients</label>
+                  </div>
+                  <div>
+                    <KFInput
+                      type="text"
+                      value={inputValue}
+                      onChange={(e) => setInputValue(e.target.value)}
+                      placeholder="Enter a new item"
+                      
+                    // className={styles.addItemInput}
+                    />
+                    <button
+                      onClick={() => handleAddItem(index)}
+                    // className={`${styles.button} ${styles.addItemButton}`}
+                    >
+                      Add Item
+                    </button>
+                  </div>
+
+                  <MealList
+                    items={items}
+                    // items={items[index] || []}
+                  // onDeleteItem={handleDeleteItem}
+                  // onEditItem={handleEditItem}
+                  />
                 </div>
 
                 <div>
@@ -154,6 +193,7 @@ const MealCategories = ({ register, errors, remove, fields, append }) => {
           type="button"
           onClick={() => {
             append({});
+            setItems((prevItems) => [...prevItems, []]);
           }}
         >
           append

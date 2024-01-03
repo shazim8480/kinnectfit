@@ -10,6 +10,8 @@ import HealthSummaryIcon from "@/assets/icons/HealthSummaryIcon";
 import TrainerSummaryIcon from "@/assets/icons/TrainerSummaryIcon";
 import CreateWorkoutIcon from "@/assets/icons/CreateWorkoutIcon";
 import UserProfileIcon from "@/assets/icons/UserProfileIcon";
+import AddReviewIcon from "@/assets/icons/AddReviewIcon";
+import { TrainerListIcon } from "@/assets/icons/TrainerListIcon";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const pathname = usePathname();
@@ -60,14 +62,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   return (
     <aside
       ref={sidebar}
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-blue-100 duration-300 ease-linear lg:static lg:translate-x-0 ${
-        sidebarOpen ? "translate-x-0" : "-translate-x-full"
-      }`}
+      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-blue-100 duration-300 ease-linear lg:static lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2  py-5.5 lg:py-6.5">
-        <Link href="/">
-          <Image width={280} height={56} src={rentalHousing} alt="Logo" />
+        <Link
+          href="/"
+          className="font-bold text-blue-800 brand-name text-[18px] ml-10 mt-5"
+        >
+          KinnectFit
         </Link>
       </div>
       {/* <!-- SIDEBAR HEADER --> */}
@@ -78,13 +82,26 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           {/* <!-- Menu Group --> */}
           <div>
             <ul className="mb-6 flex flex-col gap-1.5">
+
+              {/* <!-- Menu Item Profile --> */}
+              <li>
+                <Link
+                  href="/dashboard/profile"
+                  className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${pathname.includes("profile") && "bg-blue-200 "
+                    }`}
+                >
+                  <UserProfileIcon fill="currentColor" className="w-5 h-5" />
+                  Profile
+                </Link>
+              </li>
+              {/* <!-- Menu Item Profile --> */}
+
               {/* <!-- Menu Item Health Summary --> */}
               <li>
                 <Link
                   href="/dashboard/health-summary"
-                  className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${
-                    pathname.includes("health-summary") && "bg-blue-200"
-                  }`}
+                  className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${pathname.includes("health-summary") && "bg-blue-200"
+                    }`}
                 >
                   <HealthSummaryIcon fill="currentColor" className="w-5 h-5" />
                   Health Summary
@@ -96,10 +113,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               <li>
                 <Link
                   href="/dashboard/trainer-summary"
-                  className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${
-                    pathname.includes("trainer-summary") &&
+                  className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${pathname.includes("trainer-summary") &&
                     "bg-blue-200 dark:bg-meta-4"
-                  }`}
+                    }`}
                 >
                   <TrainerSummaryIcon fill="currentColor" className="w-5 h-5" />
                   Trainer Summary
@@ -111,10 +127,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               <li>
                 <Link
                   href="/dashboard/create-workout"
-                  className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${
-                    pathname.includes("create-workout") &&
+                  className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${pathname.includes("create-workout") &&
                     "bg-blue-200 dark:bg-meta-4"
-                  }`}
+                    }`}
                 >
                   <CreateWorkoutIcon fill="currentColor" className="w-5 h-5" />
                   Create Workout
@@ -126,10 +141,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               <li>
                 <Link
                   href="/dashboard/create-mealplan"
-                  className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${
-                    pathname.includes("create-mealplan") &&
+                  className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${pathname.includes("create-mealplan") &&
                     "bg-blue-200 dark:bg-meta-4"
-                  }`}
+                    }`}
                 >
                   <MealPlanIcon fill="currentColor" className="w-5 h-5" />
                   Create Meal Plan
@@ -137,19 +151,33 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               </li>
               {/* <!-- Menu Item Create Meal Plan --> */}
 
-              {/* <!-- Menu Item Profile --> */}
+              {/* <!-- Menu Item Add Review --> */}
               <li>
                 <Link
-                  href="/dashboard/profile"
-                  className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${
-                    pathname.includes("profile") && "bg-blue-200 "
-                  }`}
+                  href="/dashboard/add-review"
+                  className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${pathname.includes("add-review") && "bg-blue-200 "
+                    }`}
                 >
-                  <UserProfileIcon fill="currentColor" className="w-5 h-5" />
-                  Profile
+                  <AddReviewIcon fill="currentColor" className="w-5 h-5" />
+                  Add Review
                 </Link>
               </li>
-              {/* <!-- Menu Item Profile --> */}
+              {/* <!-- Menu Item Add Review --> */}
+
+              {/* <!-- Menu Item Add Review --> */}
+              <li>
+                <Link
+                  href="/dashboard/trainer-list"
+                  className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${pathname.includes("trainer-list") && "bg-blue-200 "
+                    }`}
+                >
+                  <TrainerListIcon fill="currentColor" className="w-5 h-5" />
+                  Trainer List
+                </Link>
+              </li>
+              {/* <!-- Menu Item Add Review --> */}
+
+
             </ul>
           </div>
         </nav>

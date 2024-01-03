@@ -17,6 +17,7 @@ const WorkoutModules = ({ register, errors, fields, append, remove }) => {
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         {fields.map((item, index) => {
           const isLastItem = index === fields.length - 1;
+          const isFirstItem = index === 0;
           return (
             <div key={item.id}>
               <div className="grid grid-cols-1  md:grid-cols-2 md:gap-4">
@@ -29,15 +30,9 @@ const WorkoutModules = ({ register, errors, fields, append, remove }) => {
                     name={`workoutModules[${index}].moduleName`}
                     type="text"
                     placeholder="Give a module name"
-                    {...register(`workoutModules[${index}].moduleName`, {
-                      required: "You must need to give a module name",
-                    })}
+                    {...register(`workoutModules[${index}].moduleName`)}
                   />
-                  {errors?.[`workoutModules.${index}.moduleName`] && (
-                    <p className="text-red-500 text-left mt-1">
-                      {errors[`workoutModules.${index}.moduleName`].message}
-                    </p>
-                  )}
+
                 </div>
                 {/* end module name */}
 
@@ -53,33 +48,25 @@ const WorkoutModules = ({ register, errors, fields, append, remove }) => {
                           name={`workoutModules[${index}].moduleTime`}
                           type="text"
                           placeholder="Give a workout name"
-                          {...register(`workoutModules[${index}].moduleTime`, {
-                            required: "You must need to give a module time",
-                          })}
+                          {...register(`workoutModules[${index}].moduleTime`)}
                         />
-                        {errors?.[`workoutModules.${index}.moduleTime`] && (
-                          <p className="text-red-500 text-left mt-1">
-                            {
-                              errors[`workoutModules.${index}.moduleTime`]
-                                .message
-                            }
-                          </p>
-                        )}
+
                       </div>
                     </div>
                   </div>
                   <div className="place-self-end">
-                    {!isLastItem && isDeleteButtonVisible && (
+                    {
+                      !isFirstItem &&
                       <KFButton
                         type="button"
                         size="sm"
-                        className="text-red-600"
+                        className="text-red-50 bg-red-700"
                         onClick={() => remove(index)}
                       >
                         {/* <MinusIcon /> */}
                         Remove
                       </KFButton>
-                    )}
+                    }
                   </div>
                 </div>
 

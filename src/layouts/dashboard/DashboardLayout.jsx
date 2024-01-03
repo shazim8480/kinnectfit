@@ -1,5 +1,5 @@
-import Header from "@/components/dashboard/Header";
-import Sidebar from "@/components/dashboard/Sidebar/Sidebar";
+import Header from "@/components/Dashboard/Header";
+import Sidebar from "@/components/Dashboard/Sidebar/Sidebar";
 import React, { useState } from "react";
 import { Montserrat } from "next/font/google";
 

@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { KFInput } from "@/components/UI/KFInput";
 import { Select, SelectItem, Textarea } from "@nextui-org/react";
 const CreateWorkout = ({ register, errors }) => {
+  const [isCategorySelected, setIsCategorySelected] = useState(false);
   const categories = [
     {
       label: "Strength & Conditioning",
@@ -21,7 +22,7 @@ const CreateWorkout = ({ register, errors }) => {
     },
   ];
   return (
-    <div className="max-w-xs md:max-w-3xl mx-auto">
+    <div className="max-w-xs md:max-w-5xl mx-auto">
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         {/* starts name & category */}
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-10">
@@ -60,10 +61,10 @@ const CreateWorkout = ({ register, errors }) => {
               })}
             >
               {(category) => (
-                <SelectItem key={category.value}>{category.label}</SelectItem>
+                <SelectItem onClick={() => setIsCategorySelected(true)} key={category.value}>{category.label}</SelectItem>
               )}
             </Select>
-            {errors.category && (
+            {(errors.category && !isCategorySelected) && (
               <p className="text-red-500 text-left mt-1">
                 {errors.category.message}
               </p>

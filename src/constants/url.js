@@ -4,3 +4,8 @@ export const LOCAL_BACKEND = "http://localhost:5000/api/kv1";
 // USER AUTH URL
 export const USER_LOGIN = "/sign-in";
 export const USER_SIGN_UP = "/sign-up";
+
+// Workout url
+export const CREATE_WORKOUT = "/create-workout";
+// mealplan url
+export const CREATE_MEAL_PLAN = "/create-mealplan";

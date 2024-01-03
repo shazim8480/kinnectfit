@@ -3,11 +3,15 @@ import WorkoutModules from '@/components/CreateWorkout/WorkoutModules';
 import { KFButton } from '@/components/UI/KFButton';
 
 import DashboardLayout from '@/layouts/dashboard/DashboardLayout';
+import { useCreateWorkoutMutation } from '@/redux/feature/workout/workout-api';
 import { setWorkoutValues } from '@/redux/feature/workout/workoutSlice';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 const CreateWorkoutPage = () => {
+    const router = useRouter();
+    const [createWorkout] = useCreateWorkoutMutation();
     const dispatch = useDispatch();
     const [formSteps, setFormSteps] = useState(0);
     const {
@@ -26,11 +30,21 @@ const CreateWorkoutPage = () => {
         name: "workoutModules",
     });
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         // console.log(data);
         dispatch(setWorkoutValues(data));
         setFormSteps(formSteps + 1);
-        reset();
+        // if (Object.keys(errors).length === 0) {
+        let createWorkoutResponse = await createWorkout(data);
+        // console.log("sign in response", signInResponse);
+        if (createWorkoutResponse?.data?.status === 200) {
+            reset();
+            router.push("/dashboard");
+        } else if (createWorkoutResponse?.error) {
+            console.log("err msg", createWorkoutResponse?.error);
+        }
+        // }
+
     };
     const prev = () => {
         setFormSteps(formSteps - 1);

@@ -13,7 +13,7 @@ export default function TrainerDetails({ isOpen, onOpenChange, trainerId }) {
     const [selectedImage, setSelectedImage] = useState(null);
 
     if (loading) {
-        return <div className="min-h-screen flex justify-center items-center">
+        return <div className="min-h-[80vh] flex justify-center items-center">
             <Spinner />
         </div>;
     }

@@ -5,11 +5,12 @@ import MainLayout from "@/layouts/mainLayout";
 import Clock from "@/assets/icons/Clock";
 import Star from "@/assets/icons/Star";
 import { UserIcon } from "@/assets/icons/UserIcon";
-import { Checkbox } from "@nextui-org/react";
 import { KFButton } from "@/components/UI/KFButton";
 import { useState } from "react";
+import { Checkbox, Link, User, Chip, cn } from "@nextui-org/react";
 
 function WorkoutPage() {
+  const [isSelected, setIsSelected] = useState(false);
   const router = useRouter();
   const { workoutName } = router.query;
   const workout_deatils = workout_data.find(
@@ -60,7 +61,7 @@ function WorkoutPage() {
         </div>
       </div>
 
-      <div className="block">
+      <div className="blo">
         <div className="p-6">
           <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800">
             Workout Overview
@@ -68,13 +69,35 @@ function WorkoutPage() {
           <div className="mb-4 text-base text-neutral-600">
             {workout_deatils?.workout_modules.map((module) => {
               return (
-                <p
-                  key={module.name}
-                  className="flex justify-between mb-4 text-base text-black p-6 rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]"
-                >
-                  {module.name} - {module.time} seconds
-                  <Checkbox color="secondary" isDisabled={!isStarted} />
-                </p>
+                <>
+                  <div className="py-4 w-full">
+                    <Checkbox
+                      key={module.name}
+                      aria-label={module.name}
+                      classNames={{
+                        base: cn(
+                          "inline-flex w-full max-w-xl bg-content1",
+                          "hover:bg-content2 items-center justify-start",
+                          "cursor-pointer rounded-lg gap-2 p-4 border-2 border-transparent",
+                          "data-[selected=true]:border-primary"
+                        ),
+                        label: "w-full",
+                      }}
+                      isDisabled={!isStarted}
+                      // isSelected={isSelected}
+                      onValueChange={setIsSelected}
+                    >
+                      <div className="w-full flex justify-end gap-2">
+                        <div className="flex flex-col items-end gap-1">
+                          {module.name}
+                          <Chip color="success" size="sm" variant="flat">
+                            {module.time} sec
+                          </Chip>
+                        </div>
+                      </div>
+                    </Checkbox>
+                  </div>
+                </>
               );
             })}
           </div>

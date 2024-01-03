@@ -67,8 +67,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2  py-5.5 lg:py-6.5">
-        <Link href="/">
-          <Image width={280} height={56} src={rentalHousing} alt="Logo" />
+        <Link
+          href="/"
+          className="font-bold text-blue-800 brand-name text-[18px] ml-10 mt-5"
+        >
+          KinnectFit
         </Link>
       </div>
       {/* <!-- SIDEBAR HEADER --> */}

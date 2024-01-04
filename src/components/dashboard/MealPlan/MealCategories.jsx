@@ -111,23 +111,27 @@ const MealCategories = ({ register, errors, remove, fields, append, items, setIt
                     onChange={(e) => setInputValue(e.target.value)}
                     placeholder="Enter a new item"
                   />
-                  <KFButton size="sm" color="secondary" className="mt-2"
-                    onClick={handleAddItem}
-                  >
-                    Add Item
-                  </KFButton>
+                  <div className="flex items-center gap-2">
+                    <KFButton size="sm" color="secondary" className="mt-2"
+                      onClick={handleAddItem}
+                    >
+                      Add Item
+                    </KFButton>
+                    <div className="mt-2 overflow-auto">
+                      {/* Display added items */}
+                      {items.map((item, index) => (
+                        <span key={index} className="mr-2">
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                {/* <MealList
-                  items={items}
-                /> */}
               </div>
+
+
+
             </div>
-
-
-
-
-
-
             <div>
               <div className="text-left mt-4 text-base mb-3">
                 <label htmlFor="img">Meal Image Cover</label>

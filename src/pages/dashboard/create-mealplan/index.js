@@ -21,14 +21,13 @@ const CreateMealPlanPage = () => {
   } = useForm();
   const onSubmit = async (data) => {
     const mealData = { ...data, ingredients: items };
-    console.log(mealData);
-    // let createMealResponse = await createMealPlan(mealData);
-    // if (createMealResponse?.data?.status === 200) {
-    //   reset();
-    //   router.push("/dashboard");
-    // } else if (createMealResponse?.error) {
-    //   console.log("err msg", createMealResponse?.error);
-    // }
+    let createMealPlanResponse = await createMealPlan(mealData);
+    if (createMealPlanResponse?.data?.status === 201) {
+      router.push("/dashboard");
+      reset();
+    } else if (createMealPlanResponse?.error) {
+      console.log("err msg", createMealPlanResponse?.error);
+    }
 
   };
   return (
@@ -49,7 +48,7 @@ const CreateMealPlanPage = () => {
             className="mt-4"
             type="submit"
           >
-            Create MealPlan
+            Create Meal Plan
           </KFButton>
           {/* )} */}
         </div>

@@ -8,4 +8,4 @@ export const USER_SIGN_UP = "/sign-up";
 // Workout url
 export const CREATE_WORKOUT = "/create-workout";
 // mealplan url
-export const CREATE_MEAL_PLAN = "/create-mealplan";
+export const CREATE_MEAL_PLAN = "/create-meal-plan";

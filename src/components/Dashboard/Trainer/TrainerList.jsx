@@ -47,9 +47,7 @@ export default function TrainerList() {
                 );
             case "status":
                 return (
-                    <Chip className="capitalize" color={statusColorMap[trainer?.status]} size="sm" variant="flat">
-                        <DropdownStatus trainerStatus={trainer?.status} />
-                    </Chip>
+                    <DropdownStatus trainerStatus={trainer?.status} trainerId={trainer?.trainer_id} />
                 );
             case "actions":
                 return (
@@ -69,16 +67,12 @@ export default function TrainerList() {
     }, []);
 
     const trainers = trainerList?.trainers;
-    // console.log("trainers", trainers);
 
     if (loading) {
         return <div className="min-h-[80vh] flex justify-center items-center">
             <Spinner />
         </div>;
     }
-
-
-    // console.log(formattedDate);
     return (
         <>
             <Table aria-label="Example table with custom cells">

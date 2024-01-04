@@ -1,31 +1,54 @@
-import React from "react";
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Chip } from "@nextui-org/react";
+import React, { useEffect, useState } from "react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Chip } from "@nextui-org/react";
+import { LOCAL_BACKEND } from "@/constants/url";
 
-export default function DropdownStatus({ trainerStatus }) {
-    const [selectedKeys, setSelectedKeys] = React.useState(new Set(["pending"]));
+export default function DropdownStatus({ trainerStatus, trainerId }) {
+    const [selectedKeys, setSelectedKeys] = useState(new Set([trainerStatus]));
+    const [localTrainerStatus, setLocalTrainerStatus] = useState(trainerStatus);
 
+    const selectedValue = Array.from(selectedKeys).join(", ").replaceAll("_", " ");
 
-    const selectedValue = React.useMemo(
-        () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
-        [selectedKeys]
-    );
-    // console.log("selectedValue", selectedValue);
+    const handleStatusUpdate = async () => {
+        const apiUrl = `${LOCAL_BACKEND}/trainer/${trainerId}`;
+        const updateStatusData = selectedValue.toLowerCase().replaceAll(" ", "_");
+
+        try {
+            await fetch(apiUrl, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    status: updateStatusData
+                }),
+            });
+
+            // Update local state after a successful API call
+            setLocalTrainerStatus(updateStatusData);
+            // console.log("Status updated successfully!");
+        } catch (error) {
+            console.error("Error updating status:", error);
+        }
+    };
+
+    useEffect(() => {
+        handleStatusUpdate();
+    }, [selectedKeys]);
 
     return (
         <Dropdown>
             <DropdownTrigger>
-                {/* <Button
-                    variant="bordered"
+                <Chip
                     className="capitalize"
+                    color={
+                        localTrainerStatus === "approved" ? "success" :
+                            localTrainerStatus === "pending" ? "warning" :
+                                localTrainerStatus === "paused" ? "danger" : "default"
+                    }
+                    size="sm"
+                    variant="flat"
                 >
-                    {selectedValue}
-                </Button> */}
-                <Chip className="capitalize" color={
-                    selectedKeys.has("approved") ? "success" :
-                        selectedKeys.has("pending") ? "warning" :
-                            selectedKeys.has("paused") ? "danger" : "default"
-                } size="sm" variant="flat">
-                    {selectedValue}
+                    {localTrainerStatus}
                 </Chip>
             </DropdownTrigger>
             <DropdownMenu

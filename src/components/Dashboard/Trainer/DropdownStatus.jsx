@@ -11,7 +11,14 @@ export default function DropdownStatus({ trainerStatus, trainerId }) {
     const handleStatusUpdate = async () => {
         const apiUrl = `${LOCAL_BACKEND}/trainer/${trainerId}`;
         const updateStatusData = selectedValue.toLowerCase().replaceAll(" ", "_");
-
+        // let isTrainer;
+        // if (updateStatusData === "approved") {
+        //     isTrainer = true;
+        // } else {
+        //     isTrainer = false;
+        // }
+        let isTrainer;
+        updateStatusData === "approved" ? isTrainer = true : isTrainer = false;
         try {
             await fetch(apiUrl, {
                 method: "PUT",
@@ -19,7 +26,8 @@ export default function DropdownStatus({ trainerStatus, trainerId }) {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    status: updateStatusData
+                    status: updateStatusData,
+                    isTrainer
                 }),
             });
 

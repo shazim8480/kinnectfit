@@ -1,10 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import rentalHousing from "@/assets/images/rental-housing.png";
-import healthSummary from "@/assets/images/health.png";
 // import SidebarLinkGroup from ;
-import Image from "next/image";
 import MealPlanIcon from "@/assets/icons/MealPlanIcon";
 import HealthSummaryIcon from "@/assets/icons/HealthSummaryIcon";
 import TrainerSummaryIcon from "@/assets/icons/TrainerSummaryIcon";
@@ -82,20 +79,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           {/* <!-- Menu Group --> */}
           <div>
             <ul className="mb-6 flex flex-col gap-1.5">
-
-              {/* <!-- Menu Item Profile --> */}
-              <li>
-                <Link
-                  href="/dashboard/profile"
-                  className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${pathname.includes("profile") && "bg-blue-200 "
-                    }`}
-                >
-                  <UserProfileIcon fill="currentColor" className="w-5 h-5" />
-                  Profile
-                </Link>
-              </li>
-              {/* <!-- Menu Item Profile --> */}
-
               {/* <!-- Menu Item Health Summary --> */}
               <li>
                 <Link

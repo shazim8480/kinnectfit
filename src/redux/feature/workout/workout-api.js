@@ -1,4 +1,4 @@
-import { CREATE_WORKOUT } from "@/constants/url";
+import { CREATE_WORKOUT, START_WORKOUT } from "@/constants/url";
 import { api } from "@/redux/api/apiSlice";
 
 const workoutApi = api.injectEndpoints({
@@ -10,8 +10,15 @@ const workoutApi = api.injectEndpoints({
                 body: data,
             }),
         }),
+        startWorkout: builder.mutation({
+            query: ({ data, userId }) => ({
+                url: `${START_WORKOUT}/${userId}`,
+                method: "PUT",
+                body: data,
+            }),
+        }),
 
     }),
 });
 
-export const { useCreateWorkoutMutation } = workoutApi;
+export const { useCreateWorkoutMutation, useStartWorkoutMutation } = workoutApi;

@@ -8,19 +8,56 @@ import { UserIcon } from "@/assets/icons/UserIcon";
 import { KFButton } from "@/components/UI/KFButton";
 import { useState } from "react";
 import { Checkbox, Link, User, Chip, cn } from "@nextui-org/react";
+import { useStartWorkoutMutation } from "@/redux/feature/workout/workout-api";
+import { useSelector } from "react-redux";
 
 function WorkoutPage() {
+  const { user } = useSelector((state) => state.user);
+  // console.log(user);
+  const [startWorkout] = useStartWorkoutMutation();
   const [isSelected, setIsSelected] = useState(false);
   const router = useRouter();
+
   const { workoutName } = router.query;
-  const workout_deatils = workout_data.find(
+  const workout_details = workout_data.find(
     (w) => w.workout_name === workoutName
   );
 
   const [isStarted, setIsStarted] = useState(false);
 
-  const handleStartWorkout = () => {
-    setIsStarted(true);
+  const handleCheck = (module) => {
+    console.log("clicked", module);
+    setIsSelected(true);
+
+    const data = {
+      data: module,
+      userId: user.id
+    };
+
+
+    // let startWorkoutResponse = await startWorkout(data);
+    // // console.log(startWorkoutResponse);
+    // // return;
+    // if (startWorkoutResponse?.data?.status) {
+    //   setIsStarted(true);
+    // } else if (startWorkoutResponse?.error) {
+    //   console.log("err msg", startWorkoutResponse?.error);
+    // }
+  };
+  const handleStartWorkout = async () => {
+    // console.log(data);
+    const data = {
+      data: workout_details,
+      userId: user.id
+    };
+    let startWorkoutResponse = await startWorkout(data);
+    // console.log(startWorkoutResponse);
+    // return;
+    if (startWorkoutResponse?.data?.status) {
+      setIsStarted(true);
+    } else if (startWorkoutResponse?.error) {
+      console.log("err msg", startWorkoutResponse?.error);
+    }
   };
 
   return (
@@ -31,32 +68,32 @@ function WorkoutPage() {
             removewrapper
             alt="workout_cover"
             className="z-0 object-cover w-full h-full"
-            src={workout_deatils?.workout_cover}
+            src={workout_details?.workout_cover}
             width={500}
             height={500}
           />
           <h5 className="my-3 text-xl font-medium leading-tight text-neutral-800">
-            {workout_deatils?.workout_name}
+            {workout_details?.workout_name}
           </h5>
           <div className="flex gap-3">
             <div className="flex items-center">
               <UserIcon fill="black" />
-              <p className="ml-1">{workout_deatils?.trainer_name}</p>
+              <p className="ml-1">{workout_details?.trainer_name}</p>
             </div>
             <div className="flex items-center">
               <Clock fill="black" />
-              <p className="ml-1">{workout_deatils?.total_workout_time} min</p>
+              <p className="ml-1">{workout_details?.total_workout_time} min</p>
             </div>
             <div className="flex items-center">
               <Star fill="black" />
-              <p className="ml-1">{workout_deatils?.average_rating}/5</p>
+              <p className="ml-1">{workout_details?.average_rating}/5</p>
             </div>
           </div>
           <h5 className="my-5 text-xl font-medium leading-tight text-neutral-800">
             Workout Description
           </h5>
           <p className="mb-4 text-base text-neutral-600 ">
-            {workout_deatils?.description}
+            {workout_details?.description}
           </p>
         </div>
       </div>
@@ -67,13 +104,14 @@ function WorkoutPage() {
             Workout Overview
           </h5>
           <div className="mb-4 text-base text-neutral-600">
-            {workout_deatils?.workout_modules.map((module) => {
+            {workout_details?.workout_modules.map((module) => {
               return (
                 <>
                   <div className="py-4 w-full">
                     <Checkbox
                       key={module.name}
                       aria-label={module.name}
+                      onClick={() => handleCheck(module)}
                       classNames={{
                         base: cn(
                           "inline-flex w-full max-w-xl bg-content1",

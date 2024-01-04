@@ -1,10 +1,8 @@
 import CreateWorkout from '@/components/CreateWorkout/CreateWorkout';
 import WorkoutModules from '@/components/CreateWorkout/WorkoutModules';
 import { KFButton } from '@/components/UI/KFButton';
-
 import DashboardLayout from '@/layouts/dashboard/DashboardLayout';
 import { useCreateWorkoutMutation } from '@/redux/feature/workout/workout-api';
-import { setWorkoutValues } from '@/redux/feature/workout/workoutSlice';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
@@ -22,30 +20,29 @@ const CreateWorkoutPage = () => {
         formState: { errors },
     } = useForm({
         defaultValues: {
-            workoutModules: [{ moduleName: "", moduleTime: "" }],
+            workout_modules: [{ moduleName: "", moduleTime: "" }],
         },
     });
     const { fields, append, remove } = useFieldArray({
         control,
-        name: "workoutModules",
+        name: "workout_modules",
     });
 
     const onSubmit = async (data) => {
-        // console.log(data);
-        dispatch(setWorkoutValues(data));
-        setFormSteps(formSteps + 1);
-        // if (Object.keys(errors).length === 0) {
+        console.log(data);
         let createWorkoutResponse = await createWorkout(data);
-        // console.log("sign in response", signInResponse);
-        if (createWorkoutResponse?.data?.status === 200) {
-            reset();
+        if (createWorkoutResponse?.data?.status === 201) {
             router.push("/dashboard");
+            reset();
         } else if (createWorkoutResponse?.error) {
             console.log("err msg", createWorkoutResponse?.error);
         }
-        // }
-
     };
+
+    const handleNext = () => {
+        setFormSteps(formSteps + 1);
+    };
+
     const prev = () => {
         setFormSteps(formSteps - 1);
     };
@@ -70,7 +67,7 @@ const CreateWorkoutPage = () => {
                         </KFButton>
                     }
                     {
-                        (formSteps === 0 && formSteps < 1) && <KFButton color="secondary" size="lg" className="mt-4" type='submit' >
+                        (formSteps === 0 && formSteps < 1) && <KFButton color="secondary" size="lg" className="mt-4" onClick={() => { handleNext(); }} >
                             Next
                         </KFButton>
                     }

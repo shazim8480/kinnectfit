@@ -32,16 +32,16 @@ const CreateWorkout = ({ register, errors }) => {
               <label htmlFor="workoutName">Workout Name</label>
             </div>
             <KFInput
-              name="workoutName"
+              name="workout_name"
               type="text"
               placeholder="Give a workout name"
-              {...register("workoutName", {
+              {...register("workout_name", {
                 required: "You must need to give a workout name",
               })}
             />
-            {errors.workoutName && (
+            {errors.workout_name && (
               <p className="text-red-500 text-left mt-1">
-                {errors.workoutName.message}
+                {errors.workout_name.message}
               </p>
             )}
           </div>
@@ -79,13 +79,13 @@ const CreateWorkout = ({ register, errors }) => {
           {/*starts workout time */}
           <div>
             <div className="text-left mt-4 text-base mb-3">
-              <label htmlFor="workoutTime">Workout Time</label>
+              <label htmlFor="workout_time">Workout Time</label>
             </div>
             <KFInput
-              name="workoutTime"
+              name="workout_time"
               size="xl"
               placeholder="Minutes"
-              {...register("workoutTime", {
+              {...register("workout_time", {
                 required: "Set workout duration",
                 pattern: {
                   value: /^(0|[1-9]\d*)$/,
@@ -93,9 +93,9 @@ const CreateWorkout = ({ register, errors }) => {
                 },
               })}
             />
-            {errors.workoutTime && (
+            {errors.workout_time && (
               <p className="text-red-500 text-left mt-1">
-                {errors.workoutTime.message}
+                {errors.workout_time.message}
               </p>
             )}
           </div>
@@ -110,16 +110,16 @@ const CreateWorkout = ({ register, errors }) => {
           </div>
           <Textarea
             minRows={5}
-            name="workoutDescription"
+            name="description"
             placeholder="Enter workout description"
             description="Write a concise description about workout"
-            {...register("workoutDescription", {
+            {...register("description", {
               required: "You have to describe about your workout",
             })}
           />
-          {errors.workoutDescription && (
+          {errors.description && (
             <p className="text-red-500 text-left mt-1">
-              {errors.workoutDescription.message}
+              {errors.description.message}
             </p>
           )}
         </div>
@@ -128,11 +128,11 @@ const CreateWorkout = ({ register, errors }) => {
         {/*starts workout cover */}
         <div>
           <div className="text-left mt-4 text-base mb-3">
-            <label htmlFor="workoutCover">Workout Cover</label>
+            <label htmlFor="workout_cover">Workout Cover</label>
           </div>
           <KFInput
             type="file"
-            name="workoutCover"
+            name="workout_cover"
             placeholder="Upload a workout cover"
           />
         </div>

@@ -21,13 +21,14 @@ const CreateMealPlanPage = () => {
   } = useForm();
   const onSubmit = async (data) => {
     const mealData = { ...data, ingredients: items };
-    let createMealResponse = await createMealPlan(mealData);
-    if (createMealResponse?.data?.status === 200) {
-      reset();
-      router.push("/dashboard");
-    } else if (createMealResponse?.error) {
-      console.log("err msg", createMealResponse?.error);
-    }
+    console.log(mealData);
+    // let createMealResponse = await createMealPlan(mealData);
+    // if (createMealResponse?.data?.status === 200) {
+    //   reset();
+    //   router.push("/dashboard");
+    // } else if (createMealResponse?.error) {
+    //   console.log("err msg", createMealResponse?.error);
+    // }
 
   };
   return (

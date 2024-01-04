@@ -6,7 +6,7 @@ const initialState = {
     category: "",
     workoutTime: "",
     workoutDescription: "",
-    workoutModules: []
+    workout_modules: []
 };
 
 export const workoutSlice = createSlice({

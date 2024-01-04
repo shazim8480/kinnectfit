@@ -41,7 +41,7 @@ const MealCategories = ({ register, errors, remove, fields, append, items, setIt
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-10">
               <div>
                 <div className="text-left mt-4 text-base mb-3">
-                  <label htmlFor="mealName">Meal Category</label>
+                  <label htmlFor="meal_name">Meal Category</label>
                 </div>
                 <Select
                   items={categories}
@@ -60,19 +60,19 @@ const MealCategories = ({ register, errors, remove, fields, append, items, setIt
               </div>
               <div>
                 <div className="text-left mt-4 text-base mb-3">
-                  <label htmlFor="mealName">Meal Name</label>
+                  <label htmlFor="meal_name">Meal Name</label>
                 </div>
                 <KFInput
-                  name="mealName"
+                  name="meal_name"
                   type="text"
                   placeholder="Give a meal name "
-                  {...register(`mealName`, {
+                  {...register(`meal_name`, {
                     required: "You must need to give a meal name",
                   })}
                 />
-                {errors.mealName && (
+                {errors.meal_name && (
                   <p className="text-red-500 text-left mt-1">
-                    {errors.mealName.message}
+                    {errors.meal_name.message}
                   </p>
                 )}
               </div>
@@ -80,13 +80,13 @@ const MealCategories = ({ register, errors, remove, fields, append, items, setIt
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-10">
               <div>
                 <div className="text-left mt-4 text-base mb-3">
-                  <label htmlFor="prepTime">Preparation Time</label>
+                  <label htmlFor="prep_time">Preparation Time</label>
                 </div>
                 <KFInput
-                  name="prepTime"
+                  name="prep_time"
                   size="xl"
                   placeholder="Minutes"
-                  {...register(`prepTime`, {
+                  {...register(`prep_time`, {
                     required: "Set prep Time duration",
                     pattern: {
                       value: /^(0|[1-9]\d*)$/,
@@ -94,9 +94,9 @@ const MealCategories = ({ register, errors, remove, fields, append, items, setIt
                     },
                   })}
                 />
-                {errors.prepTime && (
+                {errors.prep_time && (
                   <p className="text-red-500 text-left mt-1">
-                    {errors.prepTime.message}
+                    {errors.prep_time.message}
                   </p>
                 )}
               </div>
@@ -111,23 +111,27 @@ const MealCategories = ({ register, errors, remove, fields, append, items, setIt
                     onChange={(e) => setInputValue(e.target.value)}
                     placeholder="Enter a new item"
                   />
-                  <KFButton size="sm" color="secondary" className="mt-2"
-                    onClick={handleAddItem}
-                  >
-                    Add Item
-                  </KFButton>
+                  <div className="flex items-center gap-2">
+                    <KFButton size="sm" color="secondary" className="mt-2"
+                      onClick={handleAddItem}
+                    >
+                      Add Item
+                    </KFButton>
+                    <div className="mt-2 overflow-auto">
+                      {/* Display added items */}
+                      {items.map((item, index) => (
+                        <span key={index} className="mr-2">
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                {/* <MealList
-                  items={items}
-                /> */}
               </div>
+
+
+
             </div>
-
-
-
-
-
-
             <div>
               <div className="text-left mt-4 text-base mb-3">
                 <label htmlFor="img">Meal Image Cover</label>

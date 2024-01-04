@@ -27,10 +27,10 @@ const WorkoutModules = ({ register, errors, fields, append, remove }) => {
                     <label htmlFor="moduleName">Module Name</label>
                   </div>
                   <KFInput
-                    name={`workoutModules[${index}].moduleName`}
+                    name={`workout_modules[${index}].moduleName`}
                     type="text"
                     placeholder="Give a module name"
-                    {...register(`workoutModules[${index}].moduleName`)}
+                    {...register(`workout_modules[${index}].moduleName`)}
                   />
 
                 </div>
@@ -45,10 +45,10 @@ const WorkoutModules = ({ register, errors, fields, append, remove }) => {
                     <div>
                       <div>
                         <KFInput
-                          name={`workoutModules[${index}].moduleTime`}
+                          name={`workout_modules[${index}].moduleTime`}
                           type="text"
                           placeholder="Give a workout name"
-                          {...register(`workoutModules[${index}].moduleTime`)}
+                          {...register(`workout_modules[${index}].moduleTime`)}
                         />
 
                       </div>

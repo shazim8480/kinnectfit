@@ -20,19 +20,19 @@ const MealPlanDetails = ({ register, errors }) => {
           {/*starts meal name */}
           <div>
             <div className="text-left mt-4 text-base mb-3">
-              <label htmlFor="mealPlanName">Meal plan name</label>
+              <label htmlFor="mealPlan_name">Meal plan name</label>
             </div>
             <KFInput
-              name="mealPlanName"
+              name="mealPlan_name"
               type="text"
               placeholder="Give a Meal plan name"
-              {...register("mealPlanName", {
+              {...register("mealPlan_name", {
                 required: "You must need to give a meal plan name",
               })}
             />
-            {errors.mealName && (
+            {errors.mealPlan_name && (
               <p className="text-red-500 text-left mt-1">
-                {errors.mealName.message}
+                {errors.mealPlan_name.message}
               </p>
             )}
           </div>
@@ -47,7 +47,7 @@ const MealPlanDetails = ({ register, errors }) => {
               items={categories}
               label="Select meal plan category"
               className="max-w-l"
-              {...register("mealPlanCategory", {
+              {...register("mealPlan_category", {
                 required: "Please select meal plan category",
               })}
             >
@@ -72,16 +72,16 @@ const MealPlanDetails = ({ register, errors }) => {
           </div>
           <Textarea
             minRows={5}
-            name="mealPlanDescription"
+            name="mealPlan_description"
             placeholder="Enter meal plan description"
             description="Write a concise description about meal plan"
-            {...register("mealDescription", {
+            {...register("mealPlan_description", {
               required: "You have to describe about your meal plan",
             })}
           />
-          {errors.mealDescription && (
+          {errors.mealPlan_description && (
             <p className="text-red-500 text-left mt-1">
-              {errors.mealDescription.message}
+              {errors.mealPlan_description.message}
             </p>
           )}
         </div>
@@ -90,14 +90,14 @@ const MealPlanDetails = ({ register, errors }) => {
         {/*starts meal cover */}
         <div>
           <div className="text-left mt-4 text-base mb-3">
-            <label htmlFor="mealPlanCoverImg">Meal plan Cover</label>
+            <label htmlFor="mealPlan_cover_img">Meal plan Cover</label>
           </div>
           <KFInput
             type="file"
-            name="mealPlanCoverImg"
+            name="mealPlan_cover_img"
             // size="xl"
             placeholder="Upload a meal plan cover"
-            {...register("mealPlanCoverImg")}
+            {...register("mealPlan_cover_img")}
           />
 
         </div>

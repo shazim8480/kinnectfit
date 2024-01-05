@@ -25,34 +25,31 @@ function WorkoutPage() {
 
   const [isStarted, setIsStarted] = useState(false);
 
-  const handleCheck = (module) => {
+  const handleCheck = async (module) => {
     console.log("clicked", module);
     setIsSelected(true);
 
     const data = {
       data: module,
-      userId: user.id
+      userId: user?.id,
     };
 
-
-    // let startWorkoutResponse = await startWorkout(data);
-    // // console.log(startWorkoutResponse);
-    // // return;
-    // if (startWorkoutResponse?.data?.status) {
-    //   setIsStarted(true);
-    // } else if (startWorkoutResponse?.error) {
-    //   console.log("err msg", startWorkoutResponse?.error);
-    // }
-  };
-  const handleStartWorkout = async () => {
-    // console.log(data);
-    const data = {
-      data: workout_details,
-      userId: user.id
-    };
     let startWorkoutResponse = await startWorkout(data);
     // console.log(startWorkoutResponse);
     // return;
+    if (startWorkoutResponse?.data?.status) {
+      setIsStarted(true);
+    } else if (startWorkoutResponse?.error) {
+      console.log("err msg", startWorkoutResponse?.error);
+    }
+  };
+  const handleStartWorkout = async () => {
+    const data = {
+      data: workout_details,
+      userId: user?.id,
+    };
+    console.log(data);
+    let startWorkoutResponse = await startWorkout(data);
     if (startWorkoutResponse?.data?.status) {
       setIsStarted(true);
     } else if (startWorkoutResponse?.error) {
@@ -122,7 +119,7 @@ function WorkoutPage() {
                         label: "w-full",
                       }}
                       isDisabled={!isStarted}
-                      // isSelected={isSelected}
+                      // isIndeterminate={isSelected}
                       onValueChange={setIsSelected}
                     >
                       <div className="w-full flex justify-end gap-2">

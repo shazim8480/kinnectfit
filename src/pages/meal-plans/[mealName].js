@@ -5,8 +5,12 @@ import { mealData } from "@/lib/db/meal-data";
 import { useState } from "react";
 import { KFButton } from "@/components/UI/KFButton";
 import cn from "@/lib/utils";
+import { useSubmitMealPlanMutation } from "@/redux/feature/meal/meal-api";
+import { useSelector } from "react-redux";
 
 function MealDetailsPage() {
+  const { user } = useSelector((state) => state.user);
+  const [submitMealPlan] = useSubmitMealPlanMutation();
   const [selectedMeals, setSelectedMeals] = useState([]);
   console.log(selectedMeals);
 
@@ -36,6 +40,19 @@ function MealDetailsPage() {
     }
   };
   const isSubmitDisabled = selectedMeals.length === 0;
+
+  const handleMealPlan = async () => {
+    const data = {
+      data: selectedMeals,
+      userId: user?.id,
+    };
+    let submitMealPlanResponse = await submitMealPlan(data);
+    if (submitMealPlanResponse?.data?.status) {
+      router.push("/");
+    } else if (submitMealPlanResponse?.error) {
+      console.log("err msg", submitMealPlanResponse?.error);
+    }
+  };
 
   return (
     <section className="grid max-w-screen-xl grid-cols-1 grid-rows-1 py-10 mx-auto md:grid-cols-1">
@@ -87,7 +104,6 @@ function MealDetailsPage() {
                             handleMealSelect(category.name, meal.name)
                           }
                         >
-                          {/* <div className="flex flex-row justify-between mt-4 bg-green-600"> */}
                           <div className="flex flex-col max-w-[14rem] md:max-w-lg pl-0 md:pl-8 ">
                             <div className="flex justify-between">
                               <span className="text-base font-medium">
@@ -122,7 +138,6 @@ function MealDetailsPage() {
                             />
                           </div>
                         </div>
-                        // </div>
                       ))}
                     </div>
                   </div>
@@ -136,11 +151,9 @@ function MealDetailsPage() {
       <div className="text-center">
         <KFButton
           type="submit"
-          onClick={() => router.push("/")}
+          onClick={handleMealPlan}
           size="lg"
           color="secondary"
-          // className="opacity-60"
-          // className="text-blue-800 bg-indigo-50"
           className={cn(``, {
             "opacity-60": isSubmitDisabled,
           })}

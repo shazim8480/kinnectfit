@@ -48,7 +48,7 @@ export default function TrainerList() {
       case "name":
         return (
           <User
-            avatarProps={{ radius: "lg", src: trainer?.trainerImg[0] }}
+            avatarProps={{ radius: "lg", src: trainer?.trainerImg[0]  }}
             name={cellValue}
           ></User>
         );

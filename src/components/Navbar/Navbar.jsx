@@ -17,8 +17,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { logOutUser } from "@/redux/feature/user/userSlice";
 import { ChevronDown } from "@/assets/icons/ChevronDown";
+import { useRouter } from "next/router";
 
 export default function KFNavbar() {
+  const router = useRouter();
   const dispatch = useDispatch();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
@@ -104,10 +106,7 @@ export default function KFNavbar() {
               >
                 <DropdownItem
                   key="dashboard"
-                  as={Link}
-                  href={`/dashboard`}
-                  // description="ACME scales apps to meet user demand, automagically, based on load."
-                  // startContent={icons.scale}
+                  onClick={() => router.push('/dashboard')}
                 >
                   Dashboard
                 </DropdownItem>

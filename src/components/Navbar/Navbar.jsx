@@ -7,7 +7,6 @@ import {
   NavbarMenu,
   NavbarContent,
   NavbarItem,
-  Link,
   Button,
   DropdownItem,
   DropdownTrigger,
@@ -18,6 +17,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { logOutUser } from "@/redux/feature/user/userSlice";
 import { ChevronDown } from "@/assets/icons/ChevronDown";
 import { useRouter } from "next/router";
+
+import Link from "next/link";
 
 export default function KFNavbar() {
   const router = useRouter();

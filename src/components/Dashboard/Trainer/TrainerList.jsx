@@ -48,7 +48,7 @@ export default function TrainerList() {
       case "name":
         return (
           <User
-            avatarProps={{ radius: "lg", src: trainer?.trainerImg[0]  }}
+            avatarProps={{ radius: "lg", src: trainer?.trainerImg ? trainer?.trainerImg[0] : "https://i.pravatar.cc/150?u=a04258114e29026702d" }}
             name={cellValue}
           ></User>
         );
@@ -123,8 +123,8 @@ export default function TrainerList() {
           isOpen={isOpen}
           onOpenChange={onOpenChange}
           trainerId={selectedTrainer}
-          // trainer={selectedTrainer}
-          // onClose={onClose}
+        // trainer={selectedTrainer}
+        // onClose={onClose}
         />
       )}
     </>

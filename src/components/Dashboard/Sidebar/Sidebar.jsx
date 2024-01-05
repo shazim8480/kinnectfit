@@ -97,47 +97,51 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   </li>
                   {/* <!-- Menu Item Health Summary --> */}
 
-                  {/* <!-- Menu Item Trainer Summary --> */}
-                  <li>
-                    <Link
-                      href="/dashboard/trainer-summary"
-                      className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${pathname.includes("trainer-summary") &&
-                        "bg-blue-200 dark:bg-meta-4"
-                        }`}
-                    >
-                      <TrainerSummaryIcon fill="currentColor" className="w-5 h-5" />
-                      Trainer Summary
-                    </Link>
-                  </li>
-                  {/* <!-- Menu Item Trainer Summary --> */}
+                  {
+                    user?.isTrainer && <>
+                      {/* <!-- Menu Item Trainer Summary --> */}
+                      <li>
+                        <Link
+                          href="/dashboard/trainer-summary"
+                          className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${pathname.includes("trainer-summary") &&
+                            "bg-blue-200 dark:bg-meta-4"
+                            }`}
+                        >
+                          <TrainerSummaryIcon fill="currentColor" className="w-5 h-5" />
+                          Trainer Summary
+                        </Link>
+                      </li>
+                      {/* <!-- Menu Item Trainer Summary --> */}
 
-                  {/* <!-- Menu Item Create Workout --> */}
-                  <li>
-                    <Link
-                      href="/dashboard/create-workout"
-                      className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${pathname.includes("create-workout") &&
-                        "bg-blue-200 dark:bg-meta-4"
-                        }`}
-                    >
-                      <CreateWorkoutIcon fill="currentColor" className="w-5 h-5" />
-                      Create Workout
-                    </Link>
-                  </li>
-                  {/* <!-- Menu Item Create Workout --> */}
+                      {/* <!-- Menu Item Create Workout --> */}
+                      <li>
+                        <Link
+                          href="/dashboard/create-workout"
+                          className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${pathname.includes("create-workout") &&
+                            "bg-blue-200 dark:bg-meta-4"
+                            }`}
+                        >
+                          <CreateWorkoutIcon fill="currentColor" className="w-5 h-5" />
+                          Create Workout
+                        </Link>
+                      </li>
+                      {/* <!-- Menu Item Create Workout --> */}
 
-                  {/* <!-- Menu Item Create Meal Plan --> */}
-                  <li>
-                    <Link
-                      href="/dashboard/create-mealplan"
-                      className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${pathname.includes("create-mealplan") &&
-                        "bg-blue-200 dark:bg-meta-4"
-                        }`}
-                    >
-                      <MealPlanIcon fill="currentColor" className="w-5 h-5" />
-                      Create Meal Plan
-                    </Link>
-                  </li>
-                  {/* <!-- Menu Item Create Meal Plan --> */}
+                      {/* <!-- Menu Item Create Meal Plan --> */}
+                      <li>
+                        <Link
+                          href="/dashboard/create-mealplan"
+                          className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${pathname.includes("create-mealplan") &&
+                            "bg-blue-200 dark:bg-meta-4"
+                            }`}
+                        >
+                          <MealPlanIcon fill="currentColor" className="w-5 h-5" />
+                          Create Meal Plan
+                        </Link>
+                      </li>
+                      {/* <!-- Menu Item Create Meal Plan --> */}
+                    </>
+                  }
 
                   {/* <!-- Menu Item Add Review --> */}
                   <li>

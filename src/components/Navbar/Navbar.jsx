@@ -71,7 +71,7 @@ export default function KFNavbar() {
           <Link href="/meal-plans">Find your Meal</Link>
         </NavbarItem>
         <NavbarItem>
-          <Link href="/meal-plans">Become a Trainer</Link>
+          <Link href="/become-trainer">Become a Trainer</Link>
         </NavbarItem>
         {/* <NavbarItem>
           <button onClick={() => handleLogout()}>Log Out</button>
@@ -102,14 +102,10 @@ export default function KFNavbar() {
                   base: "gap-4",
                 }}
               >
-                <DropdownItem
-                  key="dashboard"
-                  as={Link}
-                  href={`/dashboard`}
-                  // description="ACME scales apps to meet user demand, automagically, based on load."
-                  // startContent={icons.scale}
-                >
-                  Dashboard
+                <DropdownItem>
+                  <Link href={`/dashboard`} passHref>
+                    <a>Dashboard</a>
+                  </Link>
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>

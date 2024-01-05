@@ -37,7 +37,7 @@ export default function KFNavbar() {
     dispatch(logOutUser());
   };
 
-  const menuItems = ["Workout Plans", "Find your Meal"];
+  const menuItems = ["Workout Plans", "Find your Meal", "Be a Trainer"];
 
   return (
     <Navbar isBordered isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen}>
@@ -70,6 +70,12 @@ export default function KFNavbar() {
         <NavbarItem>
           <Link href="/meal-plans">Find your Meal</Link>
         </NavbarItem>
+        <NavbarItem>
+          <Link href="/meal-plans">Become a Trainer</Link>
+        </NavbarItem>
+        {/* <NavbarItem>
+          <button onClick={() => handleLogout()}>Log Out</button>
+        </NavbarItem> */}
       </NavbarContent>
 
       <NavbarContent justify="end">
@@ -99,9 +105,9 @@ export default function KFNavbar() {
                 <DropdownItem
                   key="dashboard"
                   as={Link}
-                  href="/dashboard"
-                // description="ACME scales apps to meet user demand, automagically, based on load."
-                // startContent={icons.scale}
+                  href={`/dashboard`}
+                  // description="ACME scales apps to meet user demand, automagically, based on load."
+                  // startContent={icons.scale}
                 >
                   Dashboard
                 </DropdownItem>

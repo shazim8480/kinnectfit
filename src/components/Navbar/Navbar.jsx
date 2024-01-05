@@ -75,9 +75,6 @@ export default function KFNavbar() {
         <NavbarItem>
           <Link href="/become-trainer">Become a Trainer</Link>
         </NavbarItem>
-        {/* <NavbarItem>
-          <button onClick={() => handleLogout()}>Log Out</button>
-        </NavbarItem> */}
       </NavbarContent>
 
       <NavbarContent justify="end">

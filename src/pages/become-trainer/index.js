@@ -1,5 +1,4 @@
 import React from "react";
-import { Dialog } from "@headlessui/react";
 import MainLayout from "@/layouts/mainLayout";
 
 const BecomeTrainerPage = () => {
@@ -63,12 +62,12 @@ const BecomeTrainerPage = () => {
                 </h3>
                 <p className="relative mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">
                   KinnectFit invites passionate trainers to join our
-                  revolutionary platform, where fitness is more than a routine –
-                  it's a journey. Embrace the opportunity to redefine wellness
+                  revolutionary platform, where fitness is more than a routine,
+                  it is a journey. Embrace the opportunity to redefine wellness
                   experiences, leveraging our innovative tools and
-                  community-driven approach. Together, we'll shape the future of
-                  fitness, empowering individuals to achieve their goals while
-                  fostering a supportive, thriving community of health
+                  community-driven approach. Together, we will shape the future
+                  of fitness, empowering individuals to achieve their goals
+                  while fostering a supportive, thriving community of health
                   enthusiasts.
                 </p>
               </div>

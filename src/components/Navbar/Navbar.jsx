@@ -73,7 +73,7 @@ export default function KFNavbar() {
           <Link href="/meal-plans">Find your Meal</Link>
         </NavbarItem>
         <NavbarItem>
-          <Link href="/meal-plans">Become a Trainer</Link>
+          <Link href="/become-trainer">Become a Trainer</Link>
         </NavbarItem>
         {/* <NavbarItem>
           <button onClick={() => handleLogout()}>Log Out</button>
@@ -106,7 +106,7 @@ export default function KFNavbar() {
               >
                 <DropdownItem
                   key="dashboard"
-                  onClick={() => router.push('/dashboard')}
+                  onClick={() => router.push("/dashboard")}
                 >
                   Dashboard
                 </DropdownItem>

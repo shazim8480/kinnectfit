@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 
 const WorkoutCard = ({ workoutItem }) => {
+  console.log(workoutItem);
   const router = useRouter();
   const { isAuthenticated } = useSelector((state) => state.user);
   const handleStart = () => {

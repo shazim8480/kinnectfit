@@ -8,57 +8,68 @@ import { UserIcon } from "@/assets/icons/UserIcon";
 import { KFButton } from "@/components/UI/KFButton";
 import { useState } from "react";
 import { Checkbox, Link, User, Chip, cn } from "@nextui-org/react";
-import { useStartWorkoutMutation } from "@/redux/feature/workout/workout-api";
+import { useGetAllWorkoutsQuery, useGetUserWorkoutByIdQuery, useStartWorkoutMutation, useUpdateWorkoutModuleStatusMutation } from "@/redux/feature/workout/workout-api";
 import { useSelector } from "react-redux";
 
 function WorkoutPage() {
-  const { user } = useSelector((state) => state.user);
-  // console.log(user);
-  const [startWorkout] = useStartWorkoutMutation();
   const [isSelected, setIsSelected] = useState(false);
   const router = useRouter();
+  const { user } = useSelector((state) => state.user);
+  // console.log(user);
+  const { data } = useGetAllWorkoutsQuery();
+  // console.log(data);
+  const { data: getUserWorkout } = useGetUserWorkoutByIdQuery(user?.id);
+  console.log("User workout", getUserWorkout);
+
+  const [startWorkout] = useStartWorkoutMutation();
+  const [updateWorkoutModuleStatus] = useUpdateWorkoutModuleStatusMutation();
+
 
   const { workoutName } = router.query;
-  const workout_details = workout_data.find(
-    (w) => w.workout_name === workoutName
+  const workout_details = getUserWorkout?.workouts?.find(
+    (w) => w?.workout_name === workoutName
   );
 
   const [isStarted, setIsStarted] = useState(false);
 
-  const handleCheck = (module) => {
-    console.log("clicked", module);
-    setIsSelected(true);
 
-    const data = {
-      data: module,
-      userId: user.id
-    };
-
-
-    // let startWorkoutResponse = await startWorkout(data);
-    // // console.log(startWorkoutResponse);
-    // // return;
-    // if (startWorkoutResponse?.data?.status) {
-    //   setIsStarted(true);
-    // } else if (startWorkoutResponse?.error) {
-    //   console.log("err msg", startWorkoutResponse?.error);
-    // }
-  };
   const handleStartWorkout = async () => {
     // console.log(data);
     const data = {
       data: workout_details,
       userId: user.id
     };
-    let startWorkoutResponse = await startWorkout(data);
-    // console.log(startWorkoutResponse);
+    // console.log("req data", data);
     // return;
+
+    let startWorkoutResponse = await startWorkout(data);
     if (startWorkoutResponse?.data?.status) {
       setIsStarted(true);
     } else if (startWorkoutResponse?.error) {
       console.log("err msg", startWorkoutResponse?.error);
     }
   };
+
+  const handleCheck = async (module) => {
+
+    const moduleData = {
+      data: module,
+      userId: user.id
+    };
+    console.log("req", moduleData);
+
+    // console.log("req body", data);
+    const updateModuleStatusResponse = await updateWorkoutModuleStatus(moduleData);
+    console.log("updateModuleStatusResponse", updateModuleStatusResponse);
+
+    if (updateModuleStatusResponse?.data?.status) {
+      console.log("response succeed",);
+
+    } else if (updateModuleStatusResponse?.error) {
+      console.log("err msg", updateModuleStatusResponse?.error);
+    }
+  };
+
 
   return (
     <section className="grid max-w-screen-xl mx-auto grid-cols-1 grid-rows-1 md:grid-cols-2 py-10">
@@ -68,7 +79,7 @@ function WorkoutPage() {
             removewrapper
             alt="workout_cover"
             className="z-0 object-cover w-full h-full"
-            src={workout_details?.workout_cover}
+            src={workout_details?.workout_cover ? workout_details?.workout_cover : "https://images.unsplash.com/photo-1599058917212-d750089bc07e?q=80&w=2969&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
             width={500}
             height={500}
           />
@@ -104,13 +115,13 @@ function WorkoutPage() {
             Workout Overview
           </h5>
           <div className="mb-4 text-base text-neutral-600">
-            {workout_details?.workout_modules.map((module) => {
+            {workout_details?.workout_modules?.map((module) => {
               return (
                 <>
                   <div className="py-4 w-full">
                     <Checkbox
-                      key={module.name}
-                      aria-label={module.name}
+                      key={module?.name}
+                      aria-label={module?.name}
                       onClick={() => handleCheck(module)}
                       classNames={{
                         base: cn(

@@ -23,6 +23,13 @@ export const START_WORKOUT = "/update-user";
 export const GET_ALL_WORKOUTS = "/workouts";
 // Get all workouts
 export const GET_SINGLE_WORKOUT = "/workout";
+// Get user workout by id
+export const GET_USER_WORKOUT_BY_ID = "/user-workout";
+
+// Update user workout module by id
+export const UPDATE_USER_WORKOUT_MODULE_BY_STATUS = "/update-workout-module";
+
+
 
 /* *************** Workout url ****************** */
 

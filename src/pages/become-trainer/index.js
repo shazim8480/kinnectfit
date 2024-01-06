@@ -1,5 +1,6 @@
 import React from "react";
 import MainLayout from "@/layouts/mainLayout";
+import TrainerForm from "@/components/BecomeTrainer/TrainerForm";
 
 const BecomeTrainerPage = () => {
   const stats = [
@@ -127,9 +128,9 @@ const BecomeTrainerPage = () => {
       {/* Content section */}
       <div className="px-6 mx-auto -mt-12 max-w-7xl sm:mt-0 lg:px-8 xl:-mt-8">
         <div className="max-w-2xl mx-auto lg:mx-0 lg:max-w-none">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          <h3 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
             Our mission
-          </h2>
+          </h3>
           <div className="flex flex-col mt-6 gap-x-8 gap-y-20 lg:flex-row">
             <div className="lg:w-full lg:max-w-2xl lg:flex-auto">
               <p className="text-xl leading-8 text-gray-600">
@@ -179,12 +180,20 @@ const BecomeTrainerPage = () => {
       </div>
 
       {/* Image section */}
-      <div className="my-32 sm:my-40 xl:mx-auto xl:max-w-7xl xl:px-8">
+      <div className="mt-32 sm:mt-40 xl:mx-auto xl:max-w-7xl xl:px-8">
         <img
           src="https://images.unsplash.com/photo-1540558870477-e8c59bf88421?q=80&w=2969&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt=""
           className="aspect-[5/2] w-full object-cover xl:rounded-3xl"
         />
+      </div>
+
+      {/* Trainer registration form */}
+      <div className="px-8 my-16 sm:my-24 xl:mx-auto xl:max-w-7xl">
+        <h3 className="text-2xl font-bold tracking-tight text-center text-blue-900 sm:text-4xl">
+          You are One Step Away to Become a Trainer
+        </h3>
+        <TrainerForm />
       </div>
     </div>
   );

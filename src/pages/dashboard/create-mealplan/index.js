@@ -10,14 +10,12 @@ import { useForm, Controller } from "react-hook-form";
 const CreateMealPlanPage = () => {
   const router = useRouter();
   const [createMealPlan] = useCreateMealPlanMutation();
-  const [items, setItems] = useState([]);
 
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-
   } = useForm();
   const onSubmit = async (data) => {
     const mealData = { ...data, ingredients: items };
@@ -28,31 +26,11 @@ const CreateMealPlanPage = () => {
     } else if (createMealPlanResponse?.error) {
       console.log("err msg", createMealPlanResponse?.error);
     }
-
   };
   return (
     <div>
-      <form action="" onSubmit={handleSubmit(onSubmit)}>
-        <MealPlanDetails register={register} errors={errors} />
-        <MealCategories
-          register={register}
-          Controller={Controller}
-          errors={errors}
-          items={items}
-          setItems={setItems}
-        />
-        <div className="text-center flex gap-4 justify-center">
-          <KFButton
-            color="secondary"
-            size="lg"
-            className="mt-4"
-            type="submit"
-          >
-            Create Meal Plan
-          </KFButton>
-          {/* )} */}
-        </div>
-      </form>
+      <MealPlanDetails />
+      <MealCategories />
     </div>
   );
 };

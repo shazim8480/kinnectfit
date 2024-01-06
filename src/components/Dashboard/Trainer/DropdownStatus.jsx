@@ -19,12 +19,6 @@ export default function DropdownStatus({ trainerStatus, trainerId }) {
   const handleStatusUpdate = async () => {
     const apiUrl = `${PROTOCOL_HOST}/trainer/${trainerId}`;
     const updateStatusData = selectedValue.toLowerCase().replaceAll(" ", "_");
-    // let isTrainer;
-    // if (updateStatusData === "approved") {
-    //     isTrainer = true;
-    // } else {
-    //     isTrainer = false;
-    // }
     let isTrainer;
     updateStatusData === "approved" ? (isTrainer = true) : (isTrainer = false);
     try {
@@ -60,10 +54,10 @@ export default function DropdownStatus({ trainerStatus, trainerId }) {
             localTrainerStatus === "approved"
               ? "success"
               : localTrainerStatus === "pending"
-              ? "warning"
-              : localTrainerStatus === "paused"
-              ? "danger"
-              : "default"
+                ? "warning"
+                : localTrainerStatus === "paused"
+                  ? "danger"
+                  : "default"
           }
           size="sm"
           variant="flat"

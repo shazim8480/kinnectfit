@@ -1,4 +1,4 @@
-import { CREATE_WORKOUT, START_WORKOUT } from "@/constants/url";
+import { CREATE_WORKOUT, GET_ALL_WORKOUTS, GET_SINGLE_MEAL_PLAN, GET_SINGLE_WORKOUT, START_WORKOUT } from "@/constants/url";
 import { api } from "@/redux/api/apiSlice";
 
 const workoutApi = api.injectEndpoints({
@@ -17,8 +17,13 @@ const workoutApi = api.injectEndpoints({
                 body: data,
             }),
         }),
-
+        getAllWorkouts: builder.query({
+            query: () => `${GET_ALL_WORKOUTS}`,
+        }),
+        getSingleWorkout: builder.query({
+            query: (id) => `${GET_SINGLE_WORKOUT}/${id}`,
+        }),
     }),
 });
 
-export const { useCreateWorkoutMutation, useStartWorkoutMutation } = workoutApi;
+export const { useCreateWorkoutMutation, useStartWorkoutMutation, useGetAllWorkoutsQuery, useGetSingleWorkoutQuery } = workoutApi;

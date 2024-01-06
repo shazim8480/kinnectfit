@@ -1,4 +1,4 @@
-import { CREATE_MEAL_PLAN, GET_ALL_MEAL_PLANS, GET_SINGLE_MEAL_PLAN } from "@/constants/url";
+import { CREATE_MEAL, CREATE_MEAL_PLAN, GET_ALL_MEAL_PLANS, GET_SINGLE_MEAL_PLAN } from "@/constants/url";
 import { api } from "@/redux/api/apiSlice";
 
 const mealApi = api.injectEndpoints({
@@ -16,8 +16,16 @@ const mealApi = api.injectEndpoints({
         getSingleMealPlan: builder.query({
             query: (id) => `${GET_SINGLE_MEAL_PLAN}/${id}`,
         }),
+        createMeal: builder.mutation({
+            query: (data) => ({
+                url: `${CREATE_MEAL}`,
+                method: "POST",
+                body: data,
+            }),
+        }),
+
 
     }),
 });
 
-export const { useCreateMealPlanMutation, useGetAllMealPlansQuery,useGetSingleMealPlanQuery } = mealApi;
+export const { useCreateMealPlanMutation, useGetAllMealPlansQuery, useGetSingleMealPlanQuery, useCreateMealMutation } = mealApi;

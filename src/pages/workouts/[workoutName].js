@@ -8,31 +8,48 @@ import { UserIcon } from "@/assets/icons/UserIcon";
 import { KFButton } from "@/components/UI/KFButton";
 import { useState } from "react";
 import { Checkbox, Link, User, Chip, cn } from "@nextui-org/react";
-import { useStartWorkoutMutation } from "@/redux/feature/workout/workout-api";
+import { useGetSingleWorkoutQuery, useStartWorkoutMutation, useUpdateWorkoutModuleMutation } from "@/redux/feature/workout/workout-api";
 import { useSelector } from "react-redux";
 
 function WorkoutPage() {
+  const router = useRouter();
   const { user } = useSelector((state) => state.user);
+  const { workoutName } = router.query;
+  console.log("workoutName", workoutName);
+  // const { workoutName } = req.params;
   // console.log(user);
   const [startWorkout] = useStartWorkoutMutation();
+  const { data } = useGetSingleWorkoutQuery(workoutName);
+  const [updateWorkoutModule] = useUpdateWorkoutModuleMutation();
   const [isSelected, setIsSelected] = useState(false);
-  const router = useRouter();
 
-  const { workoutName } = router.query;
+  console.log("getSingleWorkout", data);
+
+
   const workout_details = workout_data.find(
     (w) => w.workout_name === workoutName
   );
 
   const [isStarted, setIsStarted] = useState(false);
 
-  const handleCheck = (module) => {
+  const handleCheck = async (module) => {
     console.log("clicked", module);
-    setIsSelected(true);
-
-    const data = {
-      data: module,
-      userId: user.id
+    const updateModuleInfo = {
+      data: {
+        isConfirmed: true
+      },
+      id: workoutName,
+      module_id: module?.id
     };
+    const updatedResult = await updateWorkoutModule(updateModuleInfo);
+    console.log("updatedResult", updatedResult);
+
+    // setIsSelected(true);
+
+    // const data = {
+    //   data: module,
+    //   userId: user.id
+    // };
 
 
     // let startWorkoutResponse = await startWorkout(data);
@@ -46,15 +63,16 @@ function WorkoutPage() {
   };
   const handleStartWorkout = async () => {
     // console.log(data);
-    const data = {
-      data: workout_details,
-      userId: user.id
-    };
-    let startWorkoutResponse = await startWorkout(data);
+    setIsStarted(true);
+    // const data = {
+    //   data: workout_details,
+    //   userId: user.id
+    // };
+    return;
+    // let startWorkoutResponse = await startWorkout(data);
     // console.log(startWorkoutResponse);
     // return;
     if (startWorkoutResponse?.data?.status) {
-      setIsStarted(true);
     } else if (startWorkoutResponse?.error) {
       console.log("err msg", startWorkoutResponse?.error);
     }
@@ -68,7 +86,7 @@ function WorkoutPage() {
             removewrapper
             alt="workout_cover"
             className="z-0 object-cover w-full h-full"
-            src={workout_details?.workout_cover}
+            src={workout_details?.workout_cover ? workout_details?.workout_cover : "https://images.unsplash.com/photo-1581009137042-c552e485697a?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
             width={500}
             height={500}
           />
@@ -104,7 +122,7 @@ function WorkoutPage() {
             Workout Overview
           </h5>
           <div className="mb-4 text-base text-neutral-600">
-            {workout_details?.workout_modules.map((module) => {
+            {data?.workout?.workout_modules.map((module) => {
               return (
                 <>
                   <div className="py-4 w-full">

@@ -7,7 +7,13 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
+import { useSelector } from "react-redux";
+import { useUpdateUserMutation } from '@/redux/feature/user/user-api';
+
 const CreateWorkoutPage = () => {
+    const [updateUser] = useUpdateUserMutation();
+    const { user } = useSelector((state) => state?.user);
     const router = useRouter();
     const [createWorkout] = useCreateWorkoutMutation();
     const dispatch = useDispatch();
@@ -20,7 +26,7 @@ const CreateWorkoutPage = () => {
         formState: { errors },
     } = useForm({
         defaultValues: {
-            workout_modules: [{ moduleName: "", moduleTime: "" }],
+            workout_modules: [{ id: uuidv4(), moduleName: "", moduleTime: "" }],
         },
     });
     const { fields, append, remove } = useFieldArray({
@@ -30,10 +36,25 @@ const CreateWorkoutPage = () => {
 
     const onSubmit = async (data) => {
         console.log(data);
-        let createWorkoutResponse = await createWorkout(data);
+        // return;
+        // const mealData = { ...data, ingredients: items };
+        // console.log(object)
+        let createWorkoutResponse = await createWorkout({ ...data, trainer_id: user?.id });
+        console.log("createWorkoutResponse", createWorkoutResponse);
+        const updateUserInfo = {
+            data: {
+                workout: data
+            },
+            userId: user?.id
+        };
+        // console.log("mealplan-response", createMealPlanResponse?.data?.status);
+        // console.log("updateuserinfo", updateUserInfo);
+        // return;
         if (createWorkoutResponse?.data?.status === 201) {
+            const result = await updateUser(updateUserInfo);
             router.push("/dashboard");
-            reset();
+            console.log(result);
+            // reset();
         } else if (createWorkoutResponse?.error) {
             console.log("err msg", createWorkoutResponse?.error);
         }

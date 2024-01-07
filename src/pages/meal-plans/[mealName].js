@@ -43,7 +43,7 @@ function MealDetailsPage() {
         <Image
           removewrapper
           alt="meal_cover"
-          src={meal_details?.cover_img}
+          src={meal_details?.cover_img ? meal_details?.cover_img : "https://images.unsplash.com/photo-1581009137042-c552e485697a?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
           className="absolute"
           layout="fill"
           style={{ objectFit: "cover" }}
@@ -74,15 +74,14 @@ function MealDetailsPage() {
                       {category?.meals.map((meal) => (
                         <div
                           key={meal?.name}
-                          className={`flex selectable justify-between items-center rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] ${
-                            selectedMeals.some(
-                              (selectedMeal) =>
-                                selectedMeal.categoryName === category.name &&
-                                selectedMeal.mealName === meal.name
-                            )
-                              ? "border-2 border-blue-800" // Apply border to selected meals
-                              : ""
-                          }`}
+                          className={`flex selectable justify-between items-center rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] ${selectedMeals.some(
+                            (selectedMeal) =>
+                              selectedMeal.categoryName === category.name &&
+                              selectedMeal.mealName === meal.name
+                          )
+                            ? "border-2 border-blue-800" // Apply border to selected meals
+                            : ""
+                            }`}
                           onClick={() =>
                             handleMealSelect(category.name, meal.name)
                           }
@@ -115,7 +114,7 @@ function MealDetailsPage() {
 
                           <div className="relative w-40 h-40">
                             <Image
-                              src={meal?.img}
+                              src={meal?.img ? meal?.img : "https://images.unsplash.com/photo-1581009137042-c552e485697a?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
                               alt="meal-img"
                               layout="fill"
                               className="absolute object-cover"

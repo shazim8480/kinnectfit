@@ -10,13 +10,17 @@ import { api } from "@/redux/api/apiSlice";
 
 const workoutApi = api.injectEndpoints({
   endpoints: (builder) => ({
+    getAllWorkouts: builder.query({
+      query: () => `${GET_ALL_WORKOUTS}`,
+      providesTags: ["workouts"],
+    }),
     createWorkout: builder.mutation({
       query: (data) => ({
         url: `${CREATE_WORKOUT}`,
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["wokouts"],
+      invalidatesTags: ["workouts"],
     }),
     startWorkout: builder.mutation({
       query: ({ data, userId }) => ({
@@ -24,19 +28,12 @@ const workoutApi = api.injectEndpoints({
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: ["wokouts"],
-    }),
-    getAllWorkouts: builder.query({
-      query: () => `${GET_ALL_WORKOUTS}`,
-      providesTags: ["wokouts"],
-    }),
-    getSingleWorkout: builder.query({
-      query: (id) => `${GET_SINGLE_WORKOUT}/${id}`,
-      providesTags: ["wokouts"],
     }),
     getUserWorkoutById: builder.query({
       query: (id) => `${GET_USER_WORKOUT_BY_ID}/${id}`,
-      providesTags: ["wokouts"],
+    }),
+    getSingleWorkout: builder.query({
+      query: (id) => `${GET_SINGLE_WORKOUT}/${id}`,
     }),
     updateWorkoutModule: builder.mutation({
       query: ({ data, id, module_id }) => ({
@@ -44,9 +41,9 @@ const workoutApi = api.injectEndpoints({
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: ["wokouts"],
     }),
   }),
+  overrideExisting: true,
 });
 
 export const {

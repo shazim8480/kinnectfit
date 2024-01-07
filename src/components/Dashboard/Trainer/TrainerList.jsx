@@ -34,13 +34,15 @@ export default function TrainerList() {
     loading,
     error,
   } = useFetch(`${PROTOCOL_HOST}/trainers`);
+
+  console.log("trainerList", trainerList);
+
   const handleEyeButton = (trainerId) => {
     // console.log("trainerId", trainerId);
     setSelectedTrainer(trainerId);
     onOpen();
   };
 
-  // console.log("Trainers", trainers);
   const renderCell = React.useCallback((trainer, columnKey) => {
     const cellValue = trainer[columnKey];
 
@@ -48,13 +50,19 @@ export default function TrainerList() {
       case "name":
         return (
           <User
-            avatarProps={{ radius: "lg", src: trainer?.trainerImg ? trainer?.trainerImg[0] : "https://i.pravatar.cc/150?u=a04258114e29026702d" }}
+            avatarProps={{
+              radius: "lg",
+              src: trainer?.trainerImg
+                ? trainer?.trainerImg[0]
+                : "https://i.pravatar.cc/150?u=a04258114e29026702d",
+            }}
             name={cellValue}
           ></User>
         );
       case "registration_date":
         const dateString = trainers?.created_at;
         const registrationDate = moment(dateString).format("DD MMM YYYY");
+        console.log("reg date", registrationDate);
         return (
           <div className="flex flex-col">
             <p className="text-sm capitalize text-bold text-neutral-600">
@@ -123,8 +131,8 @@ export default function TrainerList() {
           isOpen={isOpen}
           onOpenChange={onOpenChange}
           trainerId={selectedTrainer}
-        // trainer={selectedTrainer}
-        // onClose={onClose}
+          // trainer={selectedTrainer}
+          // onClose={onClose}
         />
       )}
     </>

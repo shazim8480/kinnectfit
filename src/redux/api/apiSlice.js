@@ -6,7 +6,7 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: PROTOCOL_HOST,
   }),
-  tagTypes: ["wokouts"],
+  tagTypes: ["trainers", "users", "workouts", "meals", "mealPlans"],
   endpoints: () => ({}),
   overrideExisting: true,
 });

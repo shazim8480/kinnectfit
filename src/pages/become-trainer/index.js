@@ -189,7 +189,7 @@ const BecomeTrainerPage = () => {
       </div>
 
       {/* Trainer registration form */}
-      <div className="px-8 my-16 sm:my-24 xl:mx-auto xl:max-w-7xl">
+      <div className="max-w-4xl px-8 my-16 sm:my-24 xl:mx-auto">
         <h3 className="text-2xl font-bold tracking-tight text-center text-blue-900 sm:text-4xl">
           You are One Step Away to Become a Trainer
         </h3>

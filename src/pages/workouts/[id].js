@@ -6,7 +6,7 @@ import Star from "@/assets/icons/Star";
 import { UserIcon } from "@/assets/icons/UserIcon";
 import { KFButton } from "@/components/UI/KFButton";
 import { useState } from "react";
-import { Checkbox, Link, User, Chip, cn } from "@nextui-org/react";
+import { Checkbox, Link, User, Chip, cn, Spinner } from "@nextui-org/react";
 import {
   useGetSingleWorkoutQuery,
   useGetUserWorkoutByIdQuery,
@@ -14,6 +14,7 @@ import {
   useUpdateWorkoutModuleMutation,
 } from "@/redux/feature/workout/workout-api";
 import { useSelector } from "react-redux";
+import UserCard from "@/components/Workout-Items/UserCard";
 
 function WorkoutPage() {
   const router = useRouter();
@@ -22,14 +23,13 @@ function WorkoutPage() {
   console.log("specific workout id", router.query.id);
   console.log("userinfo ", user);
 
-  const [startWorkout] = useStartWorkoutMutation();
+  const [startWorkout, { isLoading }] = useStartWorkoutMutation();
   const [updateWorkoutModule] = useUpdateWorkoutModuleMutation();
   const { data: workoutData } = useGetSingleWorkoutQuery(id);
-  const { data: getworkoutbyuserid, refetch } = useGetUserWorkoutByIdQuery(
-    user?.id
-  );
+  const { data: getworkoutbyuserid } = useGetUserWorkoutByIdQuery(user?.id, {
+    refetchOnMountOrArgChange: true,
+  });
 
-  const [isSelected, setIsSelected] = useState(false);
   const [isStarted, setIsStarted] = useState(false);
 
   const handleCheck = async (module) => {
@@ -41,21 +41,17 @@ function WorkoutPage() {
       id: id,
       module_id: module?.id,
     };
-    // const updatedResult = await updateWorkoutModule(updateModuleInfo);
-    // console.log("updatedResult", updatedResult);
+    const updatedResult = await updateWorkoutModule(updateModuleInfo);
+    console.log("updatedResult", updatedResult);
 
-    // let startWorkoutResponse = await startWorkout(data);
-    // // console.log(startWorkoutResponse);
-    // // return;
-    // if (startWorkoutResponse?.data?.status) {
-    //   setIsStarted(true);
-    // } else if (startWorkoutResponse?.error) {
-    //   console.log("err msg", startWorkoutResponse?.error);
-    // }
+    if (updatedResult?.data?.status) {
+      setIsStarted(true);
+    } else if (updatedResult?.error) {
+      console.log("err msg", updatedResult?.error);
+    }
   };
   const handleStartWorkout = async () => {
     try {
-      setIsStarted(true);
       const data = {
         data: workoutData,
         userId: user.id,
@@ -63,14 +59,12 @@ function WorkoutPage() {
       console.log(data);
 
       let startWorkoutResponse = await startWorkout(data);
-      console.log(startWorkoutResponse);
+      console.log("start workout -", startWorkoutResponse);
       if (startWorkoutResponse?.data?.status) {
-        await refetch();
+        setIsStarted(true);
       } else if (startWorkoutResponse?.error) {
         console.log("err msg", startWorkoutResponse?.error);
       }
-
-      // ... rest of your logic
     } catch (error) {
       console.error("Error fetching workout data:", error);
     }
@@ -124,81 +118,49 @@ function WorkoutPage() {
           </p>
         </div>
       </div>
-
       <div className="block">
         <div className="p-6">
           <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800">
             Workout Overview
           </h5>
           <div className="mb-4 text-base text-neutral-600">
-            {getworkoutbyuserid?.workouts.some((e) => e.workout_id === id)
-              ? getworkoutbyuserid?.workouts?.map((module) => {
-                  return (
-                    <>
-                      {module.workout_modules?.map((module) => (
-                        <div className="py-4 w-full" key={module.name}>
-                          <Checkbox
-                            key={module.name}
-                            aria-label={module.name}
-                            onClick={() => handleCheck(module)}
-                            onValueChange={setIsSelected}
-                          >
-                            <div className="w-full flex justify-end gap-2">
-                              <div className="flex flex-col items-end gap-1">
-                                {module.name}
-                                <Chip color="success" size="sm" variant="flat">
-                                  {module.time} min
-                                </Chip>
-                              </div>
-                            </div>
-                          </Checkbox>
-                        </div>
-                      ))}
-                    </>
-                  );
+            {isLoading ? (
+              <Spinner />
+            ) : getworkoutbyuserid?.workouts?.some(
+                (e) => e.workout_id === id
+              ) ? (
+              getworkoutbyuserid?.workouts
+                ?.filter((e) => e.workout_id === id)
+                ?.map((module, index) => {
+                  return module.workout_modules?.map((module) => (
+                    <UserCard
+                      key={index}
+                      module={module}
+                      handleCheck={handleCheck}
+                      isStarted={isStarted}
+                    />
+                  ));
                 })
-              : workoutData?.workout?.workout_modules.map((module) => {
-                  return (
-                    <div className="py-4 w-full" key={module.name}>
-                      <Checkbox
-                        key={module.name}
-                        aria-label={module.name}
-                        onClick={() => handleCheck(module)}
-                        classNames={{
-                          base: cn(
-                            "inline-flex w-full max-w-xl bg-content1",
-                            "hover:bg-content2 items-center justify-start",
-                            "cursor-pointer rounded-lg gap-2 p-4 border-2 border-transparent",
-                            "data-[selected=true]:border-primary"
-                          ),
-                          label: "w-full",
-                        }}
-                        isDisabled={!isStarted}
-                        // isSelected={isSelected}
-                        onValueChange={setIsSelected}
-                      >
-                        <div className="w-full flex justify-end gap-2">
-                          <div className="flex flex-col items-end gap-1">
-                            {module.name}
-                            <Chip color="success" size="sm" variant="flat">
-                              {module.time} min
-                            </Chip>
-                          </div>
-                        </div>
-                      </Checkbox>
-                    </div>
-                  );
-                })}
+            ) : (
+              workoutData?.workout?.workout_modules?.map((module, index) => {
+                return (
+                  <UserCard
+                    key={index}
+                    module={module}
+                    handleCheck={handleCheck}
+                    isStarted={isStarted}
+                  />
+                );
+              })
+            )}
           </div>
-          {getworkoutbyuserid?.workouts.some((e) => e.workout_id === id) ? (
-            <KFButton color={"primary"} isDisabled={isStarted}>
-              {"End Workout"}
-            </KFButton>
+          {getworkoutbyuserid?.workouts?.some((e) => e.workout_id === id) ? (
+            <></>
           ) : (
             <KFButton
               color={"primary"}
               onClick={isStarted ? undefined : handleStartWorkout}
-              isDisabled={getworkoutbyuserid?.workouts.some(
+              isDisabled={getworkoutbyuserid?.workouts?.some(
                 (e) => e.workout_id === id
               )}
             >

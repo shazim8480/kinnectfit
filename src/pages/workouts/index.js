@@ -2,10 +2,12 @@ import { useState } from "react";
 import { Checkbox, CheckboxGroup, Chip } from "@nextui-org/react";
 import MainLayout from "@/layouts/mainLayout";
 import { KFInput } from "@/components/UI/KFInput";
-import { workout_data } from "@/lib/db/workout-data";
 import WorkoutCard from "@/components/Workout-Items/WorkoutCard";
+import { useGetAllWorkoutsQuery } from "@/redux/feature/workout/workout-api";
 
 const Workouts = () => {
+  const { data: workout_data } = useGetAllWorkoutsQuery();
+  console.log("workout data from workouts page", workout_data);
   const [searchProduct, setSearchProduct] = useState("");
   const [groupSelected, setGroupSelected] = useState([]);
 
@@ -14,7 +16,7 @@ const Workouts = () => {
     setSearchProduct(value);
   };
 
-  const filteredProducts = workout_data?.filter((item) => {
+  const filteredProducts = workout_data?.workouts?.filter((item) => {
     const searchMatch = item.workout_name
       .toLowerCase()
       .includes(searchProduct.toLowerCase());
@@ -62,7 +64,7 @@ const Workouts = () => {
         value={groupSelected}
         onChange={setGroupSelected}
       >
-        {workout_data?.map((item) => {
+        {workout_data?.workouts?.map((item) => {
           return (
             <Checkbox key={item.category} value={item.category}>
               {item.category}

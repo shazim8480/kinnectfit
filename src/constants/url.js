@@ -44,3 +44,7 @@ export const CREATE_MEAL = "/create-meal";
 export const GET_ALL_MEALS = "/meals";
 // Get single meal plan url
 export const GET_SINGLE_MEAL = "/meal";
+
+
+// Create review
+export const CREATE_REVIEW = "/create-review";

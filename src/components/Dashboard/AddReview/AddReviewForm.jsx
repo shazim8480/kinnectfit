@@ -11,7 +11,7 @@ import UploadVideo from "./UploadVideo";
 import { PhotoIcon } from "@heroicons/react/24/outline";
 import RecordIcon from "@/assets/icons/RecordIcon";
 
-const AddReviewForm = ({ register, errors, setRating }) => {
+const AddReviewForm = ({ register, errors, setRating, setMealPlanId, setWorkoutId }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [reviewType, setReviewType] = useState("");
     const { data, isLoading } = useGetAllWorkoutsQuery();
@@ -20,11 +20,14 @@ const AddReviewForm = ({ register, errors, setRating }) => {
     const [isCategorySelected, setIsCategorySelected] = useState(false);
     const workoutCategoryNames = data?.workouts?.map((workout) => ({
         label: workout?.workout_name,
-        value: workout?.workout_name
+        value: workout?.workout_name,
+        workout_id: workout?.workout_id
+
     }));
     const mealPlanCategoryNames = mealPlanData?.mealPlans?.map((mealPlan) => ({
         label: mealPlan?.mealPlan_name,
-        value: mealPlan?.mealPlan_name
+        value: mealPlan?.mealPlan_name,
+        mealPlan_id: mealPlan?.mealPlan_id
     }));
     // console.log(mealPlanCategoryNames);
     const reviewTypes = [
@@ -57,6 +60,8 @@ const AddReviewForm = ({ register, errors, setRating }) => {
             </div>
         );
     }
+    // console.log("mealplanId", isMealPlanId);
+    // console.log("workoutId", isWorkoutId);
     return (
         <div className="max-w-xs md:max-w-5xl mx-auto">
             <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -72,7 +77,7 @@ const AddReviewForm = ({ register, errors, setRating }) => {
                             // label="Choose"
                             placeholder="Select review type"
                             className="max-w-l"
-                            {...register("reviewType", {
+                            {...register("review_type", {
                                 required: "Please select review type",
                             })}
                         >
@@ -80,9 +85,9 @@ const AddReviewForm = ({ register, errors, setRating }) => {
                                 <SelectItem onClick={() => handleReviewType(category.value)} key={category.value}>{category.label}</SelectItem>
                             )}
                         </Select>
-                        {(errors.reviewType && !isCategorySelected) && (
+                        {(errors.review_type && !isCategorySelected) && (
                             <p className="text-red-500 text-left mt-1">
-                                {errors.reviewType.message}
+                                {errors.review_type.message}
                             </p>
                         )}
                     </div>
@@ -96,17 +101,17 @@ const AddReviewForm = ({ register, errors, setRating }) => {
                             items={reviewType === "workout" ? workoutCategoryNames : mealPlanCategoryNames}
                             placeholder={reviewType === "workout" ? "Select workout" : "Select meal"}
                             className="max-w-l"
-                            {...register("reviewName", {
+                            {...register("review_name", {
                                 required: "Please select review category name",
                             })}
                         >
-                            {(reviewName) => (
-                                <SelectItem key={reviewName.value}>{reviewName.label}</SelectItem>
+                            {(review_name) => (
+                                <SelectItem onClick={reviewType === "workout" ? () => setWorkoutId(review_name?.workout_id) : () => setMealPlanId(review_name?.mealPlan_id)} key={review_name.value}>{review_name.label}</SelectItem>
                             )}
                         </Select>
-                        {(errors.reviewName && !isCategorySelected) && (
+                        {(errors.review_name && !isCategorySelected) && (
                             <p className="text-red-500 text-left mt-1">
-                                {errors.reviewName.message}
+                                {errors.review_name.message}
                             </p>
                         )}
                     </div>
@@ -167,6 +172,7 @@ const AddReviewForm = ({ register, errors, setRating }) => {
                                                 name="file-upload"
                                                 type="file"
                                                 className="sr-only"
+                                                {...register("upload_photo")}
                                             />
                                         </label>
                                         <p className="pl-1">or drag and drop</p>
@@ -183,7 +189,9 @@ const AddReviewForm = ({ register, errors, setRating }) => {
                     </div>
                     <div>
                         {/* <StarRating /> */}
-                        <div className="h-[250px] w-[400px] bg-[#4B4B4B] flex justify-center items-center rounded-xl">
+                        <div className="h-[250px] w-[400px] bg-[#4B4B4B] flex justify-center items-center rounded-xl"
+                            {...register("upload_video")}
+                        >
                             <div className="flex flex-col">
                                 <span className="text-[#FFFFFF] text-center font-medium text-lg">Create a video review</span>
                                 <KFButton onPress={onOpen} startContent={<RecordIcon className="text-white" />} className="mt-3 bg-[#F5D3D4] text-[#962529] font-semibold ">Record Now</KFButton>

@@ -5,6 +5,7 @@ import MealPlanCard from "@/components/MealPlanCard/MealPlanCard";
 import WorkoutCard from "@/components/Workout-Items/WorkoutCard";
 import { useSelector } from "react-redux";
 import { Slider } from "@nextui-org/react";
+import { calculateBmi, getBmiCategory } from "@/lib/getBMI";
 
 const RecommendedPlanPage = () => {
   const formData = useSelector((state) => state.surveyForm);
@@ -30,23 +31,8 @@ const RecommendedPlanPage = () => {
     goal,
     plan,
   } = formData;
-  const calculateBmi = (height, weight) => {
-    const heightInMeters = height / 100;
-    const bmi = weight / (heightInMeters * heightInMeters);
-    return bmi;
-  };
+
   const bmi = calculateBmi(height, weight);
-  const getBmiCategory = (bmi) => {
-    if (bmi < 18.5) {
-      return "Underweight";
-    } else if (bmi < 25) {
-      return "Normal weight";
-    } else if (bmi < 30) {
-      return "Overweight";
-    } else {
-      return "Obese";
-    }
-  };
 
   return (
     <>

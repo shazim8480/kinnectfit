@@ -32,12 +32,22 @@ export default function KFNavbar() {
   );
 
   let userName = userProfile?.user?.name;
+  let isAuthenticated = userProfile?.isAuthenticated;
   // console.log("🚀 ~ file: Navbar.jsx:21 ~ KFNavbar ~ userName:", userName);
 
   // handle logout
   const handleLogout = () => {
     console.log("logged out");
     dispatch(logOutUser());
+  };
+
+  // become trainer handler
+  const handleBecomeTrainer = () => {
+    if (isAuthenticated) {
+      router.push("/become-trainer");
+    } else {
+      router.push("sign-in");
+    }
   };
 
   const menuItems = ["Workout Plans", "Find your Meal", "Be a Trainer"];
@@ -74,7 +84,9 @@ export default function KFNavbar() {
           <Link href="/meal-plans">Find your Meal</Link>
         </NavbarItem>
         <NavbarItem>
-          <Link href="/become-trainer">Become a Trainer</Link>
+          <button onClick={() => handleBecomeTrainer()}>
+            Become a Trainer
+          </button>
         </NavbarItem>
       </NavbarContent>
 

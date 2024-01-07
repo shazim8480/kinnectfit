@@ -17,16 +17,7 @@ const CreateMealPlanPage = () => {
     reset,
     formState: { errors },
   } = useForm();
-  const onSubmit = async (data) => {
-    const mealData = { ...data, ingredients: items };
-    let createMealPlanResponse = await createMealPlan(mealData);
-    if (createMealPlanResponse?.data?.status === 201) {
-      router.push("/dashboard");
-      reset();
-    } else if (createMealPlanResponse?.error) {
-      console.log("err msg", createMealPlanResponse?.error);
-    }
-  };
+
   return (
     <div>
       <MealPlanDetails />

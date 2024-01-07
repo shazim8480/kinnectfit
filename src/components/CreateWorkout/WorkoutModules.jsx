@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { KFInput } from "@/components/UI/KFInput";
-import { PlusIcon } from "@/assets/icons/PlusIcon";
-import { MinusIcon } from "@/assets/icons/MinusIcon";
 import { KFButton } from "../UI/KFButton";
+import { v4 as uuidv4 } from 'uuid';
 const WorkoutModules = ({ register, errors, fields, append, remove }) => {
   const [isDeleteButtonVisible, setDeleteButtonVisible] = useState(false);
   const handleAppend = () => {
@@ -10,7 +9,7 @@ const WorkoutModules = ({ register, errors, fields, append, remove }) => {
     if (!isDeleteButtonVisible) {
       setDeleteButtonVisible(true);
     }
-    append({ moduleName: "", moduleTime: "" });
+    append({ id: uuidv4(), moduleName: "", moduleTime: "" });
   };
   return (
     <div className="max-w-xs md:max-w-3xl mx-auto">

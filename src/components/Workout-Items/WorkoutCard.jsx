@@ -25,6 +25,7 @@ const WorkoutCard = ({ workoutItem }) => {
     average_rating,
     category,
     workout_cover,
+    workout_id
   } = workoutItem;
   return (
     <Card
@@ -41,7 +42,7 @@ const WorkoutCard = ({ workoutItem }) => {
         removeWrapper
         alt="workout_cover"
         className="z-0 object-cover w-full h-full rounded-lg"
-        src={workout_cover}
+        src={workout_cover ? workout_cover : "https://images.unsplash.com/photo-1581009137042-c552e485697a?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
       />
       <CardFooter className="absolute bottom-0 z-10 bg-black/40 border-t-1 border-default-600 dark:border-default-100">
         <div className="flex items-center flex-grow gap-2">
@@ -67,7 +68,7 @@ const WorkoutCard = ({ workoutItem }) => {
           </div>
         </div>
         <Button radius="full" size="sm" onClick={handleStart}>
-          <Link href={`/workouts/${workout_name}`}>Start Now</Link>
+          <Link href={`/workouts/${workout_id}`}>Start Now</Link>
         </Button>
       </CardFooter>
     </Card>

@@ -18,6 +18,7 @@ const authApi = api.injectEndpoints({
       }),
     }),
   }),
+  overrideExisting: true,
 });
 
 export const { useSignInMutation, useSignUpMutation } = authApi;

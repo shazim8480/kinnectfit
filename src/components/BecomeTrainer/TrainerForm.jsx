@@ -7,16 +7,23 @@ import { useSelector } from "react-redux";
 import { calculateBmi } from "@/lib/getBMI";
 import Image from "next/image";
 
+import { CldUploadButton, CldImage } from "next-cloudinary";
+import { useAddTrainerMutation } from "@/redux/feature/trainer/trainer-api";
+import { useRouter } from "next/navigation";
+
 const TrainerForm = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
     resetField,
-    control,
     setValue,
   } = useForm();
+
+  //   add trainer query //
+  const [addTrainer] = useAddTrainerMutation();
+
   const [weightValue, setWeightValue] = useState(null);
 
   const [heightValue, setHeightValue] = useState(null);
@@ -39,23 +46,28 @@ const TrainerForm = () => {
   const [files, setFiles] = useState([]);
   //   console.log("🚀 ~ file: TrainerForm.jsx:40 ~ TrainerForm ~ files:", files);
 
-  const handleFileChange = (e) => {
-    // this gives us the data on what files are selected
-    // however, it's of type `FileList` which is hard to modify.
-    const fileList = e.target.files;
-    // let's convert `FileList` into a `File[]`
-    if (fileList) {
-      const files = [...fileList];
-      setFiles(files);
-    }
+  const addFile = (newFile) => {
+    const updatedFiles = [...files, newFile];
+    setFiles(updatedFiles);
   };
 
+  //   const handleFileChange = (e) => {
+  //     // this gives us the data on what files are selected
+  //     // however, it's of type `FileList` which is hard to modify.
+  //     const fileList = e.target.files;
+  //     // let's convert `FileList` into a `File[]`
+  //     if (fileList) {
+  //       const files = [...fileList];
+  //       setFiles(files);
+  //     }
+  //   };
+
   // transform files into data urls
-  const imageUrls = files?.map((file) => URL.createObjectURL(file));
-  console.log(
-    "🚀 ~ file: TrainerForm.jsx:55 ~ TrainerForm ~ imageUrls:",
-    imageUrls
-  );
+  //   const imageUrls = files?.map((file) => URL.createObjectURL(file));
+  //   console.log(
+  //     "🚀 ~ file: TrainerForm.jsx:55 ~ TrainerForm ~ imageUrls:",
+  //     imageUrls
+  //   );
 
   useEffect(() => {
     resetField("bmi");
@@ -68,16 +80,26 @@ const TrainerForm = () => {
   }, [calculatedBmi]);
 
   const onSubmit = async (data) => {
-    console.log("form data", data);
+    // console.log("form data", data);
     if (Object.keys(errors).length === 0) {
-      const trainerData = {
+      const trainerDataObj = {
         trainer_id: userProfile?.user?.id,
+        name: userProfile?.user?.name,
         age: data.age,
         height: data.height,
         weight: data.weight,
         BMI: data.bmi,
+        status: "pending",
+        trainerImg: files,
       };
-      // router.push("more-info");
+      console.log("trainer submission ready data ===>", trainerDataObj);
+      let addTrainerResponse = await addTrainer(trainerDataObj);
+      console.log("addTrainerResponse", addTrainerResponse);
+      if (addTrainerResponse?.data?.status === 201) {
+        router.push("/dashboard/health-summary");
+      } else {
+        alert("Something went wrong, please try again!");
+      }
     }
   };
 
@@ -229,13 +251,9 @@ const TrainerForm = () => {
               variant="faded"
               isReadOnly
               placeholder={calculatedBmi ? calculatedBmi.toFixed(2) : null}
-              //   defaultValue={calculatedBmi ? calculatedBmi.toFixed(2) : null}
-              //   isDisabled
               size="xl"
-              //   control={control}
               className="mt-2"
               {...register("bmi", {
-                // required: "BMI is required!",
                 pattern: {
                   value: /^18\.5|19(?:\.\d)?|2[0-3](?:\.\d)?|24\.[0-9]$/,
                   message: "BMI Range should be between 18.5 to 24.9",
@@ -268,24 +286,18 @@ const TrainerForm = () => {
                     htmlFor="file_upload"
                     className="font-semibold text-center text-indigo-600 bg-white rounded-md cursor-pointer focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
                   >
-                    <span>Upload</span>
-
-                    <KFInput
-                      id="file_upload"
-                      name="file_upload"
-                      type="file"
-                      accept="image/*" // only accept image file types
-                      multiple // allow multiple images
-                      {...register("file_upload", {
-                        onChange: (e) => handleFileChange(e),
-                        required: "Select at least one (1) Image!",
-                      })}
-                      required
-                      className="sr-only"
+                    <CldUploadButton
+                      onUpload={(results) => {
+                        if (results) {
+                          const fileList = results?.info?.secure_url;
+                          addFile(fileList);
+                        }
+                      }}
+                      uploadPreset="kinnectfit_app"
                     />
                   </label>
                   {/* Delete */}
-                  {files?.length > 0 ? (
+                  {/* {files?.length > 0 ? (
                     <button
                       type="button"
                       onClick={() => setFiles([])}
@@ -293,26 +305,23 @@ const TrainerForm = () => {
                     >
                       Clear
                     </button>
-                  ) : null}
+                  ) : null} */}
                 </div>
                 <p className="relative mb-5 text-xs leading-5 text-gray-600">
                   PNG, JPG up to 10MB
                 </p>
                 {/* show uploaded images */}
-                {files?.length > 0 ? (
+                {files ? (
                   <div className="relative flex items-center justify-center">
-                    {imageUrls?.map((url, i) => {
-                      const filename = files[i]?.name; // image-1.jpg
-                      console.log("img local url", url); // blob:http://localhost:3000/ea1f5af2-d00f-4090-a4c9-538799f065d2
+                    {files?.map((file, i) => {
+                      //   console.log("showing file", file);
                       return (
-                        <Image
-                          className="object-contain h-[180px] mr-5"
-                          src={url}
-                          key={i}
-                          //   fill={true}
-                          height={80}
-                          width={120}
-                          alt={filename}
+                        <CldImage
+                          className="mr-5"
+                          width="140"
+                          height="80"
+                          src={file}
+                          alt="trainer_img"
                         />
                       );
                     })}
@@ -322,11 +331,6 @@ const TrainerForm = () => {
                 )}
               </div>
             </div>
-            {errors.file_upload && (
-              <p className="mt-1 text-left text-red-500">
-                {errors.file_upload.message}
-              </p>
-            )}
           </div>
         </section>
 

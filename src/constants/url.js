@@ -30,3 +30,18 @@ export const UPDATE_WORKOUT_MODULE = "/update-workout-module";
 
 // create meal plan url
 export const CREATE_MEAL_PLAN = "/create-meal-plan";
+// Get all meal plans url
+export const GET_ALL_MEAL_PLANS = "/meal-plans";
+// Get single meal plan url
+export const GET_SINGLE_MEAL_PLAN = "/meal-plan";
+
+// create meal plan url
+export const CREATE_MEAL = "/create-meal";
+// Get all meal plans url
+export const GET_ALL_MEALS = "/meals";
+// Get single meal plan url
+export const GET_SINGLE_MEAL = "/meal";
+
+/* *************** trainer url ****************** */
+export const CREATE_TRAINER_URL = "/create-trainer";
+export const GET_ALL_TRAINERS_URL = "/trainers";

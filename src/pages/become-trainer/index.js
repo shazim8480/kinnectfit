@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MainLayout from "@/layouts/mainLayout";
 import TrainerForm from "@/components/BecomeTrainer/TrainerForm";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 const BecomeTrainerPage = () => {
+  const router = useRouter();
+  const { user } = useSelector((state) => state?.user);
+  useEffect(() => {
+    if (!user) {
+      router.push("/");
+    }
+  }, [user]);
+
   const stats = [
     { label: "Trainers every 24 hours", value: "20+" },
     { label: "Certified Trainers", value: "500+" },

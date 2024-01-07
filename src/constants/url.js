@@ -26,7 +26,7 @@ export const GET_SINGLE_WORKOUT = "/workout";
 // Update workout module
 export const UPDATE_WORKOUT_MODULE = "/update-workout-module";
 
-/* *************** Workout url ****************** */
+/* *************** Meal Plan url ****************** */
 
 // create meal plan url
 export const CREATE_MEAL_PLAN = "/create-meal-plan";

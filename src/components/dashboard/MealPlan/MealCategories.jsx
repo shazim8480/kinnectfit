@@ -1,6 +1,6 @@
 import { KFInput } from "@/components/UI/KFInput";
 import { Select, SelectItem, Spinner } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { KFButton } from "@/components/UI/KFButton";
 import { useForm } from "react-hook-form";
 import { PhotoIcon } from "@heroicons/react/24/outline";
@@ -27,7 +27,18 @@ const MealCategories = () => {
     formState: { errors },
   } = useForm();
   const [createMeal] = useCreateMealMutation();
-  const { data, isLoading, refetch } = useGetAllMealPlansQuery({ refetchOnMountOrArgChange: true });
+  const {
+    data,
+    isLoading,
+    refetch: mealPlansRefetch,
+  } = useGetAllMealPlansQuery();
+
+  useEffect(() => {
+    if (data !== undefined) {
+      mealPlansRefetch();
+    }
+  }, [data]);
+
   console.log("getPlans", data);
   const [updateUser] = useUpdateUserMutation();
   const mealPlanCategoryNames = data?.mealPlans?.map((mealPlan) => ({
@@ -50,6 +61,7 @@ const MealCategories = () => {
     // return;
     const mealData = {
       ...data,
+      meal_img: mealFiles[0],
       ingredients: items,
       mealPlan_id: isMealPlanId,
       trainer_id: user?.id,
@@ -63,9 +75,9 @@ const MealCategories = () => {
     let createMealResponse = await createMeal(mealData);
     if (createMealResponse?.data?.status === 201) {
       const result = await updateUser(updateUserInfo);
-      await refetch();
       reset();
-      router.push('/dashboard');
+      setMealFiles([]);
+      router.push("/dashboard");
     } else if (createMealResponse?.error) {
       console.log("err msg", createMealResponse?.error);
     }

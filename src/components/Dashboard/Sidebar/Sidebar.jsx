@@ -105,7 +105,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           {/* <!-- Menu Group --> */}
           <div>
             <ul className="mb-6 flex flex-col gap-1.5">
-              {!user?.isAdmin && !isTrainer && (
+              {!user?.isAdmin && (!isTrainer || isTrainer === undefined) && (
                 <>
                   {/* <!-- Menu Item Health Summary --> */}
                   <li>
@@ -140,7 +140,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 </>
               )}
 
-              {/* {isTrainer === true && ( */}
+              {isTrainer === true && (
                 <>
                   {/* <!-- Menu Item Trainer Summary --> */}
                   <li>
@@ -193,7 +193,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   </li>
                   {/* <!-- Menu Item Create Meal Plan --> */}
                 </>
-              {/* )} */}
+              )}
 
               {/* <!-- Menu Item Add Review --> */}
               {user?.isAdmin && (

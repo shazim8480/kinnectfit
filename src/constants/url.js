@@ -43,6 +43,10 @@ export const CREATE_MEAL = "/create-meal";
 export const GET_ALL_MEALS = "/meals";
 // Get single meal plan url
 export const GET_SINGLE_MEAL = "/meal";
+// Get single meal plan url
+export const GET_MEAL_BY_MEAL_PLAN = "/get-meal";
+//Get grouped meals by mealPlan id;
+export const GET_GROUPED_MEALS_BY_MEAL_PLAN_ID = "/group-meals";
 
 
 // Create review

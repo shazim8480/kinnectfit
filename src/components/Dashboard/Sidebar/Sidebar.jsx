@@ -130,7 +130,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 </>
               )}
 
-              {isTrainer === true && (
+              {/* {isTrainer === true && ( */}
                 <>
                   {/* <!-- Menu Item Trainer Summary --> */}
                   <li>
@@ -183,7 +183,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   </li>
                   {/* <!-- Menu Item Create Meal Plan --> */}
                 </>
-              )}
+              {/* )} */}
 
               {/* <!-- Menu Item Add Review --> */}
               {user?.isAdmin && (

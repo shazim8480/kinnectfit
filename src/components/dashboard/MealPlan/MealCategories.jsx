@@ -7,8 +7,10 @@ import { PhotoIcon } from "@heroicons/react/24/outline";
 import { useCreateMealMutation, useGetAllMealPlansQuery } from "@/redux/feature/meal/meal-api";
 import { useSelector } from "react-redux";
 import { useUpdateUserMutation } from "@/redux/feature/user/user-api";
+import { useRouter } from "next/router";
 
 const MealCategories = () => {
+  const router = useRouter();
   const { user } = useSelector((state) => state?.user);
   // console.log("useeeeeerid", user?.id);
   const [items, setItems] = useState([]);
@@ -22,7 +24,8 @@ const MealCategories = () => {
     formState: { errors },
   } = useForm();
   const [createMeal] = useCreateMealMutation();
-  const { data, isLoading } = useGetAllMealPlansQuery();
+  const { data, isLoading, refetch } = useGetAllMealPlansQuery({ refetchOnMountOrArgChange: true });
+  console.log("getPlans", data);
   const [updateUser] = useUpdateUserMutation();
   const mealPlanCategoryNames = data?.mealPlans?.map((mealPlan) => ({
     label: mealPlan?.mealPlan_name,
@@ -43,8 +46,9 @@ const MealCategories = () => {
     let createMealResponse = await createMeal(mealData);
     if (createMealResponse?.data?.status === 201) {
       const result = await updateUser(updateUserInfo);
-      console.log(result);
-      // reset();
+      await refetch();
+      reset();
+      router.push('/dashboard');
     } else if (createMealResponse?.error) {
       console.log("err msg", createMealResponse?.error);
     }

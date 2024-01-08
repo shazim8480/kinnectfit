@@ -6,7 +6,6 @@ import { PhotoIcon } from "@heroicons/react/24/outline";
 import { Select, SelectItem, Textarea } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-
 const MealPlanDetails = () => {
   const { user } = useSelector((state) => state?.user);
   // console.log(user?.id);
@@ -23,7 +22,11 @@ const MealPlanDetails = () => {
     // return;
     // const mealData = { ...data, ingredients: items };
     // console.log(object)
-    let createMealPlanResponse = await createMealPlan({ data, trainer_id: user?.id });
+    // let createMealPlanResponse = await createMealPlan({ data, trainer_id: user?.id });
+    // const mealPlanData = {
+    //   data: { data, trainer_id: user?.id }
+    // };
+    let createMealPlanResponse = await createMealPlan({ ...data, trainer_id: user?.id });
     console.log("createMealPlanResponse", createMealPlanResponse);
     const updateUserInfo = {
       data: {
@@ -37,7 +40,7 @@ const MealPlanDetails = () => {
     if (createMealPlanResponse?.data?.status === 201) {
       const result = await updateUser(updateUserInfo);
       console.log(result);
-      // reset();
+      reset();
     } else if (createMealPlanResponse?.error) {
       console.log("err msg", createMealPlanResponse?.error);
     }

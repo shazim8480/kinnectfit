@@ -15,7 +15,7 @@ const UserCard = ({ module, handleCheck, isStarted }) => {
   }, [confirmed, module?.isConfirmed]);
 
   return (
-    <div className="w-full py-4">
+    <div className="w-full py-4 mx-4 ">
       <Checkbox
         key={module?.moduleName}
         aria-label={module?.moduleName}
@@ -24,16 +24,16 @@ const UserCard = ({ module, handleCheck, isStarted }) => {
         isDisabled={confirmed === true ? true : false}
         classNames={{
           base: cn(
-            "inline-flex w-full max-w-xl bg-content1",
-            "hover:bg-content2 items-center justify-start",
-            "cursor-pointer rounded-lg gap-2 p-4 border-2 border-transparent",
+            "inline-flex w-full max-w-xl bg-gray-50",
+            " items-center justify-center",
+            "cursor-pointer rounded-lg gap-2 p-4 border-1 border-gray-200",
             "data-[selected=true]:border-primary"
           ),
           label: "w-full",
         }}
       >
-        <div className="flex justify-end w-full gap-2">
-          <div className="flex flex-col items-end gap-1">
+        <div className="flex justify-end w-full gap-2 ">
+          <div className="flex flex-col items-end gap-1 font-medium text-blue-900">
             {module?.moduleName}
             <Chip color="success" size="sm" variant="flat">
               {module?.moduleTime} min

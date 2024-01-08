@@ -87,42 +87,43 @@ function WorkoutPage() {
             width={500}
             height={500}
           />
-          <h5 className="my-3 text-xl font-medium leading-tight text-neutral-800">
+          <h5 className="mt-5 text-2xl font-bold leading-tight text-blue-900">
             {workoutData?.workout.workout_name}
           </h5>
-          <div className="flex gap-3">
+          <div className="flex gap-3 mt-3">
             <div className="flex items-center">
               <UserIcon fill="black" />
-              <p className="ml-1">{workoutData?.workout.trainer_name}</p>
+              <p className="ml-1 text-gray-500">
+                {workoutData?.workout.trainer_name}
+              </p>
             </div>
             <div className="flex items-center">
               <Clock fill="black" />
-              <p className="ml-1">
+              <p className="ml-1 text-gray-500">
                 {workoutData?.workout.total_workout_time} min
               </p>
             </div>
             <div className="flex items-center">
-              <Star fill="black" />
-              <p className="ml-1">
+              <Star fill="orange" />
+              <p className="ml-1 text-gray-500">
                 {workoutData?.workout.average_rating
                   ? workoutData?.workout.average_rating
                   : "4.8"}
-                /5
               </p>
             </div>
           </div>
-          <h5 className="my-5 text-xl font-medium leading-tight text-neutral-800">
-            Workout Description
+          <h5 className="mt-5 mb-2 text-lg font-medium leading-tight text-gray-800">
+            Workout Overview
           </h5>
-          <p className="mb-4 text-base text-neutral-600 ">
+          <p className="text-gray-500 text-md ">
             {workoutData?.workout?.description}
           </p>
         </div>
       </div>
       <div className="block">
-        <div className="p-6">
+        <div className="px-6">
           <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800">
-            Workout Overview
+            Workout Modules
           </h5>
           <div className="mb-4 text-base text-neutral-600">
             {isLoading ? (
@@ -133,7 +134,7 @@ function WorkoutPage() {
               getworkoutbyuserid?.workouts
                 ?.filter((e) => e?.workout_id === workoutID)
                 ?.map((module, index) => {
-                  console.log("module if user started workout", module);
+                  // console.log("module if user started workout", module);
                   return module.workout_modules?.map((module) => (
                     <UserCard
                       key={module?._id}
@@ -145,7 +146,7 @@ function WorkoutPage() {
                 })
             ) : (
               workoutData?.workout?.workout_modules?.map((module, index) => {
-                console.log("mod", module);
+                // console.log("mod", module);
                 return (
                   <UserCard
                     key={module?.id}
@@ -163,7 +164,8 @@ function WorkoutPage() {
             <></>
           ) : (
             <KFButton
-              color={"primary"}
+              color={"secondary"}
+              className="w-full rounded-md"
               onClick={isStarted ? undefined : handleStartWorkout}
               isDisabled={getworkoutbyuserid?.workouts?.some(
                 (e) => e?.workout_id === workoutID

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { KFButton } from "@/components/UI/KFButton";
 import { KFInput } from "@/components/UI/KFInput";
 import { useCreateMealPlanMutation } from "@/redux/feature/meal/meal-api";
@@ -7,8 +8,13 @@ import { Select, SelectItem, Textarea } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 
+import { CldUploadButton, CldImage } from "next-cloudinary";
+
 const MealPlanDetails = () => {
   const { user } = useSelector((state) => state?.user);
+  //   file upload section
+  const [mealPlanFiles, setMealPlanFiles] = useState([]);
+  console.log("🚀 MealPlanDetails ~ mealPlanFiles:", mealPlanFiles);
   // console.log(user?.id);
   const [createMealPlan] = useCreateMealPlanMutation();
   const [updateUser] = useUpdateUserMutation();
@@ -18,18 +24,28 @@ const MealPlanDetails = () => {
     reset,
     formState: { errors },
   } = useForm();
+
+  // append upload cover
+  const addFile = (newFile) => {
+    const updatedFiles = [...mealPlanFiles, newFile];
+    setMealPlanFiles(updatedFiles);
+  };
+
   const onSubmit = async (data) => {
     console.log(data);
     // return;
     // const mealData = { ...data, ingredients: items };
     // console.log(object)
-    let createMealPlanResponse = await createMealPlan({ data, trainer_id: user?.id });
+    let createMealPlanResponse = await createMealPlan({
+      data,
+      trainer_id: user?.id,
+    });
     console.log("createMealPlanResponse", createMealPlanResponse);
     const updateUserInfo = {
       data: {
-        mealPlan_id: data
+        mealPlan_id: data,
       },
-      userId: user?.id
+      userId: user?.id,
     };
     // console.log("mealplan-response", createMealPlanResponse?.data?.status);
     // console.log("updateuserinfo", updateUserInfo);
@@ -54,12 +70,12 @@ const MealPlanDetails = () => {
   ];
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="max-w-xs md:max-w-5xl mx-auto">
-        <div className="bg-white  rounded px-8 pt-6 pb-8 mb-4">
+      <div className="max-w-xs mx-auto md:max-w-5xl">
+        <div className="px-8 pt-6 pb-8 mb-4 bg-white rounded">
           <div className="grid grid-cols-1 md:grid-cols-2 md:gap-10">
             {/*starts meal name */}
-            <div>
-              <div className="text-left mt-4 text-base mb-3">
+            <div className="my-4">
+              <div className="mb-4 text-sm font-medium text-left">
                 <label htmlFor="mealPlan_name">Meal plan name</label>
               </div>
               <KFInput
@@ -71,7 +87,7 @@ const MealPlanDetails = () => {
                 })}
               />
               {errors.mealPlan_name && (
-                <p className="text-red-500 text-left mt-1">
+                <p className="mt-1 text-left text-red-500">
                   {errors.mealPlan_name.message}
                 </p>
               )}
@@ -79,8 +95,8 @@ const MealPlanDetails = () => {
             {/*ends meal name */}
 
             {/*starts meal category */}
-            <div>
-              <div className="text-left mt-4 text-base mb-3">
+            <div className="my-4 ">
+              <div className="mb-4 text-sm font-medium text-left">
                 <label>Meal plan category</label>
               </div>
               <Select
@@ -96,7 +112,7 @@ const MealPlanDetails = () => {
                 )}
               </Select>
               {errors.category && (
-                <p className="text-red-500 text-left mt-1">
+                <p className="mt-1 text-left text-red-500">
                   {errors.category.message}
                 </p>
               )}
@@ -105,8 +121,8 @@ const MealPlanDetails = () => {
           </div>
 
           {/*starts meal description */}
-          <div>
-            <div className="text-left mt-4 text-base mb-3">
+          <div className="my-4">
+            <div className="mb-4 text-sm font-medium text-left">
               <label htmlFor="mealPlanDescription">Meal plan description</label>
             </div>
             <Textarea
@@ -118,7 +134,7 @@ const MealPlanDetails = () => {
               })}
             />
             {errors.mealPlan_description && (
-              <p className="text-red-500 text-left mt-1">
+              <p className="mt-1 text-left text-red-500">
                 {errors.mealPlan_description.message}
               </p>
             )}
@@ -126,51 +142,74 @@ const MealPlanDetails = () => {
           {/*ends meal description */}
 
           {/*starts meal cover */}
-          <div className="text-left mt-4 text-base mb-3">
-            <label htmlFor="img">Meal Image Cover</label>
-          </div>
-          <div className="  flex justify-center px-6 py-10 border border-dashed rounded-lg border-gray-900/25">
-            <div>
+
+          {/* Upload Images */}
+          <div className="my-4">
+            <label
+              htmlFor="cover-photo"
+              className="block mt-4 text-sm font-medium leading-6 text-gray-900"
+            >
+              Upload Cover
+            </label>
+            <div className="flex justify-center px-6 py-10 mt-2 border border-dashed rounded-lg border-gray-900/25">
               <div className="text-center">
                 <PhotoIcon
                   className="w-12 h-12 mx-auto text-gray-300"
                   aria-hidden="true"
                 />
-                <div className="flex mt-4 text-sm leading-6 text-gray-600">
+                <div className="h-[20px] my-4 text-sm leading-6">
                   <label
-                    htmlFor="file-upload"
-                    className="relative font-semibold text-blue-800 bg-white rounded-md cursor-pointer focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-600 focus-within:ring-offset-2 hover:text-blue-500"
+                    htmlFor="file_upload"
+                    className="font-semibold text-center text-indigo-600 bg-white rounded-md cursor-pointer focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
                   >
-                    <span>Upload Photo</span>
-                    <input
-                      id="file-upload"
-                      name="file-upload"
-                      type="file"
-                      className="sr-only"
-                      {...register("mealPlan_cover_img")}
+                    <CldUploadButton
+                      onUpload={(results) => {
+                        if (results) {
+                          const fileList = results?.info?.secure_url;
+                          addFile(fileList);
+                        }
+                      }}
+                      uploadPreset="kinnectfit_app"
                     />
                   </label>
                 </div>
+                <p className="relative mb-5 text-xs leading-5 text-gray-600">
+                  PNG, JPG up to 10MB
+                </p>
+                {/* show uploaded images */}
+                {mealPlanFiles ? (
+                  <div className="relative flex items-center justify-center">
+                    {mealPlanFiles?.map((file, i) => {
+                      //   console.log("showing file", file);
+                      return (
+                        <CldImage
+                          key={i}
+                          className="mr-5"
+                          width="180"
+                          height="80"
+                          src={file}
+                          alt="trainer_img"
+                        />
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
           </div>
           {/*ends meal cover */}
 
           {/* Submit button */}
-          <div className="text-center flex gap-4 justify-center mt-8">
-            <KFButton
-              color="secondary"
-              size="lg"
-              type="submit"
-            >
+          <div className="flex justify-center gap-4 mt-8 text-center">
+            <KFButton color="secondary" size="md" type="submit">
               Create Meal Plan
             </KFButton>
           </div>
-
         </div>
-      </div >
+      </div>
     </form>
-
   );
 };
 

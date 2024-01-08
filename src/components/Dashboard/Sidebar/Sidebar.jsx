@@ -13,16 +13,26 @@ import { useSelector } from "react-redux";
 import { useGetAllTrainersQuery } from "@/redux/feature/trainer/trainer-api";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
-  // get all trainers query
-  const { data: allTrainerData } = useGetAllTrainersQuery({
-    refetchOnMountOrArgChange: true,
-  });
   const { user } = useSelector((state) => state?.user);
   let userID = user?.id;
-  let matchedTrainer = allTrainerData?.trainers?.find(
-    (trainer) => trainer?.trainer_id === userID
-  );
-  let isTrainer = matchedTrainer?.isTrainer;
+  // check if trainer is true
+  const [isTrainer, setIsTrainer] = useState(false);
+
+  // get all trainers query
+  const { data: allTrainerData, refetch: trainersRefetch } =
+    useGetAllTrainersQuery();
+
+  useEffect(() => {
+    if (allTrainerData !== undefined) {
+      trainersRefetch();
+    }
+    let matchedTrainer = allTrainerData?.trainers?.find(
+      (trainer) => trainer?.trainer_id === userID
+    );
+    let isUserTrainer = matchedTrainer?.isTrainer;
+    setIsTrainer(isUserTrainer);
+  }, [allTrainerData]);
+
   console.log("is trainer", isTrainer);
 
   // console.log("isAdmin", user);

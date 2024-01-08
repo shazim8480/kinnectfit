@@ -48,9 +48,12 @@ export const GET_MEAL_BY_MEAL_PLAN = "/get-meal";
 //Get grouped meals by mealPlan id;
 export const GET_GROUPED_MEALS_BY_MEAL_PLAN_ID = "/group-meals";
 
-
+/* *************** Reviews url ****************** */
 // Create review
 export const CREATE_REVIEW = "/create-review";
+// get all reviews
+export const GET_ALL_REVIEWS = "/reviews";
+
 /* *************** trainer url ****************** */
 export const CREATE_TRAINER_URL = "/create-trainer";
 export const GET_ALL_TRAINERS_URL = "/trainers";

@@ -3,8 +3,11 @@ import { KFInput } from "@/components/UI/KFInput";
 import { Select, SelectItem, Textarea } from "@nextui-org/react";
 import { CldUploadButton, CldImage } from "next-cloudinary";
 import { PhotoIcon } from "@heroicons/react/24/solid";
+import { useDispatch } from "react-redux";
+import { setWorkoutCover } from "@/redux/feature/workout/workoutSlice";
 
 const CreateWorkout = ({ register, errors }) => {
+  const dispatch = useDispatch();
   const [isCategorySelected, setIsCategorySelected] = useState(false);
   //   file upload section
   const [files, setFiles] = useState([]);
@@ -13,6 +16,7 @@ const CreateWorkout = ({ register, errors }) => {
   const addFile = (newFile) => {
     const updatedFiles = [...files, newFile];
     setFiles(updatedFiles);
+    dispatch(setWorkoutCover(updatedFiles));
   };
 
   const categories = [
@@ -141,17 +145,6 @@ const CreateWorkout = ({ register, errors }) => {
         {/*ends workout description */}
 
         {/*starts workout cover */}
-        {/* <div>
-          <div className="mt-4 mb-3 text-base text-left">
-            <label htmlFor="workout_cover">Workout Cover</label>
-          </div>
-          <KFInput
-            type="file"
-            name="workout_cover"
-            placeholder="Upload a workout cover"
-          />
-        </div> */}
-
         {/* Upload Images */}
         <div className="">
           <label

@@ -10,13 +10,18 @@ import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { useSelector } from "react-redux";
 import { useUpdateUserMutation } from "@/redux/feature/user/user-api";
+import { removeWorkoutCover } from "@/redux/feature/workout/workoutSlice";
 
 const CreateWorkoutPage = () => {
-  const [updateUser] = useUpdateUserMutation();
-  const { user } = useSelector((state) => state?.user);
-  const router = useRouter();
-  const [createWorkout] = useCreateWorkoutMutation();
   const dispatch = useDispatch();
+  const router = useRouter();
+  // redux states
+  const { user } = useSelector((state) => state?.user);
+  const workoutState = useSelector((state) => state.workout);
+  console.log("cover of workout", workoutState);
+
+  const [updateUser] = useUpdateUserMutation();
+  const [createWorkout] = useCreateWorkoutMutation();
   const [formSteps, setFormSteps] = useState(0);
   const {
     register,
@@ -35,14 +40,14 @@ const CreateWorkoutPage = () => {
   });
 
   const onSubmit = async (data) => {
-    console.log(data);
-    // return;
-    // const mealData = { ...data, ingredients: items };
-    // console.log(object)
-    let createWorkoutResponse = await createWorkout({
+    const newWorkoutObj = {
       ...data,
+      workout_cover: workoutState.workout_cover[0],
       trainer_id: user?.id,
-    });
+    };
+    console.log("data to post ===>", newWorkoutObj);
+    // return;
+    let createWorkoutResponse = await createWorkout(newWorkoutObj);
     console.log("createWorkoutResponse", createWorkoutResponse);
     const updateUserInfo = {
       data: {
@@ -55,7 +60,8 @@ const CreateWorkoutPage = () => {
     // return;
     if (createWorkoutResponse?.data?.status === 201) {
       const result = await updateUser(updateUserInfo);
-      router.push("/dashboard");
+      dispatch(removeWorkoutCover());
+      router.push("/dashboard/trainer-summary");
       console.log(result);
       // reset();
     } else if (createWorkoutResponse?.error) {
@@ -94,7 +100,7 @@ const CreateWorkoutPage = () => {
           {formSteps === 1 && (
             <KFButton
               color="secondary"
-              size="lg"
+              size="md"
               className="mt-4"
               onClick={prev}
             >
@@ -104,7 +110,7 @@ const CreateWorkoutPage = () => {
           {formSteps === 0 && formSteps < 1 && (
             <KFButton
               color="secondary"
-              size="lg"
+              size="md"
               className="mt-4"
               onClick={() => {
                 handleNext();
@@ -116,7 +122,7 @@ const CreateWorkoutPage = () => {
           {formSteps === 1 && (
             <KFButton
               color="secondary"
-              size="lg"
+              size="md"
               className="mt-4"
               type="submit"
             >

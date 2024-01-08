@@ -1,15 +1,27 @@
 import { Checkbox, Chip, cn } from "@nextui-org/react";
+import { useEffect, useState } from "react";
 
 const UserCard = ({ module, handleCheck, isStarted }) => {
-  console.log("stert ", isStarted);
+  console.log("🚀 ~ file: UserCard.jsx:5 ~ UserCard ~ module:", module);
+  console.log("is started ", isStarted);
+
+  const [confirmed, setIsConfirmed] = useState(false);
+  console.log("🚀 ~ file: UserCard.jsx:8 ~ UserCard ~ confirmed:", confirmed);
+
+  useEffect(() => {
+    if (module?.isConfirmed !== undefined) {
+      setIsConfirmed(module?.isConfirmed);
+    }
+  }, [confirmed, module?.isConfirmed]);
+
   return (
-    <div className="py-4 w-full">
+    <div className="w-full py-4">
       <Checkbox
-        key={module.moduleName}
-        aria-label={module.moduleName}
+        key={module?.moduleName}
+        aria-label={module?.moduleName}
         onClick={() => handleCheck(module)}
-        isSelected={module.isConfirmed}
-        isDisabled={!isStarted}
+        isSelected={confirmed}
+        isDisabled={confirmed === true ? true : false}
         classNames={{
           base: cn(
             "inline-flex w-full max-w-xl bg-content1",
@@ -20,11 +32,11 @@ const UserCard = ({ module, handleCheck, isStarted }) => {
           label: "w-full",
         }}
       >
-        <div className="w-full flex justify-end gap-2">
+        <div className="flex justify-end w-full gap-2">
           <div className="flex flex-col items-end gap-1">
-            {module.moduleName}
+            {module?.moduleName}
             <Chip color="success" size="sm" variant="flat">
-              {module.moduleTime} min
+              {module?.moduleTime} min
             </Chip>
           </div>
         </div>

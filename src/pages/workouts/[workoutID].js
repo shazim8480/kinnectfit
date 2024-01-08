@@ -18,51 +18,33 @@ import UserCard from "@/components/Workout-Items/UserCard";
 
 function WorkoutPage() {
   const router = useRouter();
-  const { id } = router.query;
+  const { workoutID } = router.query;
+  // console.log("route query", router?.query);
   const { user } = useSelector((state) => state.user);
-  console.log("specific workout id", router.query.id);
-  console.log("userinfo ", user);
+  // console.log("userinfo ", user);
 
-  const [startWorkout, { isLoading }] = useStartWorkoutMutation();
+  const [startWorkout, { isLoading, isSuccess }] = useStartWorkoutMutation();
   const [updateWorkoutModule] = useUpdateWorkoutModuleMutation();
-  const { data: workoutData } = useGetSingleWorkoutQuery(id);
+  const { data: workoutData } = useGetSingleWorkoutQuery(workoutID);
   const { data: getworkoutbyuserid } = useGetUserWorkoutByIdQuery(user?.id, {
     refetchOnMountOrArgChange: true,
   });
 
   const [isStarted, setIsStarted] = useState(false);
 
-  const handleCheck = async (module) => {
-    console.log("clicked", module);
-    const updateModuleInfo = {
-      data: {
-        isConfirmed: true,
-      },
-      id: id,
-      module_id: module?.id,
-    };
-    const updatedResult = await updateWorkoutModule(updateModuleInfo);
-    console.log("updatedResult", updatedResult);
-
-    if (updatedResult?.data?.status) {
-      setIsStarted(true);
-    } else if (updatedResult?.error) {
-      console.log("err msg", updatedResult?.error);
-    }
-  };
   const handleStartWorkout = async () => {
     try {
       const data = {
         data: workoutData,
         userId: user.id,
       };
-      console.log(data);
+      // console.log(data);
 
       let startWorkoutResponse = await startWorkout(data);
       console.log("start workout -", startWorkoutResponse);
-      if (startWorkoutResponse?.data?.status) {
+      if (startWorkoutResponse?.data?.status === 200) {
         setIsStarted(true);
-      } else if (startWorkoutResponse?.error) {
+      } else {
         console.log("err msg", startWorkoutResponse?.error);
       }
     } catch (error) {
@@ -70,12 +52,31 @@ function WorkoutPage() {
     }
   };
 
+  const handleCheck = async (module) => {
+    // console.log("clicked", module);
+    const updateModuleInfo = {
+      data: {
+        isConfirmed: true,
+      },
+      id: workoutID,
+      module_id: module?.id,
+    };
+    const updatedResult = await updateWorkoutModule(updateModuleInfo);
+    console.log("updatedResult", updatedResult);
+
+    if (updatedResult?.data?.status === 200) {
+      setIsStarted(true);
+    } else if (updatedResult?.error) {
+      console.log("err msg", updatedResult?.error);
+    }
+  };
+
   return (
-    <section className="grid max-w-screen-xl mx-auto grid-cols-1 grid-rows-1 md:grid-cols-2 py-10">
+    <section className="grid max-w-screen-xl grid-cols-1 grid-rows-1 py-10 mx-auto md:grid-cols-2">
       <div className="block rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]">
         <div className="p-6">
           <Image
-            removewrapper
+            removewrapper="true"
             alt="workout_cover"
             className="z-0 object-cover w-full h-full"
             src={
@@ -114,7 +115,7 @@ function WorkoutPage() {
             Workout Description
           </h5>
           <p className="mb-4 text-base text-neutral-600 ">
-            {workoutData?.workout.description}
+            {workoutData?.workout?.description}
           </p>
         </div>
       </div>
@@ -127,14 +128,14 @@ function WorkoutPage() {
             {isLoading ? (
               <Spinner />
             ) : getworkoutbyuserid?.workouts?.some(
-                (e) => e.workout_id === id
+                (e) => e?.workout_id === workoutID
               ) ? (
               getworkoutbyuserid?.workouts
-                ?.filter((e) => e.workout_id === id)
+                ?.filter((e) => e?.workout_id === workoutID)
                 ?.map((module, index) => {
                   return module.workout_modules?.map((module) => (
                     <UserCard
-                      key={index}
+                      key={module?._id}
                       module={module}
                       handleCheck={handleCheck}
                       isStarted={isStarted}
@@ -146,7 +147,7 @@ function WorkoutPage() {
                 return (
                   <UserCard
                     key={index}
-                    module={module}
+                    module={module?._id}
                     handleCheck={handleCheck}
                     isStarted={isStarted}
                   />
@@ -154,14 +155,16 @@ function WorkoutPage() {
               })
             )}
           </div>
-          {getworkoutbyuserid?.workouts?.some((e) => e.workout_id === id) ? (
+          {getworkoutbyuserid?.workouts?.some(
+            (e) => e?.workout_id === workoutID
+          ) ? (
             <></>
           ) : (
             <KFButton
               color={"primary"}
               onClick={isStarted ? undefined : handleStartWorkout}
               isDisabled={getworkoutbyuserid?.workouts?.some(
-                (e) => e.workout_id === id
+                (e) => e?.workout_id === workoutID
               )}
             >
               {"Start Workout"}

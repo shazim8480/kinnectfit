@@ -22,16 +22,20 @@ const workoutApi = api.injectEndpoints({
       }),
       invalidatesTags: ["workouts"],
     }),
+    getUserWorkoutById: builder.query({
+      query: (id) => `${GET_USER_WORKOUT_BY_ID}/${id}`,
+      providesTags: ["moduleUpdate"],
+    }),
+
     startWorkout: builder.mutation({
       query: ({ data, userId }) => ({
         url: `${START_WORKOUT}/${userId}`,
         method: "PUT",
         body: data,
       }),
+      invalidatesTags: ["moduleUpdate"],
     }),
-    getUserWorkoutById: builder.query({
-      query: (id) => `${GET_USER_WORKOUT_BY_ID}/${id}`,
-    }),
+
     getSingleWorkout: builder.query({
       query: (id) => `${GET_SINGLE_WORKOUT}/${id}`,
     }),
@@ -41,6 +45,7 @@ const workoutApi = api.injectEndpoints({
         method: "PUT",
         body: data,
       }),
+      invalidatesTags: ["moduleUpdate"],
     }),
   }),
   overrideExisting: true,

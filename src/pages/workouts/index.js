@@ -27,7 +27,7 @@ const Workouts = () => {
     return searchMatch && categoryMatch;
   });
   return (
-    <section className="max-w-screen-xl mx-auto py-10 px-4">
+    <section className="max-w-screen-xl px-4 py-10 mx-auto">
       <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800">
         Workout Overview
       </h5>
@@ -40,7 +40,7 @@ const Workouts = () => {
         value={searchProduct}
         onChange={handleInputSearch}
         type="text"
-        className="mb-4 md:w-1/2 w-full"
+        className="w-full mb-4 md:w-1/2"
       />
       <hr></hr>
       <h5 className="my-3 text-xl font-medium leading-tight text-neutral-800">
@@ -74,7 +74,7 @@ const Workouts = () => {
       </CheckboxGroup>
       <div className="grid max-w-screen-xl grid-cols-1 gap-6 px-4 py-8 mx-auto place-items-center lg:place-content-center lg:gap-8 xl:gap-8 lg:py-16 lg:grid-cols-4">
         {filteredProducts?.map((item) => {
-          return <WorkoutCard key={item.workout_name} workoutItem={item} />;
+          return <WorkoutCard key={item?.workout_id} workoutItem={item} />;
         })}
       </div>
     </section>

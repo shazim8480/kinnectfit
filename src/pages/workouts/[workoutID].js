@@ -74,20 +74,20 @@ function WorkoutPage() {
   return (
     <section className="grid max-w-screen-xl grid-cols-1 grid-rows-1 py-10 mx-auto md:grid-cols-2">
       <div className="block rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]">
+        <Image
+          removewrapper="true"
+          alt="workout_cover"
+          className="z-0 object-cover w-full"
+          src={
+            workoutData?.workout.workout_cover
+              ? workoutData?.workout.workout_cover
+              : "https://images.unsplash.com/photo-1581009137042-c552e485697a?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          }
+          width={1000}
+          height={300}
+        />
         <div className="p-6">
-          <Image
-            removewrapper="true"
-            alt="workout_cover"
-            className="z-0 object-cover w-full h-full"
-            src={
-              workoutData?.workout.workout_cover
-                ? workoutData?.workout.workout_cover
-                : "https://images.unsplash.com/photo-1581009137042-c552e485697a?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            }
-            width={500}
-            height={500}
-          />
-          <h5 className="mt-5 text-2xl font-bold leading-tight text-blue-900">
+          <h5 className="text-2xl font-bold leading-tight text-blue-900">
             {workoutData?.workout.workout_name}
           </h5>
           <div className="flex gap-3 mt-3">
@@ -121,7 +121,7 @@ function WorkoutPage() {
         </div>
       </div>
       <div className="block">
-        <div className="px-6">
+        <div className="px-6 py-6 lg:py-0 xl:py-0">
           <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800">
             Workout Modules
           </h5>

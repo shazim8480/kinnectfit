@@ -143,7 +143,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               {isTrainer === true && (
                 <>
                   {/* <!-- Menu Item Trainer Summary --> */}
-                  <li>
+                  {/* <li>
                     <Link
                       href="/dashboard/trainer-summary"
                       className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${
@@ -157,7 +157,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                       />
                       Trainer Summary
                     </Link>
-                  </li>
+                  </li> */}
                   {/* <!-- Menu Item Trainer Summary --> */}
 
                   {/* <!-- Menu Item Create Workout --> */}

@@ -61,7 +61,7 @@ const CreateWorkoutPage = () => {
     if (createWorkoutResponse?.data?.status === 201) {
       const result = await updateUser(updateUserInfo);
       dispatch(removeWorkoutCover());
-      router.push("/dashboard/trainer-summary");
+      router.push("/dashboard");
       console.log(result);
       // reset();
     } else if (createWorkoutResponse?.error) {

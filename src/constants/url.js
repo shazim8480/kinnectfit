@@ -51,6 +51,7 @@ export const GET_GROUPED_MEALS_BY_MEAL_PLAN_ID = "/group-meals";
 
 // Create review
 export const CREATE_REVIEW = "/create-review";
+
 /* *************** trainer url ****************** */
 export const CREATE_TRAINER_URL = "/create-trainer";
 export const GET_ALL_TRAINERS_URL = "/trainers";

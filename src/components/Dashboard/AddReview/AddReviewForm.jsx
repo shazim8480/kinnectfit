@@ -152,7 +152,7 @@ const AddReviewForm = ({ register, errors, setRating, setMealPlanId, setWorkoutI
                 </div>
                 {/*ends review description */}
 
-                <div className="flex  justify-center items-center gap-14 ">
+                <div className="flex flex-wrap justify-center items-center gap-14 ">
                     <div className=" h-[250px] w-[400px]  flex justify-center px-6 py-10 border border-dashed rounded-lg border-gray-900/25">
                         <div>
                             <div className="">
@@ -189,7 +189,7 @@ const AddReviewForm = ({ register, errors, setRating, setMealPlanId, setWorkoutI
                     </div>
                     <div>
                         {/* <StarRating /> */}
-                        <div className="h-[250px] w-[400px] bg-[#4B4B4B] flex justify-center items-center rounded-xl"
+                        <div className="h-[250px] md:w-[400px] w-[300px] bg-[#4B4B4B] flex justify-center items-center rounded-xl"
                             {...register("upload_video")}
                         >
                             <div className="flex flex-col">

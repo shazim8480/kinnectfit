@@ -133,6 +133,7 @@ function WorkoutPage() {
               getworkoutbyuserid?.workouts
                 ?.filter((e) => e?.workout_id === workoutID)
                 ?.map((module, index) => {
+                  console.log("module if user started workout", module);
                   return module.workout_modules?.map((module) => (
                     <UserCard
                       key={module?._id}
@@ -144,10 +145,11 @@ function WorkoutPage() {
                 })
             ) : (
               workoutData?.workout?.workout_modules?.map((module, index) => {
+                console.log("mod", module);
                 return (
                   <UserCard
-                    key={index}
-                    module={module?._id}
+                    key={module?.id}
+                    module={module}
                     handleCheck={handleCheck}
                     isStarted={isStarted}
                   />

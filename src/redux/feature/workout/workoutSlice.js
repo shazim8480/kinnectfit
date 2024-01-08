@@ -1,26 +1,29 @@
 "use client";
 import { createSlice } from "@reduxjs/toolkit";
 
+// const initialState = {
+//     workoutName: "",
+//     category: "",
+//     workoutTime: "",
+//     workoutDescription: "",
+//     workout_modules: []
+// };
 const initialState = {
-    workoutName: "",
-    category: "",
-    workoutTime: "",
-    workoutDescription: "",
-    workout_modules: []
+  workout_cover: [],
 };
 
 export const workoutSlice = createSlice({
-    name: "workout",
-    initialState,
-    reducers: {
-        setWorkoutValues: (state, action) => {
-            state, action, action.payload;
-            Object.keys(action.payload).forEach((key) => {
-                state[key] = action.payload[key];
-            });
-        },
+  name: "workout",
+  initialState,
+  reducers: {
+    setWorkoutCover: (state, action) => {
+      state.workout_cover = action.payload;
     },
+    removeWorkoutCover: (state, action) => {
+      state.workout_cover = null;
+    },
+  },
 });
 
-export const { setWorkoutValues } = workoutSlice.actions;
+export const { setWorkoutCover, removeWorkoutCover } = workoutSlice.actions;
 export default workoutSlice.reducer;

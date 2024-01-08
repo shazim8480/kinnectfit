@@ -1,15 +1,16 @@
-import DashboardLayout from '@/layouts/dashboard/DashboardLayout';
-import React from 'react';
+import WorkoutList from "@/components/dashboard/Workout/WorkoutList";
+import DashboardLayout from "@/layouts/dashboard/DashboardLayout";
+
 const HealthSummaryPage = () => {
-    return (
-        <div>
-            <h3>This is health summary page.</h3>
-        </div>
-    );
+  return (
+    <>
+      <WorkoutList />
+    </>
+  );
 };
 
 export default HealthSummaryPage;
 
 HealthSummaryPage.getLayout = function getLayout(page) {
-    return <DashboardLayout>{page}</DashboardLayout>;
+  return <DashboardLayout>{page}</DashboardLayout>;
 };

@@ -54,9 +54,9 @@ const SignUpPage = () => {
     // console.log(data);
     if (Object.keys(errors).length === 0) {
       let signUpResponse = await signUp(data);
-      // console.log("sign up response", signUpResponse);
+      console.log("sign up response", signUpResponse);
       if (signUpResponse?.data?.status === 200) {
-        dispatch(setUser(data));
+        dispatch(setUser(signUpResponse?.data?.user));
         router.push("/");
       } else if (signUpResponse?.error) {
         console.log("err msg", signUpResponse?.error);

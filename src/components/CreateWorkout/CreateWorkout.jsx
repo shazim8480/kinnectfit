@@ -1,8 +1,24 @@
 import React, { useState } from "react";
 import { KFInput } from "@/components/UI/KFInput";
 import { Select, SelectItem, Textarea } from "@nextui-org/react";
+import { CldUploadButton, CldImage } from "next-cloudinary";
+import { PhotoIcon } from "@heroicons/react/24/solid";
+import { useDispatch } from "react-redux";
+import { setWorkoutCover } from "@/redux/feature/workout/workoutSlice";
+
 const CreateWorkout = ({ register, errors }) => {
+  const dispatch = useDispatch();
   const [isCategorySelected, setIsCategorySelected] = useState(false);
+  //   file upload section
+  const [files, setFiles] = useState([]);
+  console.log("🚀CreateWorkout ~ files:", files);
+
+  const addFile = (newFile) => {
+    const updatedFiles = [...files, newFile];
+    setFiles(updatedFiles);
+    dispatch(setWorkoutCover(updatedFiles));
+  };
+
   const categories = [
     {
       label: "Strength & Conditioning",
@@ -22,13 +38,13 @@ const CreateWorkout = ({ register, errors }) => {
     },
   ];
   return (
-    <div className="max-w-xs md:max-w-5xl mx-auto">
-      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <div className="max-w-xs mx-auto md:max-w-5xl">
+      <div className="px-8 pt-6 pb-8 mb-4 bg-white rounded shadow-md">
         {/* starts name & category */}
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-10">
           {/*starts workout name */}
           <div>
-            <div className="text-left mt-4 text-base mb-3">
+            <div className="mt-4 mb-3 text-base text-left">
               <label htmlFor="workoutName">Workout Name</label>
             </div>
             <KFInput
@@ -40,7 +56,7 @@ const CreateWorkout = ({ register, errors }) => {
               })}
             />
             {errors.workout_name && (
-              <p className="text-red-500 text-left mt-1">
+              <p className="mt-1 text-left text-red-500">
                 {errors.workout_name.message}
               </p>
             )}
@@ -49,7 +65,7 @@ const CreateWorkout = ({ register, errors }) => {
 
           {/*starts workout category */}
           <div>
-            <div className="text-left mt-4 text-base mb-3">
+            <div className="mt-4 mb-3 text-base text-left">
               <label>Workout Category</label>
             </div>
             <Select
@@ -61,11 +77,16 @@ const CreateWorkout = ({ register, errors }) => {
               })}
             >
               {(category) => (
-                <SelectItem onClick={() => setIsCategorySelected(true)} key={category.value}>{category.label}</SelectItem>
+                <SelectItem
+                  onClick={() => setIsCategorySelected(true)}
+                  key={category.value}
+                >
+                  {category.label}
+                </SelectItem>
               )}
             </Select>
-            {(errors.category && !isCategorySelected) && (
-              <p className="text-red-500 text-left mt-1">
+            {errors.category && !isCategorySelected && (
+              <p className="mt-1 text-left text-red-500">
                 {errors.category.message}
               </p>
             )}
@@ -75,17 +96,17 @@ const CreateWorkout = ({ register, errors }) => {
         {/* ends name & category */}
 
         {/* starts time & rating */}
-        <div className="grid grid-cols-1  md:gap-10">
+        <div className="grid grid-cols-1 md:gap-10">
           {/*starts workout time */}
           <div>
-            <div className="text-left mt-4 text-base mb-3">
-              <label htmlFor="workout_time">Workout Time</label>
+            <div className="mt-4 mb-3 text-base text-left">
+              <label htmlFor="total_workout_time">Workout Time</label>
             </div>
             <KFInput
-              name="workout_time"
+              name="total_workout_time"
               size="xl"
               placeholder="Minutes"
-              {...register("workout_time", {
+              {...register("total_workout_time", {
                 required: "Set workout duration",
                 pattern: {
                   value: /^(0|[1-9]\d*)$/,
@@ -93,19 +114,17 @@ const CreateWorkout = ({ register, errors }) => {
                 },
               })}
             />
-            {errors.workout_time && (
-              <p className="text-red-500 text-left mt-1">
-                {errors.workout_time.message}
+            {errors.total_workout_time && (
+              <p className="mt-1 text-left text-red-500">
+                {errors.total_workout_time.message}
               </p>
             )}
           </div>
-          {/*ends workout time */}
         </div>
-        {/* ends time & rating */}
 
         {/*starts workout description */}
         <div>
-          <div className="text-left mt-4 text-base mb-3">
+          <div className="mt-4 mb-3 text-base text-left">
             <label htmlFor="workoutDescription">Workout Description</label>
           </div>
           <Textarea
@@ -118,7 +137,7 @@ const CreateWorkout = ({ register, errors }) => {
             })}
           />
           {errors.description && (
-            <p className="text-red-500 text-left mt-1">
+            <p className="mt-1 text-left text-red-500">
               {errors.description.message}
             </p>
           )}
@@ -126,16 +145,63 @@ const CreateWorkout = ({ register, errors }) => {
         {/*ends workout description */}
 
         {/*starts workout cover */}
-        <div>
-          <div className="text-left mt-4 text-base mb-3">
-            <label htmlFor="workout_cover">Workout Cover</label>
+        {/* Upload Images */}
+        <div className="">
+          <label
+            htmlFor="cover-photo"
+            className="block mt-4 text-sm font-medium leading-6 text-gray-900"
+          >
+            Upload Cover
+          </label>
+          <div className="flex justify-center px-6 py-10 mt-2 border border-dashed rounded-lg border-gray-900/25">
+            <div className="text-center">
+              <PhotoIcon
+                className="w-12 h-12 mx-auto text-gray-300"
+                aria-hidden="true"
+              />
+              <div className="h-[20px] my-4 text-sm leading-6">
+                <label
+                  htmlFor="file_upload"
+                  className="font-semibold text-center text-indigo-600 bg-white rounded-md cursor-pointer focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                >
+                  <CldUploadButton
+                    onUpload={(results) => {
+                      if (results) {
+                        const fileList = results?.info?.secure_url;
+                        addFile(fileList);
+                      }
+                    }}
+                    uploadPreset="kinnectfit_app"
+                  />
+                </label>
+              </div>
+              <p className="relative mb-5 text-xs leading-5 text-gray-600">
+                PNG, JPG up to 10MB
+              </p>
+              {/* show uploaded images */}
+              {files ? (
+                <div className="relative flex items-center justify-center">
+                  {files?.map((file, i) => {
+                    //   console.log("showing file", file);
+                    return (
+                      <CldImage
+                        key={i}
+                        className="mr-5"
+                        width="140"
+                        height="80"
+                        src={file}
+                        alt="trainer_img"
+                      />
+                    );
+                  })}
+                </div>
+              ) : (
+                <></>
+              )}
+            </div>
           </div>
-          <KFInput
-            type="file"
-            name="workout_cover"
-            placeholder="Upload a workout cover"
-          />
         </div>
+
         {/*ends workout cover */}
       </div>
     </div>

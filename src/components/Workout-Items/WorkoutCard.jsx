@@ -71,8 +71,8 @@ const WorkoutCard = ({ workoutItem }) => {
             </div>
           </div>
         </div>
-        <Button radius="full" size="sm" onClick={handleStart}>
-          <Link href={`/workouts/${workout_id}`}>Start Now</Link>
+        <Button color="primary" radius="full" size="sm" onClick={handleStart}>
+          <Link href={`/workouts/${workout_id}`}>See Workout</Link>
         </Button>
       </CardFooter>
     </Card>

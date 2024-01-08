@@ -15,10 +15,8 @@ import { CldUploadButton, CldImage } from "next-cloudinary";
 
 const MealCategories = () => {
   const { user } = useSelector((state) => state?.user);
-  // console.log("useeeeeerid", user?.id);
   const [items, setItems] = useState([]);
   const [isMealPlanId, setMealPlanId] = useState("");
-  // console.log({ isMealPlanId });
   const [inputValue, setInputValue] = useState("");
   const {
     register,

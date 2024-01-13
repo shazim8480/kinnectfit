@@ -13,6 +13,7 @@ export const api = createApi({
     "meals",
     "mealPlans",
     "moduleUpdate",
+    "reviews",
   ],
   endpoints: () => ({}),
   overrideExisting: true,

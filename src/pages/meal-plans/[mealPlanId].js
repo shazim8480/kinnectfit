@@ -84,7 +84,7 @@ function MealDetailsPage() {
   const { data, isLoading } = useGetSingleMealPlanQuery(mealPlanId);
   const { data: mealDataByMealPlan, isLoading: mealLoading } = useGetMealByMealPlanIDQuery(mealPlanId);
   const { data: groupedMealsByMealPlan, isLoading: groupMealLoading } = useGetGroupedMealsByMealPlanIDQuery(mealPlanId);
-  console.log("🔥", groupedMealsByMealPlan);
+  console.log("🔥", data);
 
   if (isLoading || mealLoading || groupMealLoading) {
     return (
@@ -94,6 +94,7 @@ function MealDetailsPage() {
     );
   }
 
+  // return
   const { mealPlan_name, mealPlan_description, mealPlan_id, trainer_id, mealPlan_cover_img, mealPlan_category } = data?.mealPlan;
 
   console.log("ssssssssselemeals", selectedMeals);

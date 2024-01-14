@@ -4,24 +4,18 @@ import { KFInput } from "@/components/UI/KFInput";
 import { mealData } from "@/lib/db/meal-data";
 import MealPlanCard from "@/components/MealPlanCard/MealPlanCard";
 import { Checkbox, CheckboxGroup, Chip } from "@nextui-org/react";
+import { useGetAllMealPlansQuery } from "@/redux/feature/meal/meal-api";
 
 const MealPlansPage = () => {
     const [searchMealPlan, setSearchMealPlan] = useState('');
     const [groupSelected, setGroupSelected] = useState([]);
+    const { data } = useGetAllMealPlansQuery();
     const handleInputSearch = (e) => {
         const { name, value } = e.target;
         setSearchMealPlan(value);
     };
 
-    const filteredProducts = mealData?.filter((item) => {
-        const searchMatch = item?.name
-            .toLowerCase()
-            .includes(searchMealPlan.toLowerCase());
-        const categoryMatch =
-            groupSelected.length === 0 || groupSelected.includes(item.category);
 
-        return searchMatch && categoryMatch;
-    });
 
     const uniqueCategories = Array.from(new Set(mealData?.map(item => item.category)));
 
@@ -75,7 +69,7 @@ const MealPlansPage = () => {
                     })}
                 </CheckboxGroup>
                 <div className="grid max-w-screen-xl grid-cols-2 gap-6  mx-auto place-items-center lg:place-content-center lg:gap-8 xl:gap-8 lg:py-8 lg:grid-cols-4">
-                    {filteredProducts?.map((item) => {
+                    {data?.mealPlans?.map((item) => {
                         return <MealPlanCard key={item.name} mealItem={item} />;
                     })}
                 </div>

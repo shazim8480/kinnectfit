@@ -22,6 +22,8 @@ const rootReducer = combineReducers(
 const persistConfig = {
   key: 'root',
   storage,
+  whitelist: ['user'],
+  blacklist: ['mealplan', 'workout', 'surveyForm']
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

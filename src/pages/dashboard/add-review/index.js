@@ -28,14 +28,10 @@ const AddReviewPage = () => {
 
   const onSubmit = async (data) => {
     const {
-      upload_photo,
-      upload_video,
       review_type,
       review_name,
-      rating,
       description,
     } = data;
-    const img_video = [upload_photo, upload_video];
     const review_data = {
       review_info: {
         workout_id: workoutId,
@@ -44,17 +40,15 @@ const AddReviewPage = () => {
           review_type,
           review_name,
           description,
-          rating: rating,
+          rating,
+          review_img: reviewImg,
         },
-        img_video,
       },
     };
     console.log(review_data);
+    // return;
     await createReview(review_data);
 
-    // console.log("ReviewsData", { ...restData, img_video, rating, user_id: user?.id, user_name: user?.name });
-
-    return;
     let createWorkoutResponse = await createWorkout(data);
     if (createWorkoutResponse?.data?.status === 201) {
       router.push("/dashboard/health-summary");
@@ -67,6 +61,8 @@ const AddReviewPage = () => {
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <AddReviewForm
+          reviewImg={reviewImg}
+          setReviewImg={setReviewImg}
           setMealPlanId={setMealPlanId}
           setWorkoutId={setWorkoutId}
           setRating={setRating}

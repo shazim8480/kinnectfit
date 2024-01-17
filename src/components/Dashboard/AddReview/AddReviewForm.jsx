@@ -23,9 +23,10 @@ const AddReviewForm = ({
   setRating,
   setMealPlanId,
   setWorkoutId,
+  reviewImg,
+  setReviewImg
 }) => {
   // review images
-  const [reviewImg, setReviewImg] = useState([]);
   console.log("🚀 ~ file: AddReviewForm.jsx:27 ~ reviewImg:", reviewImg);
 
   // append upload cover
@@ -77,6 +78,10 @@ const AddReviewForm = ({
     {
       label: "Meal",
       value: "meal",
+    },
+    {
+      label: "App",
+      value: "app",
     },
   ];
   const handleReviewType = (type) => {
@@ -134,47 +139,50 @@ const AddReviewForm = ({
             )}
           </div>
 
-          <div>
-            <div className="mt-4 mb-3 text-base text-left">
-              <label>
-                {" "}
-                {reviewType === "workout" ? "Select workout" : "Select meal"}
-              </label>
-            </div>
-            <Select
-              // items={workoutCategoryNames}
-              items={
-                reviewType === "workout"
-                  ? workoutCategoryNames
-                  : mealPlanCategoryNames
-              }
-              placeholder={
-                reviewType === "workout" ? "Select workout" : "Select meal"
-              }
-              className="max-w-l"
-              {...register("review_name", {
-                required: "Please select review category name",
-              })}
-            >
-              {(review_name) => (
-                <SelectItem
-                  onClick={
-                    reviewType === "workout"
-                      ? () => setWorkoutId(review_name?.workout_id)
-                      : () => setMealPlanId(review_name?.mealPlan_id)
-                  }
-                  key={review_name.value}
-                >
-                  {review_name.label}
-                </SelectItem>
+          {
+            reviewType !== 'app' && <div>
+              <div className="mt-4 mb-3 text-base text-left">
+                <label>
+                  {" "}
+                  {reviewType === "workout" ? "Select workout" : "Select meal"}
+                </label>
+              </div>
+              <Select
+                // items={workoutCategoryNames}
+                items={
+                  reviewType === "workout"
+                    ? workoutCategoryNames
+                    : mealPlanCategoryNames
+                }
+                placeholder={
+                  reviewType === "workout" ? "Select workout" : "Select meal"
+                }
+                className="max-w-l"
+                {...register("review_name", {
+                  required: "Please select review category name",
+                })}
+              >
+                {(review_name) => (
+                  <SelectItem
+                    onClick={
+                      reviewType === "workout"
+                        ? () => setWorkoutId(review_name?.workout_id)
+                        : () => setMealPlanId(review_name?.mealPlan_id)
+                    }
+                    key={review_name.value}
+                  >
+                    {review_name.label}
+                  </SelectItem>
+                )}
+              </Select>
+              {errors.review_name && !isCategorySelected && (
+                <p className="mt-1 text-left text-red-500">
+                  {errors.review_name.message}
+                </p>
               )}
-            </Select>
-            {errors.review_name && !isCategorySelected && (
-              <p className="mt-1 text-left text-red-500">
-                {errors.review_name.message}
-              </p>
-            )}
-          </div>
+            </div>
+          }
+
         </div>
 
         <div>

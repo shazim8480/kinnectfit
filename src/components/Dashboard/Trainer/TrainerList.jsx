@@ -62,7 +62,7 @@ export default function TrainerList() {
       case "registration_date":
         const dateString = trainers?.created_at;
         const registrationDate = moment(dateString).format("DD MMM YYYY");
-        console.log("reg date", registrationDate);
+        // console.log("reg date", registrationDate);
         return (
           <div className="flex flex-col">
             <p className="text-sm capitalize text-bold text-neutral-600">

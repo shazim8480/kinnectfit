@@ -2,6 +2,7 @@ import Image from 'next/image';
 import React from 'react';
 import house from "@/assets/images/rental-housing.png";
 import ReviewStar from './ReviewStar';
+import { useSelector } from 'react-redux';
 const ShowReview = () => {
     return (
         <div className='grid grid-cols-1 md:grid-cols-2 h-full  min-h-[650px] md:min-h-[350px] items-center shadow-lg '>

@@ -33,7 +33,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     setIsTrainer(isUserTrainer);
   }, [allTrainerData]);
 
-  console.log("is trainer", isTrainer);
+  // console.log("is trainer", isTrainer);
 
   // console.log("isAdmin", user);
   const pathname = usePathname();

@@ -2,11 +2,11 @@ import { Checkbox, Chip, cn } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 
 const UserCard = ({ module, handleCheck, isStarted }) => {
-  console.log("🚀 ~ file: UserCard.jsx:5 ~ UserCard ~ module:", module);
-  console.log("is started ", isStarted);
+  // console.log("🚀 ~ file: UserCard.jsx:5 ~ UserCard ~ module:", module);
+  // console.log("is started ", isStarted);
 
   const [confirmed, setIsConfirmed] = useState(false);
-  console.log("🚀 ~ file: UserCard.jsx:8 ~ UserCard ~ confirmed:", confirmed);
+  // console.log("🚀 ~ file: UserCard.jsx:8 ~ UserCard ~ confirmed:", confirmed);
 
   useEffect(() => {
     if (module?.isConfirmed !== undefined) {

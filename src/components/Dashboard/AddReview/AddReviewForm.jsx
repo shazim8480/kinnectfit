@@ -27,7 +27,7 @@ const AddReviewForm = ({
   setReviewImg
 }) => {
   // review images
-  console.log("🚀 ~ file: AddReviewForm.jsx:27 ~ reviewImg:", reviewImg);
+  // console.log("🚀 ~ file: AddReviewForm.jsx:27 ~ reviewImg:", reviewImg);
 
   // append upload cover
   const addFile = (newFile) => {
@@ -210,7 +210,7 @@ const AddReviewForm = ({
             <label htmlFor="workoutDescription">Share your review</label>
           </div>
           <div>
-            <StarRating setRating={setRating} />
+            <StarRating  setRating={setRating} />
           </div>
         </div>
         {/*ends review description */}

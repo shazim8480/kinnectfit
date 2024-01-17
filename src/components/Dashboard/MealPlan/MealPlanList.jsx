@@ -28,7 +28,7 @@ const MealPlanList = () => {
               )}
             </TableHeader>
             <TableBody items={user?.selected_meals?.flat()}>
-              {console.log("Flattened meals:", user?.selected_meals?.flat())}
+              {/* {console.log("Flattened meals:", user?.selected_meals?.flat())} */}
 
               {items?.map((item) => (
                 <TableRow key={item._id}>

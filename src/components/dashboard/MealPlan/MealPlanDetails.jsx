@@ -14,7 +14,7 @@ const MealPlanDetails = () => {
   const { user } = useSelector((state) => state?.user);
   //   file upload section
   const [mealPlanFiles, setMealPlanFiles] = useState([]);
-  console.log("🚀 MealPlanDetails ~ mealPlanFiles:", mealPlanFiles);
+  // console.log("🚀 MealPlanDetails ~ mealPlanFiles:", mealPlanFiles);
   // console.log(user?.id);
   const [createMealPlan] = useCreateMealPlanMutation();
   const [updateUser] = useUpdateUserMutation();
@@ -37,7 +37,7 @@ const MealPlanDetails = () => {
       mealPlan_cover_img: mealPlanFiles[0],
       trainer_id: user?.id,
     });
-    console.log("createMealPlanResponse", createMealPlanResponse);
+    // console.log("createMealPlanResponse", createMealPlanResponse);
     const updateUserInfo = {
       data: {
         mealPlan_id: data,
@@ -46,7 +46,7 @@ const MealPlanDetails = () => {
     };
     if (createMealPlanResponse?.data?.status === 201) {
       const result = await updateUser(updateUserInfo);
-      console.log(result);
+      // console.log(result);
       reset();
       setMealPlanFiles([]);
     } else if (createMealPlanResponse?.error) {

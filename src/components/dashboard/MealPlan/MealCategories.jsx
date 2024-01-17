@@ -39,7 +39,7 @@ const MealCategories = () => {
     }
   }, [data]);
 
-  console.log("getPlans", data);
+  // console.log("getPlans", data);
   const [updateUser] = useUpdateUserMutation();
   const mealPlanCategoryNames = data?.mealPlans?.map((mealPlan) => ({
     label: mealPlan?.mealPlan_name,
@@ -48,7 +48,7 @@ const MealCategories = () => {
   }));
 
   const [mealFiles, setMealFiles] = useState([]);
-  console.log("🚀mealFiles:", mealFiles);
+  // console.log("🚀mealFiles:", mealFiles);
 
   // append upload cover
   const addFile = (newFile) => {

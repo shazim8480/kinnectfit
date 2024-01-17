@@ -11,7 +11,7 @@ const CreateWorkout = ({ register, errors }) => {
   const [isCategorySelected, setIsCategorySelected] = useState(false);
   //   file upload section
   const [files, setFiles] = useState([]);
-  console.log("🚀CreateWorkout ~ files:", files);
+  // console.log("🚀CreateWorkout ~ files:", files);
 
   const addFile = (newFile) => {
     const updatedFiles = [...files, newFile];

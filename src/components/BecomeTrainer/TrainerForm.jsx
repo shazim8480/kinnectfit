@@ -92,9 +92,9 @@ const TrainerForm = () => {
         status: "pending",
         trainerImg: files,
       };
-      console.log("trainer submission ready data ===>", trainerDataObj);
+      // console.log("trainer submission ready data ===>", trainerDataObj);
       let addTrainerResponse = await addTrainer(trainerDataObj);
-      console.log("addTrainerResponse", addTrainerResponse);
+      // console.log("addTrainerResponse", addTrainerResponse);
       if (addTrainerResponse?.data?.status === 201) {
         router.push("/dashboard/health-summary");
       } else {

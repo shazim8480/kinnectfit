@@ -53,6 +53,10 @@ export const GET_GROUPED_MEALS_BY_MEAL_PLAN_ID = "/group-meals";
 export const CREATE_REVIEW = "/create-review";
 // get all reviews
 export const GET_ALL_REVIEWS = "/reviews";
+// get  reviews by meal plan
+export const GET_REVIEWS_BY_MEAL_PLAN = "/meal-plan-reviews";
+// get  reviews by workout
+export const GET_REVIEWS_BY_WORKOUT = "/workout-reviews";
 
 /* *************** trainer url ****************** */
 export const CREATE_TRAINER_URL = "/create-trainer";

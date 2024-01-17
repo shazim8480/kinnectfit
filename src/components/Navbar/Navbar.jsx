@@ -26,10 +26,10 @@ export default function KFNavbar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const userProfile = useSelector((state) => state.user);
-  console.log(
-    "🚀 ~ file: Navbar.jsx:19 ~ KFNavbar ~ userProfile:",
-    userProfile
-  );
+  // console.log(
+  //   "🚀 ~ file: Navbar.jsx:19 ~ KFNavbar ~ userProfile:",
+  //   userProfile
+  // );
 
   let userName = userProfile?.user?.name;
   let isAuthenticated = userProfile?.isAuthenticated;
@@ -37,7 +37,7 @@ export default function KFNavbar() {
 
   // handle logout
   const handleLogout = () => {
-    console.log("logged out");
+    // console.log("logged out");
     dispatch(logOutUser());
   };
 

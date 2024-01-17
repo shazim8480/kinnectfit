@@ -16,6 +16,8 @@ import {
 import { useSelector } from "react-redux";
 import UserCard from "@/components/Workout-Items/UserCard";
 import ShowReview from "@/components/ShowReview/ShowReview";
+import ReviewStar from "@/components/ShowReview/ReviewStar";
+import { useGetReviewsByWorkoutIdQuery } from "@/redux/feature/review/review-api";
 
 function WorkoutPage() {
   const router = useRouter();
@@ -23,7 +25,7 @@ function WorkoutPage() {
   // console.log("route query", router?.query);
   const { user } = useSelector((state) => state.user);
   // console.log("userinfo ", user);
-
+  const { data: workoutReviewData, isLoading: workoutReviewLoading } = useGetReviewsByWorkoutIdQuery(workoutID);
   const [startWorkout, { isLoading, isSuccess }] = useStartWorkoutMutation();
   const [updateWorkoutModule] = useUpdateWorkoutModuleMutation();
   const { data: workoutData } = useGetSingleWorkoutQuery(workoutID);
@@ -71,6 +73,14 @@ function WorkoutPage() {
       console.log("err msg", updatedResult?.error);
     }
   };
+
+  if (workoutReviewLoading) {
+    return (
+      <div className="min-h-[80vh] flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -182,11 +192,47 @@ function WorkoutPage() {
       </section>;
       {/* workout modules ends */}
 
+
+
+
+
+
+
+
+
       {/* Show reviews  */}
-      <div className=" mx-10">
-        <ShowReview />
-      </div>;
+      {workoutReviewData?.reviews?.map((review) => {
+        return <div key={review?.review_id} className=" m-10">
+          <div className='grid grid-cols-1 md:grid-cols-2 h-full  min-h-[650px] md:min-h-[350px] items-center shadow-lg '>
+            <div className='p-10'>
+              <div>
+                <span className='font-semibold text-lg'>{review?.review_information?.review_info?.reviewer_name}</span>
+              </div>
+              <div className='mt-1'>
+                <ReviewStar rating={review?.review_information?.review_info?.rating} />
+              </div>
+              <div className='mt-2'>
+                <span className='font-medium text-base'>{review?.review_information?.review_info?.review_name}</span>
+              </div>
+              <div className='mt-2'>
+                <span className='italic text-gray-600'>
+                  {review?.review_information?.review_info?.description}
+                </span>
+              </div>
+            </div>
+            <div className='h-full relative '>
+              <Image src={review?.review_information?.review_info?.review_img[0]} alt='rental' layout='fill' className='absolute' />
+            </div>
+          </div>
+        </div>;
+      })}
+
       {/* Show reviews ends */}
+
+
+
+
+
     </>
   );
 }

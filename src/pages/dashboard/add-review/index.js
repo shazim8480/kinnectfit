@@ -9,15 +9,16 @@ import { useSelector } from "react-redux";
 const AddReviewPage = () => {
   // review images
   const [reviewImg, setReviewImg] = useState([]);
-  // review videos
-  const [reviewVideo, setReviewVideo] = useState([]);
-
   const [mealPlanId, setMealPlanId] = useState("");
   const [workoutId, setWorkoutId] = useState("");
-  const { user } = useSelector((state) => state?.user);
-  // console.log("Userid", user?.id, "userName", user?.name);
-  const [createReview] = useCreateReviewMutation();
   const [rating, setRating] = useState(0);
+  const [createReview] = useCreateReviewMutation();
+  const { user } = useSelector((state) => state?.user);
+
+  // review videos
+  // const [reviewVideo, setReviewVideo] = useState([]);
+
+  // console.log("Userid", user?.id, "userName", user?.name);
   const {
     register,
     handleSubmit,
@@ -33,28 +34,38 @@ const AddReviewPage = () => {
       description,
     } = data;
     const review_data = {
-      review_info: {
+      review_information: {
         workout_id: workoutId,
         mealPlan_id: mealPlanId,
         review_info: {
           review_type,
           review_name,
+          reviewer_name: user?.name,
+          reviewer_id: user?.id,
           description,
           rating,
           review_img: reviewImg,
         },
       },
     };
-    console.log(review_data);
-    // return;
-    await createReview(review_data);
+    console.log("rating", rating);
 
-    let createWorkoutResponse = await createWorkout(data);
-    if (createWorkoutResponse?.data?.status === 201) {
+    // console.log(review_data);
+    // return;
+    // await createReview(review_data);
+
+    let createReviewResponse = await createReview(review_data);
+    console.log("res", createReviewResponse);
+    setWorkoutId("");
+    setMealPlanId("");
+    setReviewImg([]);
+    reset();
+    return;
+    if (createReviewResponse?.data?.status === 201) {
       router.push("/dashboard/health-summary");
       reset();
-    } else if (createWorkoutResponse?.error) {
-      console.log("err msg", createWorkoutResponse?.error);
+    } else if (createReviewResponse?.error) {
+      console.log("err msg", createReviewResponse?.error);
     }
   };
   return (

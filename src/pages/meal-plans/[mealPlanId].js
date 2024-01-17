@@ -3,20 +3,18 @@ import Image from "next/image";
 import MainLayout from "@/layouts/mainLayout";
 import { useState } from "react";
 import { KFButton } from "@/components/UI/KFButton";
-import cn from "@/lib/utils";
 import { useGetGroupedMealsByMealPlanIDQuery, useGetMealByMealPlanIDQuery, useGetSingleMealPlanQuery } from "@/redux/feature/meal/meal-api";
 import { Spinner } from "@nextui-org/react";
 import { useUpdateUserMutation } from "@/redux/feature/user/user-api";
-import { useSelector } from "react-redux";
+import { useGetReviewsByMealPlanIdQuery } from "@/redux/feature/review/review-api";
+import ReviewStar from "@/components/ShowReview/ReviewStar";
 
 function MealDetailsPage() {
-  const { user } = useSelector((state) => state?.user);
-
   const [selectedMeals, setSelectedMeals] = useState([]);
   const [selectedMealStates, setSelectedMealStates] = useState({});
-  console.log(selectedMeals);
+  // console.log(selectedMeals);
 
-  console.log("SelectedMeals", selectedMeals);
+  // console.log("SelectedMeals", selectedMeals);
   const [isBorderd, setIsBordered] = useState(false);
 
   const [updateUser] = useUpdateUserMutation();
@@ -25,7 +23,7 @@ function MealDetailsPage() {
 
 
   const handleSubmitMeals = async (data) => {
-    console.log(data);
+    // console.log(data);
     // return;
     // const mealData = { ...data, ingredients: items };
     // console.log(object)
@@ -77,16 +75,18 @@ function MealDetailsPage() {
   };
 
 
-
   const router = useRouter();
   const { mealPlanId } = router.query;
 
   const { data, isLoading } = useGetSingleMealPlanQuery(mealPlanId);
   const { data: mealDataByMealPlan, isLoading: mealLoading } = useGetMealByMealPlanIDQuery(mealPlanId);
   const { data: groupedMealsByMealPlan, isLoading: groupMealLoading } = useGetGroupedMealsByMealPlanIDQuery(mealPlanId);
-  console.log("🔥", data);
+  const { data: mealPlanReviewData, isLoading: mealPlanReviewLoading } = useGetReviewsByMealPlanIdQuery(mealPlanId);
+  console.log("🔥 meal plan reviews", mealPlanReviewData?.reviews);
 
-  if (isLoading || mealLoading || groupMealLoading) {
+
+
+  if (isLoading || mealLoading || groupMealLoading || mealPlanReviewLoading) {
     return (
       <div className="min-h-[80vh] flex justify-center items-center">
         <Spinner />
@@ -97,18 +97,10 @@ function MealDetailsPage() {
   // return
   const { mealPlan_name, mealPlan_description, mealPlan_id, trainer_id, mealPlan_cover_img, mealPlan_category } = data?.mealPlan;
 
-  console.log("ssssssssselemeals", selectedMeals);
-
-
-
-
-
-  // console.log("",selectedMeals);
-
   const isSubmitDisabled = selectedMeals.length === 0;
 
   return (
-    <section className="grid max-w-screen-xl grid-cols-1 grid-rows-1 py-10 mx-auto md:grid-cols-1">
+    <> <section className="grid max-w-screen-xl grid-cols-1 grid-rows-1 py-10 mx-auto md:grid-cols-1">
       <div className="flex justify-center  h-[100vh] relative">
         <Image
           removewrapper
@@ -403,6 +395,35 @@ function MealDetailsPage() {
         </KFButton>
       </div >
     </section >
+
+      {mealPlanReviewData?.reviews?.map((review) => {
+        return <div key={review?.review_id} className=" m-10">
+          <div className='grid grid-cols-1 md:grid-cols-2 h-full  min-h-[650px] md:min-h-[350px] items-center shadow-lg '>
+            <div className='p-10'>
+              <div>
+                <span className='font-semibold text-lg'>{review?.review_information?.review_info?.reviewer_name}</span>
+              </div>
+              <div className='mt-1'>
+                <ReviewStar rating={review?.review_information?.review_info?.rating} />
+              </div>
+              <div className='mt-2'>
+                <span className='font-medium text-base'>{review?.review_information?.review_info?.review_name}</span>
+              </div>
+              <div className='mt-2'>
+                <span className='italic text-gray-600'>
+                  {review?.review_information?.review_info?.description}
+                </span>
+              </div>
+            </div>
+            <div className='h-full relative '>
+              <Image src={review?.review_information?.review_info?.review_img[0]} alt='rental' layout='fill' className='absolute' />
+            </div>
+          </div>
+        </div>;
+      })}
+
+    </>
+
   );
 }
 export default MealDetailsPage;

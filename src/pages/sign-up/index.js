@@ -52,11 +52,16 @@ const SignUpPage = () => {
   const onSubmit = async (data) => {
     // e.preventDefault();
     // console.log(data);
+    // return
     if (Object.keys(errors).length === 0) {
       let signUpResponse = await signUp(data);
-      console.log("sign up response", signUpResponse);
-      if (signUpResponse?.data?.status === 200) {
-        dispatch(setUser(signUpResponse?.data?.user));
+
+      // console.log("sign up response", signUpResponse);
+      if (signUpResponse?.data?.statusCode === 200) {
+        dispatch(setUser(signUpResponse?.data?.data));
+        // console.log(("usrInfo", signUpResponse?.data?.accessToken));
+
+        // return;
         router.push("/");
       } else if (signUpResponse?.error) {
         console.log("err msg", signUpResponse?.error);
@@ -95,8 +100,8 @@ const SignUpPage = () => {
         <form
           className="w-1/2 bg-white"
           onSubmit={handleSubmit(onSubmit)}
-          // action="#"
-          // method="POST"
+        // action="#"
+        // method="POST"
         >
           <h1 className="mb-1 text-2xl font-bold text-gray-800">
             Hello Again!
@@ -117,7 +122,7 @@ const SignUpPage = () => {
             fullWidth
             placeholder="Enter you full name"
             endContent={<NameIcon />}
-            // className="mb-4"
+          // className="mb-4"
           />
 
           <div className="h-[25px] my-1">

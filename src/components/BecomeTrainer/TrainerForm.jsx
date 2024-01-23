@@ -80,24 +80,27 @@ const TrainerForm = () => {
   }, [calculatedBmi]);
 
   const onSubmit = async (data) => {
-    // console.log("form data", data);
+    console.log("form data", data);
+    // return;
     if (Object.keys(errors).length === 0) {
       const trainerDataObj = {
-        trainer_id: userProfile?.user?.id,
-        name: userProfile?.user?.name,
+        user: userProfile?.user?.signupUser?.id,
         age: data.age,
         height: data.height,
         weight: data.weight,
-        BMI: data.bmi,
-        status: "pending",
-        trainerImg: files,
+        bmi: data.bmi,
+        // status: "pending",
+        images: files,
       };
-      // console.log("trainer submission ready data ===>", trainerDataObj);
       let addTrainerResponse = await addTrainer(trainerDataObj);
-      // console.log("addTrainerResponse", addTrainerResponse);
-      if (addTrainerResponse?.data?.status === 201) {
+      // console.log("trainer submission ready data ===>", addTrainerResponse);
+      if (addTrainerResponse?.data?.statusCode === 200) {
         router.push("/dashboard/health-summary");
-      } else {
+      }
+      else if (addTrainerResponse?.error?.status === 409) {
+        alert(addTrainerResponse?.error?.data?.message);
+      }
+      else {
         alert("Something went wrong, please try again!");
       }
     }
@@ -121,7 +124,7 @@ const TrainerForm = () => {
               id="name"
               name="name"
               label="name"
-              placeholder={userProfile?.user?.name}
+              placeholder={userProfile?.user?.signupUser?.name}
               isDisabled
               variant="faded"
               size="xl"
@@ -138,7 +141,7 @@ const TrainerForm = () => {
               id="email"
               name="email"
               label="email"
-              placeholder={userProfile?.user?.email}
+              placeholder={userProfile?.user?.signupUser?.email}
               isDisabled
               variant="faded"
               size="xl"

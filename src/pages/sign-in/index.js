@@ -50,9 +50,10 @@ const SignInPage = () => {
     // console.log(data);
     if (Object.keys(errors).length === 0) {
       let signInResponse = await signIn(data);
-      // console.log("sign in response", signInResponse);
-      if (signInResponse?.data?.status === 200) {
-        dispatch(setUser(signInResponse?.data?.user));
+      console.log("sign in response", signInResponse);
+      if (signInResponse?.data?.statusCode === 200) {
+        dispatch(setUser(signInResponse?.data?.data));
+        return
         router.push("/");
       } else if (signInResponse?.error) {
         console.log("err msg", signInResponse?.error);

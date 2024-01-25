@@ -44,7 +44,7 @@ function WorkoutPage() {
       // console.log(data);
 
       let startWorkoutResponse = await startWorkout(data);
-      console.log("start workout -", startWorkoutResponse);
+      // console.log("start workout -", startWorkoutResponse);
       if (startWorkoutResponse?.data?.status === 200) {
         setIsStarted(true);
       } else {
@@ -65,7 +65,7 @@ function WorkoutPage() {
       module_id: module?.id,
     };
     const updatedResult = await updateWorkoutModule(updateModuleInfo);
-    console.log("updatedResult", updatedResult);
+    // console.log("updatedResult", updatedResult);
 
     if (updatedResult?.data?.status === 200) {
       setIsStarted(true);

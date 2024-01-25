@@ -62,7 +62,7 @@ const CreateWorkoutPage = () => {
       const result = await updateUser(updateUserInfo);
       dispatch(removeWorkoutCover());
       router.push("/dashboard");
-      console.log(result);
+      // console.log(result);
       // reset();
     } else if (createWorkoutResponse?.error) {
       console.log("err msg", createWorkoutResponse?.error);

@@ -62,7 +62,7 @@ const TrainerForm = () => {
   }, [calculatedBmi]);
 
   const onSubmit = async (data) => {
-    console.log("form data", data);
+    // console.log("form data", data);
     // return;
     if (Object.keys(errors).length === 0) {
       const trainerDataObj = {
@@ -75,7 +75,7 @@ const TrainerForm = () => {
         images: files,
       };
       let addTrainerResponse = await trainerRequest({ data: trainerDataObj, accessToken });
-      console.log("trainer submission ready data ===>", addTrainerResponse);
+      // console.log("trainer submission ready data ===>", addTrainerResponse);
       if (addTrainerResponse?.data?.statusCode === 200) {
         router.push("/dashboard/health-summary");
       }

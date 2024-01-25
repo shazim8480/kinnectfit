@@ -42,7 +42,7 @@ function MealDetailsPage() {
     if (result?.data?.status === 200) {
       router.push("/dashboard");
     }
-    console.log(result);
+    // console.log(result);
 
   };
 
@@ -82,7 +82,7 @@ function MealDetailsPage() {
   const { data: mealDataByMealPlan, isLoading: mealLoading } = useGetMealByMealPlanIDQuery(mealPlanId);
   const { data: groupedMealsByMealPlan, isLoading: groupMealLoading } = useGetGroupedMealsByMealPlanIDQuery(mealPlanId);
   const { data: mealPlanReviewData, isLoading: mealPlanReviewLoading } = useGetReviewsByMealPlanIdQuery(mealPlanId);
-  console.log("🔥 meal plan reviews", mealPlanReviewData?.reviews);
+  // console.log("🔥 meal plan reviews", mealPlanReviewData?.reviews);
 
 
 

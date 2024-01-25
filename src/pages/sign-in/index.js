@@ -46,16 +46,18 @@ const SignInPage = () => {
   const [signIn] = useSignInMutation();
 
   const onSubmit = async (data) => {
-    // e.preventDefault();
-    // console.log(data);
     if (Object.keys(errors).length === 0) {
       let signInResponse = await signIn(data);
-      console.log("sign in response", signInResponse);
+      const accessToken = signInResponse?.data?.data?.accessToken;
+      const userData = signInResponse?.data?.data?.user;
+      // Store user data or token in localStorage
+
       if (signInResponse?.data?.statusCode === 200) {
+        localStorage.setItem('accessToken', JSON.stringify(accessToken));
+        localStorage.setItem('userData', JSON.stringify(userData));
         dispatch(setUser(signInResponse?.data?.data));
         router.push("/");
       } else if (signInResponse?.error) {
-        console.log("err msg", signInResponse?.error);
         setError("email", {
           message: signInResponse?.error?.data?.message,
         });

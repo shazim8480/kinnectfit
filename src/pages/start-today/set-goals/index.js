@@ -37,7 +37,7 @@ const SetGoalsPage = () => {
     if (selectedItems.length === 0) {
       return;
     }
-    console.log("goal", data, selectedItems[0]);
+    // console.log("goal", data, selectedItems[0]);
     const selectedGoal = selectedItems[0];
     dispatch(setFormValues({ ...formData, goal: selectedGoal }));
     router.push("set-plan");

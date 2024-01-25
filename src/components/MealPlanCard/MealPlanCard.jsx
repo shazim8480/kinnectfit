@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const MealPlanCard = ({ mealItem }) => {
   const { mealPlan_name, mealPlan_cover, id } = mealItem;
-  console.log("mealItem", mealItem);
+  // console.log("mealItem", mealItem);
   return (
     <Card className="rounded-md shadow-md bg-blue-50">
       <CardBody className="overflow-visible">

@@ -9,7 +9,7 @@ import { useGetAllMealPlansQuery, useGetFeaturedMealPlansQuery } from "@/redux/f
 const FeatureMealPlans = () => {
   const { data } = useGetFeaturedMealPlansQuery();
 
-  console.log("featuredMealPlan", data);
+  // console.log("featuredMealPlan", data);
   return (
     <section className="py-8 lg:py-16">
       <HeadingText title="Featured Meal Plans" className="text-center" />

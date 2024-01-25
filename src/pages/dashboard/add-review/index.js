@@ -55,7 +55,7 @@ const AddReviewPage = () => {
     // await createReview(review_data);
 
     let createReviewResponse = await createReview(review_data);
-    console.log("res", createReviewResponse);
+    // console.log("res", createReviewResponse);
     setWorkoutId("");
     setMealPlanId("");
     setReviewImg([]);

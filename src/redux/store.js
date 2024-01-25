@@ -9,26 +9,26 @@ import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 
-const rootReducer = combineReducers(
-  {
+// const rootReducer = combineReducers(
+
+// );
+
+const persistConfig = {
+  key: 'root',
+  storage,
+  // whitelist: ['user'],
+  // blacklist: ['mealplan', 'workout', 'surveyForm']
+};
+
+// const persistedReducer = persistReducer(persistConfig, rootReducer);
+const store = configureStore({
+  reducer: {
     mealplan: mealPlanReducer,
     workout: workoutReducer,
     user: userReducer,
     surveyForm: surveyFormReducer,
     [api.reducerPath]: api.reducer,
-  }
-);
-
-const persistConfig = {
-  key: 'root',
-  storage,
-  whitelist: ['user'],
-  blacklist: ['mealplan', 'workout', 'surveyForm']
-};
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-const store = configureStore({
-  reducer: persistedReducer,
+  },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware),
 });

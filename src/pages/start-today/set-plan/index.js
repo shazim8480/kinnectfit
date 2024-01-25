@@ -31,7 +31,7 @@ const SetPlanPage = () => {
     if (selectedItems.length === 0) {
       return;
     }
-    console.log("plan", data, selectedItems[0]);
+    // console.log("plan", data, selectedItems[0]);
     const selectedPlan = selectedItems[0];
     dispatch(setFormValues({ ...formData, plan: selectedPlan }));
     router.push("recommended-plans");

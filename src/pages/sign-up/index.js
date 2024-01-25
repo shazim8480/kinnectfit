@@ -55,13 +55,12 @@ const SignUpPage = () => {
     // return
     if (Object.keys(errors).length === 0) {
       let signUpResponse = await signUp(data);
-
+      const accessToken = signUpResponse?.data?.data?.accessToken;
+      const userData = signUpResponse?.data?.data?.user;
       // console.log("sign up response", signUpResponse);
       if (signUpResponse?.data?.statusCode === 200) {
-        dispatch(setUser(signUpResponse?.data?.data));
-        // console.log(("usrInfo", signUpResponse?.data?.accessToken));
-
-        // return;
+        localStorage.setItem('accessToken', JSON.stringify(accessToken));
+        localStorage.setItem('userData', JSON.stringify(userData));
         router.push("/");
       } else if (signUpResponse?.error) {
         console.log("err msg", signUpResponse?.error);

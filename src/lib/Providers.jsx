@@ -9,11 +9,11 @@ const Providers = ({ children }) => {
   let persistor = persistStore(store);
   return (
     <Provider store={store}>
-      <PersistGate persistor={persistor}>
+      {/* <PersistGate persistor={persistor}> */}
         <NextUIProvider>
           {children}
         </NextUIProvider>
-      </PersistGate>
+      {/* </PersistGate> */}
     </Provider>
   );
 };

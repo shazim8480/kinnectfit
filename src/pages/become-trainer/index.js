@@ -1,17 +1,16 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import MainLayout from "@/layouts/mainLayout";
 import TrainerForm from "@/components/BecomeTrainer/TrainerForm";
-import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
+import { accessTokenFromLS } from "@/lib/utils";
 
 const BecomeTrainerPage = () => {
   const router = useRouter();
-  const { user } = useSelector((state) => state?.user);
   useEffect(() => {
-    if (!user) {
+    if (!accessTokenFromLS) {
       router.push("/");
     }
-  }, [user]);
+  }, [accessTokenFromLS]);
 
   const stats = [
     { label: "Trainers every 24 hours", value: "20+" },

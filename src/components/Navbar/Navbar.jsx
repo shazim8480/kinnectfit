@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Navbar,
   NavbarBrand,
@@ -13,41 +13,33 @@ import {
   Dropdown,
   DropdownMenu,
 } from "@nextui-org/react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { logOutUser } from "@/redux/feature/user/userSlice";
 import { ChevronDown } from "@/assets/icons/ChevronDown";
 import { useRouter } from "next/router";
 
 import Link from "next/link";
+import { accessTokenFromLS, userDataFromLS } from "@/lib/utils";
 
 export default function KFNavbar() {
+  const [accessToken, setAccessToken] = useState(accessTokenFromLS);
+  useEffect(() => {
+    // Fetch updated accessToken from your source (e.g., local storage or API)
+    const updatedAccessToken = localStorage.getItem('accessToken'); // Replace with your actual logic
+    setAccessToken(updatedAccessToken);
+  }, [accessToken]);
   const router = useRouter();
   const dispatch = useDispatch();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-  const userProfile = useSelector((state) => state.user);
-  // console.log(
-  //   "🚀 ~ file: Navbar.jsx:19 ~ KFNavbar ~ userProfile:",
-  //   userProfile
-  // );
-
-  let userName = userProfile?.user?.user?.name;
-  let isAuthenticated = userProfile?.isAuthenticated;
-  // console.log("🚀 ~ file: Navbar.jsx:21 ~ KFNavbar ~ userName:", userName);
-
+  let userName = userDataFromLS?.name;
+  console.log("userName", userName);
   // handle logout
   const handleLogout = () => {
-    // console.log("logged out");
+    localStorage.removeItem('userData');
+    localStorage.removeItem('accessToken');
+    setAccessToken(null);
     dispatch(logOutUser());
-  };
-
-  // become trainer handler
-  const handleBecomeTrainer = () => {
-    if (isAuthenticated) {
-      router.push("/become-trainer");
-    } else {
-      router.push("sign-in");
-    }
   };
 
   const menuItems = ["Workout Plans", "Find your Meal", "Be a Trainer"];
@@ -84,14 +76,12 @@ export default function KFNavbar() {
           <Link href="/meal-plans">Find your Meal</Link>
         </NavbarItem>
         <NavbarItem>
-          <button onClick={() => handleBecomeTrainer()}>
-            Become a Trainer
-          </button>
+          <Link href={accessToken ? "/become-trainer" : "/sign-in"}>Become a trainer</Link>
         </NavbarItem>
       </NavbarContent>
 
       <NavbarContent justify="end">
-        {userProfile?.isAuthenticated === true && (
+        {accessToken && (
           <NavbarContent className="flex gap-4" justify="center">
             <Dropdown>
               <NavbarItem>
@@ -125,7 +115,7 @@ export default function KFNavbar() {
           </NavbarContent>
         )}
 
-        {userProfile?.isAuthenticated === true ? (
+        {accessToken ? (
           <NavbarItem>
             <Button onClick={() => handleLogout()} color="secondary">
               Log out

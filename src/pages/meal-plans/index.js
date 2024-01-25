@@ -16,7 +16,6 @@ const MealPlansPage = () => {
     };
 
 
-
     const uniqueCategories = Array.from(new Set(mealData?.map(item => item.category)));
 
 
@@ -69,8 +68,8 @@ const MealPlansPage = () => {
                     })}
                 </CheckboxGroup>
                 <div className="grid max-w-screen-xl grid-cols-2 gap-6  mx-auto place-items-center lg:place-content-center lg:gap-8 xl:gap-8 lg:py-8 lg:grid-cols-4">
-                    {data?.mealPlans?.map((item) => {
-                        return <MealPlanCard key={item.name} mealItem={item} />;
+                    {data?.data?.map((item) => {
+                        return <MealPlanCard key={item.id} mealItem={item} />;
                     })}
                 </div>
             </section>

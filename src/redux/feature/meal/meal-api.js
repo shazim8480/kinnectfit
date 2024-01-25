@@ -15,6 +15,10 @@ const mealApi = api.injectEndpoints({
       query: () => `${GET_ALL_MEAL_PLANS}`,
       provideTags: ["mealPlans"],
     }),
+    getFeaturedMealPlans: builder.query({
+      query: () => `${GET_ALL_MEAL_PLANS}?sortBy=createdAt&sortOrder=desc&limit=4`,
+      provideTags: ["mealPlans"],
+    }),
     createMealPlan: builder.mutation({
       query: (data) => ({
         url: `${CREATE_MEAL_PLAN}`,
@@ -58,5 +62,6 @@ export const {
   useGetSingleMealPlanQuery,
   useCreateMealMutation,
   useGetMealByMealPlanIDQuery,
-  useGetGroupedMealsByMealPlanIDQuery
+  useGetGroupedMealsByMealPlanIDQuery,
+  useGetFeaturedMealPlansQuery
 } = mealApi;

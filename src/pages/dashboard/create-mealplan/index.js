@@ -21,7 +21,7 @@ const CreateMealPlanPage = () => {
   return (
     <div>
       <MealPlanDetails />
-      <MealCategories />
+      {/* <MealCategories /> */}
     </div>
   );
 };

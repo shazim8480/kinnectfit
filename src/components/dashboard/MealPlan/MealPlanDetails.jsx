@@ -32,6 +32,9 @@ const MealPlanDetails = () => {
   };
 
   const onSubmit = async (data) => {
+
+    console.log("data of meal plan", )
+
     let createMealPlanResponse = await createMealPlan({
       ...data,
       mealPlan_cover_img: mealPlanFiles[0],
@@ -90,29 +93,26 @@ const MealPlanDetails = () => {
             {/*ends meal name */}
 
             {/*starts meal category */}
-            <div className="my-4 ">
+            <div className="my-4">
               <div className="mb-4 text-sm font-medium text-left">
-                <label>Meal plan category</label>
+                <label htmlFor="mealPlan_name">Meal plan category</label>
               </div>
-              <Select
-                items={categories}
-                label="Select meal plan category"
-                className="max-w-l"
+              <KFInput
+                name="mealPlan_category"
+                type="text"
+                placeholder="Give a Meal plan category name"
                 {...register("mealPlan_category", {
-                  required: "Please select meal plan category",
+                  required: "You must need to give a meal plan category name",
                 })}
-              >
-                {(category) => (
-                  <SelectItem key={category.value}>{category.label}</SelectItem>
-                )}
-              </Select>
-              {errors.category && (
+              />
+              {errors.mealPlan_category && (
                 <p className="mt-1 text-left text-red-500">
-                  {errors.category.message}
+                  {errors.mealPlan_category.message}
                 </p>
               )}
             </div>
             {/*ends meal category */}
+
           </div>
 
           {/*starts meal description */}

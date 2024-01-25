@@ -16,7 +16,7 @@ export default function HomePage() {
     <>
       <Hero />
       <FeaturedWorkouts />
-      <FeatureMealPlans />
+      {/* <FeatureMealPlans /> */}
       <Review />
       <DownloadApp />
       <FAQ />

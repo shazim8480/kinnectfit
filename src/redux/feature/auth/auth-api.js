@@ -4,10 +4,14 @@ import { api } from "@/redux/api/apiSlice";
 const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
     signIn: builder.mutation({
-      query: (data) => ({
+      query: (data, accessToken) => ({
         url: `${USER_LOGIN}`,
         method: "POST",
         body: data,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
       }),
     }),
     signUp: builder.mutation({

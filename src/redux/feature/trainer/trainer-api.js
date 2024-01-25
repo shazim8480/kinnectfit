@@ -8,10 +8,13 @@ const trainerApi = api.injectEndpoints({
       providesTags: ["trainers"],
     }),
     addTrainer: builder.mutation({
-      query: (data) => ({
+      query: ({ data, accessToken }) => ({
         url: `${CREATE_TRAINER_URL}`,
         method: "POST",
         body: data,
+        headers: {
+          Authorization: `${accessToken}`,
+        },
       }),
       invalidatesTags: ["trainers"],
     }),

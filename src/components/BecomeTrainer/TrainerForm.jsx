@@ -41,6 +41,7 @@ const TrainerForm = () => {
 
   const userProfile = useSelector((state) => state.user);
   // console.log("🚀 ~ userProfile:", userProfile);
+  const accessToken = userProfile?.user?.accessToken;
 
   //   file upload section
   const [files, setFiles] = useState([]);
@@ -84,7 +85,7 @@ const TrainerForm = () => {
     // return;
     if (Object.keys(errors).length === 0) {
       const trainerDataObj = {
-        user: userProfile?.user?.signupUser?.id,
+        user: userProfile?.user?.user?.id,
         age: data.age,
         height: data.height,
         weight: data.weight,
@@ -92,16 +93,13 @@ const TrainerForm = () => {
         // status: "pending",
         images: files,
       };
-      let addTrainerResponse = await addTrainer(trainerDataObj);
-      // console.log("trainer submission ready data ===>", addTrainerResponse);
+      let addTrainerResponse = await addTrainer({ data: trainerDataObj, accessToken });
+      console.log("trainer submission ready data ===>", addTrainerResponse);
       if (addTrainerResponse?.data?.statusCode === 200) {
         router.push("/dashboard/health-summary");
       }
-      else if (addTrainerResponse?.error?.status === 409) {
-        alert(addTrainerResponse?.error?.data?.message);
-      }
       else {
-        alert("Something went wrong, please try again!");
+        alert(addTrainerResponse?.error?.data?.message);
       }
     }
   };
@@ -124,7 +122,7 @@ const TrainerForm = () => {
               id="name"
               name="name"
               label="name"
-              placeholder={userProfile?.user?.signupUser?.name}
+              placeholder={userProfile?.user?.user?.name}
               isDisabled
               variant="faded"
               size="xl"
@@ -141,7 +139,7 @@ const TrainerForm = () => {
               id="email"
               name="email"
               label="email"
-              placeholder={userProfile?.user?.signupUser?.email}
+              placeholder={userProfile?.user?.user?.email}
               isDisabled
               variant="faded"
               size="xl"

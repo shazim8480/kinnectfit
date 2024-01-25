@@ -31,7 +31,7 @@ export default function KFNavbar() {
   //   userProfile
   // );
 
-  let userName = userProfile?.user?.signupUser?.name;
+  let userName = userProfile?.user?.user?.name;
   let isAuthenticated = userProfile?.isAuthenticated;
   // console.log("🚀 ~ file: Navbar.jsx:21 ~ KFNavbar ~ userName:", userName);
 

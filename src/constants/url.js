@@ -62,6 +62,7 @@ export const GET_REVIEWS_BY_APP = "/review/app-review";
 
 
 /* *************** trainer url ****************** */
+export const CREATE_TRAINER_REQUEST = "/trainer/trainer-request";
 export const CREATE_TRAINER = "/trainer/create-trainer";
 export const GET_ALL_TRAINERS = "/trainer/trainers";
 export const GET_A_SINGLE_TRAINER = "/trainer";

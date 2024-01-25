@@ -1,4 +1,4 @@
-import { CREATE_TRAINER_URL, GET_ALL_TRAINERS_URL } from "@/constants/url";
+import { CREATE_TRAINER_REQUEST, CREATE_TRAINER_URL, GET_ALL_TRAINERS_URL } from "@/constants/url";
 import { api } from "@/redux/api/apiSlice";
 
 const trainerApi = api.injectEndpoints({
@@ -6,6 +6,17 @@ const trainerApi = api.injectEndpoints({
     getAllTrainers: builder.query({
       query: () => `${GET_ALL_TRAINERS_URL}`,
       providesTags: ["trainers"],
+    }),
+    trainerRequest: builder.mutation({
+      query: ({ data, accessToken }) => ({
+        url: `${CREATE_TRAINER_REQUEST}`,
+        method: "POST",
+        body: data,
+        headers: {
+          Authorization: `${accessToken}`,
+        },
+      }),
+      invalidatesTags: ["trainers"],
     }),
     addTrainer: builder.mutation({
       query: ({ data, accessToken }) => ({
@@ -22,4 +33,4 @@ const trainerApi = api.injectEndpoints({
   overrideExisting: true,
 });
 
-export const { useAddTrainerMutation, useGetAllTrainersQuery } = trainerApi;
+export const { useAddTrainerMutation, useGetAllTrainersQuery, useTrainerRequestMutation } = trainerApi;

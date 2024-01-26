@@ -2,10 +2,9 @@ import {
   CREATE_MEAL,
   CREATE_MEAL_PLAN,
   GET_ALL_MEALS,
-  GET_ALL_MEAL_PLANS,
-  GET_GROUPED_MEALS_BY_MEAL_PLAN_ID,
-  GET_MEAL_BY_MEAL_PLAN,
-  GET_SINGLE_MEAL_PLAN,
+  GET_ALL_MEALS_BY_MEAL_PLAN,
+  GET_ALL_MEAL_PLANS, GET_MEAL_BY_MEAL_PLAN,
+  GET_SINGLE_MEAL_PLAN
 } from "@/constants/url";
 import { api } from "@/redux/api/apiSlice";
 
@@ -49,7 +48,7 @@ const mealApi = api.injectEndpoints({
       provideTags: ["meals"],
     }),
     getGroupedMealsByMealPlanID: builder.query({
-      query: (id) => `${GET_GROUPED_MEALS_BY_MEAL_PLAN_ID}/${id}`,
+      query: (id) => `${GET_ALL_MEALS_BY_MEAL_PLAN}/${id}`,
       provideTags: ["meals"],
     }),
   }),

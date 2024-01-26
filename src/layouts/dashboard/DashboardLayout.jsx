@@ -1,8 +1,10 @@
 import Header from "@/components/Dashboard/Header";
 import Sidebar from "@/components/Dashboard/Sidebar/Sidebar";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Montserrat } from "next/font/google";
-
+import { accessTokenFromLS, getItemFromLocalStorage } from "@/lib/utils";
+import { useRouter } from "next/router";
+import { Spinner } from "@nextui-org/react";
 const montserrat = Montserrat({
   weight: ["400", "500", "700", "800", "900"],
   subsets: ["latin"],
@@ -10,6 +12,26 @@ const montserrat = Montserrat({
 
 const DashboardLayout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const accessToken = getItemFromLocalStorage('accessToken');
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      if (!accessToken) {
+        await router.push("/sign-in");
+      }
+      setLoading(false);
+    };
+
+    checkAuthentication();
+  }, [accessToken]);
+
+  if (loading) {
+    return <div className="min-h-[80vh] flex justify-center items-center">
+      <Spinner />
+    </div>;
+  }
+
 
   return (
     <div className={`bg-[#f1f5f9] ${montserrat.className}`}>

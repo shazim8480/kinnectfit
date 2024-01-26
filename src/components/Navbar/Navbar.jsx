@@ -19,12 +19,11 @@ import { ChevronDown } from "@/assets/icons/ChevronDown";
 import { useRouter } from "next/router";
 
 import Link from "next/link";
-import { accessTokenFromLS, userDataFromLS } from "@/lib/utils";
+import { accessTokenFromLS, getItemFromLocalStorage } from "@/lib/utils";
 
 export default function KFNavbar() {
   const [accessToken, setAccessToken] = useState(accessTokenFromLS);
   useEffect(() => {
-    // Fetch updated accessToken from your source (e.g., local storage or API)
     const updatedAccessToken = localStorage.getItem('accessToken'); // Replace with your actual logic
     setAccessToken(updatedAccessToken);
   }, [accessToken]);
@@ -32,8 +31,8 @@ export default function KFNavbar() {
   const dispatch = useDispatch();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-  let userName = userDataFromLS?.name;
-  console.log("userName", userName);
+  const userData = getItemFromLocalStorage('userData');
+  let userName = userData?.name;
   // handle logout
   const handleLogout = () => {
     localStorage.removeItem('userData');

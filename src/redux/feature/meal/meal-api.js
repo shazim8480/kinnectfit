@@ -19,10 +19,14 @@ const mealApi = api.injectEndpoints({
       provideTags: ["mealPlans"],
     }),
     createMealPlan: builder.mutation({
-      query: (data) => ({
+      query: ({ data, accessToken }) => ({
         url: `${CREATE_MEAL_PLAN}`,
         method: "POST",
         body: data,
+        headers: {
+          Authorization: `${accessToken}`,
+          'Content-Type': 'application/json',
+        },
       }),
       invalidatesTags: ["mealPlans"],
     }),

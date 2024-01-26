@@ -13,6 +13,8 @@ export const USER_SIGN_UP = "/user/sign-up";
 export const GET_ALL_USER = "/user/all-users";
 // Get a single user
 export const GET_A_USER = "/user";
+// Get trainer by a single user
+export const GET_TRAINER_BY_USER = "/user/find-trainer";
 
 /* *************** Workout url ****************** */
 

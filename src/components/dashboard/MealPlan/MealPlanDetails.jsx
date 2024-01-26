@@ -2,21 +2,26 @@ import { useState } from "react";
 import { KFButton } from "@/components/UI/KFButton";
 import { KFInput } from "@/components/UI/KFInput";
 import { useCreateMealPlanMutation } from "@/redux/feature/meal/meal-api";
-import { useUpdateUserMutation } from "@/redux/feature/user/user-api";
+import { useGetTrainerByUserQuery, useUpdateUserMutation } from "@/redux/feature/user/user-api";
 import { PhotoIcon } from "@heroicons/react/24/outline";
-import { Select, SelectItem, Textarea } from "@nextui-org/react";
+import { Spinner, Textarea } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 
 import { CldUploadButton, CldImage } from "next-cloudinary";
+import { getItemFromLocalStorage } from "@/lib/utils";
 
 const MealPlanDetails = () => {
-  const { user } = useSelector((state) => state?.user);
+  const { _id } = getItemFromLocalStorage('userData');
+  const accessToken = getItemFromLocalStorage('accessToken');
+  // console.log("Userforls",_id)
   //   file upload section
   const [mealPlanFiles, setMealPlanFiles] = useState([]);
   // console.log("🚀 MealPlanDetails ~ mealPlanFiles:", mealPlanFiles);
   // console.log(user?.id);
   const [createMealPlan] = useCreateMealPlanMutation();
+  const { data: trainerData, isLoading } = useGetTrainerByUserQuery(_id);
+  // console.log("UserId Trainer data", trainerData);
   const [updateUser] = useUpdateUserMutation();
   const {
     register,
@@ -32,40 +37,28 @@ const MealPlanDetails = () => {
   };
 
   const onSubmit = async (data) => {
+    const mealPlanData = { data: { ...data, mealPlan_cover: mealPlanFiles, trainer: trainerData?.data?._id, }, accessToken };
+    // return;
+    let createMealPlanResponse = await createMealPlan(mealPlanData);
+    console.log("createMealPlanResponse", createMealPlanResponse);
 
-    console.log("data of meal plan", )
-
-    let createMealPlanResponse = await createMealPlan({
-      ...data,
-      mealPlan_cover_img: mealPlanFiles[0],
-      trainer_id: user?.id,
-    });
-    // console.log("createMealPlanResponse", createMealPlanResponse);
-    const updateUserInfo = {
-      data: {
-        mealPlan_id: data,
-      },
-      userId: user?.id,
-    };
-    if (createMealPlanResponse?.data?.status === 201) {
-      const result = await updateUser(updateUserInfo);
+    if (createMealPlanResponse?.data?.statusCode === 200) {
       // console.log(result);
       reset();
       setMealPlanFiles([]);
     } else if (createMealPlanResponse?.error) {
+      alert(createMealPlanResponse?.error?.data?.errorMessages[0].message);
       console.log("err msg", createMealPlanResponse?.error);
     }
   };
-  const categories = [
-    {
-      label: "Dietary Goals",
-      value: "Dietary Goals",
-    },
-    {
-      label: "Dietary Restrictions",
-      value: "Dietary Restrictions",
-    },
-  ];
+
+  if (isLoading) {
+    return (
+      <div className="min-h-[80vh] flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
+  }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="max-w-xs mx-auto md:max-w-5xl">

@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { CldUploadButton, CldImage } from "next-cloudinary";
 import { getItemFromLocalStorage } from "@/lib/utils";
 
-const MealPlanDetails = () => {
+const MealPlanDetails = ({ refetch }) => {
   const { _id } = getItemFromLocalStorage('userData');
   const accessToken = getItemFromLocalStorage('accessToken');
   // console.log("Userforls",_id)
@@ -40,10 +40,11 @@ const MealPlanDetails = () => {
     const mealPlanData = { data: { ...data, mealPlan_cover: mealPlanFiles, trainer: trainerData?.data?._id, }, accessToken };
     // return;
     let createMealPlanResponse = await createMealPlan(mealPlanData);
-    console.log("createMealPlanResponse", createMealPlanResponse);
+    // console.log("createMealPlanResponse", createMealPlanResponse);
 
     if (createMealPlanResponse?.data?.statusCode === 200) {
       // console.log(result);
+      refetch();
       reset();
       setMealPlanFiles([]);
     } else if (createMealPlanResponse?.error) {

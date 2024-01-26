@@ -2,7 +2,7 @@ import { KFButton } from "@/components/UI/KFButton";
 import MealCategories from "@/components/dashboard/MealPlan/MealCategories";
 import MealPlanDetails from "@/components/dashboard/MealPlan/MealPlanDetails";
 import DashboardLayout from "@/layouts/dashboard/DashboardLayout";
-import { useCreateMealPlanMutation } from "@/redux/feature/meal/meal-api";
+import { useCreateMealPlanMutation, useGetAllMealPlansQuery } from "@/redux/feature/meal/meal-api";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
@@ -17,11 +17,12 @@ const CreateMealPlanPage = () => {
     reset,
     formState: { errors },
   } = useForm();
+  const { data: allMealPlansData, isLoading: mealPlanLoading, refetch } = useGetAllMealPlansQuery();
 
   return (
     <div>
-      <MealPlanDetails />
-      {/* <MealCategories /> */}
+      <MealPlanDetails refetch={refetch} />
+      <MealCategories allMealPlansData={allMealPlansData} mealPlanLoading={mealPlanLoading} />
     </div>
   );
 };

@@ -36,10 +36,14 @@ const mealApi = api.injectEndpoints({
       provideTags: ["meals"],
     }),
     createMeal: builder.mutation({
-      query: (data) => ({
+      query: ({ data, accessToken }) => ({
         url: `${CREATE_MEAL}`,
         method: "POST",
         body: data,
+        headers: {
+          Authorization: `${accessToken}`,
+          'Content-Type': 'application/json',
+        },
       }),
       invalidatesTags: ["meals"],
     }),

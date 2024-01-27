@@ -6,26 +6,29 @@ import { KFButton } from "@/components/UI/KFButton";
 import { useGetGroupedMealsByMealPlanIDQuery, useGetMealByUserIDQuery, useGetSingleMealPlanQuery, useSelectMealMutation } from "@/redux/feature/meal/meal-api";
 import { Spinner } from "@nextui-org/react";
 import { getItemFromLocalStorage } from "@/lib/utils";
+import MealComponent from "@/components/dashboard/MealPlan/MealComponent";
 
 function MealDetailsPage() {
 
   const [selectedMeals, setSelectedMeals] = useState([]);
   const [selectedMealStates, setSelectedMealStates] = useState({});
 
+  // get token and userData from localStorage
   const accessToken = getItemFromLocalStorage('accessToken');
   const userData = getItemFromLocalStorage('userData');
 
   const router = useRouter();
   const { mealPlanId } = router.query;
 
+  // query & mutations
   const [selectMeal] = useSelectMealMutation();
   const { data, isLoading } = useGetSingleMealPlanQuery(mealPlanId);
   const { data: groupMealsData, isLoading: groupMealsLoading } = useGetGroupedMealsByMealPlanIDQuery(mealPlanId);
   const { data: userSelectedMealsData, refetch } = useGetMealByUserIDQuery(userData?._id);
-  console.log("userSelectedMealsData", userSelectedMealsData);
 
   const isSubmitDisabled = selectedMeals.length === 0;
 
+  // logic for selecting meal
   let alreadyMealSelected;
   const handleSelectMeal = (mealId) => {
     alreadyMealSelected = userSelectedMealsData?.data[0]?.selected_meals.some(item => item._id === mealId);
@@ -48,7 +51,7 @@ function MealDetailsPage() {
     setSelectedMealStates(updatedSelectedMealStates);
   };
 
-
+  // submit meals after selecting
   const handleSubmitMeals = async () => {
     const selectedMealsData = {
       data: {
@@ -74,8 +77,7 @@ function MealDetailsPage() {
     );
   }
 
-
-  const { mealPlan_cover, mealPlan_name, mealPlan_description, mealPlan_category } = data.data;
+  const { mealPlan_cover, mealPlan_name, mealPlan_description } = data.data;
 
   return (
     <>
@@ -110,238 +112,88 @@ function MealDetailsPage() {
             <div className="mb-4 text-base text-neutral-600 bg-green-60">
 
               {/* Breakfast */}
-              {
-                groupMealsData?.data?.Breakfast && <>
-                  <div className="py-6 text-base text-black">
-                    <div>
-                      <p className="flex justify-between mb-4 text-xl font-semibold">Breakfast</p>
-                      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 ">
-                        {groupMealsData?.data?.Breakfast?.map((meal) => (
-                          <div
-                            key={meal?._id}
-                            onClick={() => handleSelectMeal(meal?._id)}
-                            className={`flex selectable justify-between items-center rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] ${selectedMealStates[meal?._id] ? "border-2 border-blue-800 rounded-sm" : ""
-                              } ${userSelectedMealsData?.data[0]?.selected_meals.some(item => item._id === meal?._id) ? "opacity-[0.6] border-2 rounded-sm border-blue-800" : ""
-                              }`}
-                          >
-
-                            <div className="flex flex-col max-w-[14rem] md:max-w-lg pl-0 md:pl-8 ">
-                              <div className="flex justify-between">
-                                <span className="text-base font-medium">
-                                  {meal?.meal_name}
-                                </span>
-                              </div>
-                              <div className="flex justify-between ">
-                                <div>
-                                  <p className="leading-normal text-neutral-800">
-                                    <span>Protein:</span>{" "}
-                                    {meal?.protein}
-                                  </p>
-                                  <p className="leading-normal text-neutral-800">
-                                    <span>Carbs:</span> {meal?.carbs}
-                                  </p>
-                                  <p className="leading-normal text-neutral-800">
-                                    <span>Fat:</span> {meal?.fat}
-                                  </p>
-                                </div>
-                              </div>
-                              <span className="leading-normal text-neutral-800">
-                                Prepare time: {meal?.prep_time} minutes
-                              </span>
-                            </div>
-
-                            <div className="relative w-40 h-40">
-                              <Image
-                                src={meal?.meal_cover[0]}
-                                alt="meal-img"
-                                layout="fill"
-                                className="absolute object-cover"
-                              />
-                            </div>
-                          </div>
-                          // </div>
-                        ))}
-                      </div>
+              {groupMealsData?.data?.Breakfast && (
+                <div className="py-6 text-base text-black">
+                  <div>
+                    <p className="flex justify-between mb-4 text-xl font-semibold">Breakfast</p>
+                    <div className="grid grid-cols-1 gap-8 md:grid-cols-2 ">
+                      {groupMealsData?.data?.Breakfast?.map((meal) => (
+                        <MealComponent
+                          key={meal?._id}
+                          meal={meal}
+                          selected={selectedMealStates[meal?._id]}
+                          onClick={handleSelectMeal}
+                          alreadySelected={userSelectedMealsData?.data[0]?.selected_meals.some(item => item._id === meal?._id)}
+                        />
+                      ))}
                     </div>
                   </div>
-                </>
-              }
+                </div>
+              )}
               {/* Breakfast ends*/}
 
               {/* Lunch */}
-              {
-                groupMealsData?.data?.Lunch && <>
-                  <div className="py-6 text-base text-black">
-                    <div>
-                      <p className="flex justify-between mb-4 text-xl font-semibold">Lunch</p>
-                      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 ">
-                        {groupMealsData?.data?.Lunch?.map((meal) => (
-                          <div
-                            key={meal?._id}
-                            onClick={() => handleSelectMeal(meal?._id)}
-                            className={`flex selectable justify-between items-center rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] ${selectedMealStates[meal?._id] ? "border-2 border-blue-800 rounded-sm" : ""
-                              } ${userSelectedMealsData?.data[0]?.selected_meals.some(item => item._id === meal?._id) ? "opacity-[0.6] border-2 rounded-sm border-blue-800" : ""
-                              }`}
-                          >
-
-                            <div className="flex flex-col max-w-[14rem] md:max-w-lg pl-0 md:pl-8 ">
-                              <div className="flex justify-between">
-                                <span className="text-base font-medium">
-                                  {meal?.meal_name}
-                                </span>
-                              </div>
-                              <div className="flex justify-between ">
-                                <div>
-                                  <p className="leading-normal text-neutral-800">
-                                    <span>Protein:</span>{" "}
-                                    {meal?.protein}
-                                  </p>
-                                  <p className="leading-normal text-neutral-800">
-                                    <span>Carbs:</span> {meal?.carbs}
-                                  </p>
-                                  <p className="leading-normal text-neutral-800">
-                                    <span>Fat:</span> {meal?.fat}
-                                  </p>
-                                </div>
-                              </div>
-                              <span className="leading-normal text-neutral-800">
-                                Prepare time: {meal?.prep_time} minutes
-                              </span>
-                            </div>
-
-                            <div className="relative w-40 h-40">
-                              <Image
-                                src={meal?.meal_cover[0]}
-                                alt="meal-img"
-                                layout="fill"
-                                className="absolute object-cover"
-                              />
-                            </div>
-                          </div>
-                          // </div>
-                        ))}
-                      </div>
+              {groupMealsData?.data?.Lunch && (
+                <div className="py-6 text-base text-black">
+                  <div>
+                    <p className="flex justify-between mb-4 text-xl font-semibold">Lunch</p>
+                    <div className="grid grid-cols-1 gap-8 md:grid-cols-2 ">
+                      {groupMealsData?.data?.Lunch?.map((meal) => (
+                        <MealComponent
+                          key={meal?._id}
+                          meal={meal}
+                          selected={selectedMealStates[meal?._id]}
+                          onClick={handleSelectMeal}
+                          alreadySelected={userSelectedMealsData?.data[0]?.selected_meals.some(item => item._id === meal?._id)}
+                        />
+                      ))}
                     </div>
                   </div>
-                </>
-              }
-
+                </div>
+              )}
+              {/* Lunch ends */}
 
               {/* Dinner */}
-              {
-                groupMealsData?.data?.Dinner && <>
-                  <div className="py-6 text-base text-black">
-                    <div>
-                      {<p className="flex justify-between mb-4 text-xl font-semibold">Dinner</p>}
-                      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 ">
-                        {groupMealsData?.data?.Dinner?.map((meal) => (
-                          <div
-                            key={meal?._id}
-                            onClick={() => handleSelectMeal(meal?._id)}
-                            className={`flex selectable justify-between items-center rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] ${selectedMealStates[meal?._id] ? "border-2 border-blue-800 rounded-sm" : ""
-                              } ${userSelectedMealsData?.data[0]?.selected_meals.some(item => item._id === meal?._id) ? "opacity-[0.6] border-2 rounded-sm border-blue-800" : ""
-                              }`}
-                          >
-
-                            <div className="flex flex-col max-w-[14rem] md:max-w-lg pl-0 md:pl-8 ">
-                              <div className="flex justify-between">
-                                <span className="text-base font-medium">
-                                  {meal?.meal_name}
-                                </span>
-                              </div>
-                              <div className="flex justify-between ">
-                                <div>
-                                  <p className="leading-normal text-neutral-800">
-                                    <span>Protein:</span>{" "}
-                                    {meal?.protein}
-                                  </p>
-                                  <p className="leading-normal text-neutral-800">
-                                    <span>Carbs:</span> {meal?.carbs}
-                                  </p>
-                                  <p className="leading-normal text-neutral-800">
-                                    <span>Fat:</span> {meal?.fat}
-                                  </p>
-                                </div>
-                              </div>
-                              <span className="leading-normal text-neutral-800">
-                                Prepare time: {meal?.prep_time} minutes
-                              </span>
-                            </div>
-
-                            <div className="relative w-40 h-40">
-                              <Image
-                                src={meal?.meal_cover[0]}
-                                alt="meal-cover"
-                                layout="fill"
-                                className="absolute object-cover"
-                              />
-                            </div>
-                          </div>
-                          // </div>
-                        ))}
-                      </div>
+              {groupMealsData?.data?.Dinner && (
+                <div className="py-6 text-base text-black">
+                  <div>
+                    <p className="flex justify-between mb-4 text-xl font-semibold">Dinner</p>
+                    <div className="grid grid-cols-1 gap-8 md:grid-cols-2 ">
+                      {groupMealsData?.data?.Dinner?.map((meal) => (
+                        <MealComponent
+                          key={meal?._id}
+                          meal={meal}
+                          selected={selectedMealStates[meal?._id]}
+                          onClick={handleSelectMeal}
+                          alreadySelected={userSelectedMealsData?.data[0]?.selected_meals.some(item => item._id === meal?._id)}
+                        />
+                      ))}
                     </div>
                   </div>
-                </>
-              }
+                </div>
+              )}
+              {/* Dinner ends */}
 
               {/* Snacks */}
-              {
-                groupMealsData?.data?.Snacks && <>
-                  <div className="py-6 text-base text-black">
-                    <div>
-                      <p className="flex justify-between mb-4 text-xl font-semibold">Snacks</p>
-                      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 ">
-                        {groupMealsData?.data?.Snacks?.map((meal) => (
-                          <div
-                            key={meal?._id}
-                            onClick={() => handleSelectMeal(meal?._id)}
-                            className={`flex selectable justify-between items-center rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] ${selectedMealStates[meal?._id] ? "border-2 border-blue-800 rounded-sm" : ""
-                              } ${userSelectedMealsData?.data[0]?.selected_meals.some(item => item._id === meal?._id) ? "opacity-[0.6] border-2 rounded-sm border-blue-800" : ""
-                              }`}
-                          >
-
-                            <div className="flex flex-col max-w-[14rem] md:max-w-lg pl-0 md:pl-8 ">
-                              <div className="flex justify-between">
-                                <span className="text-base font-medium">
-                                  {meal?.meal_name}
-                                </span>
-                              </div>
-                              <div className="flex justify-between ">
-                                <div>
-                                  <p className="leading-normal text-neutral-800">
-                                    <span>Protein:</span>{" "}
-                                    {meal?.protein}
-                                  </p>
-                                  <p className="leading-normal text-neutral-800">
-                                    <span>Carbs:</span> {meal?.carbs}
-                                  </p>
-                                  <p className="leading-normal text-neutral-800">
-                                    <span>Fat:</span> {meal?.fat}
-                                  </p>
-                                </div>
-                              </div>
-                              <span className="leading-normal text-neutral-800">
-                                Prepare time: {meal?.prep_time} minutes
-                              </span>
-                            </div>
-
-                            <div className="relative w-40 h-40">
-                              <Image
-                                src={meal?.meal_cover[0]}
-                                alt="meal-img"
-                                layout="fill"
-                                className="absolute object-cover"
-                              />
-                            </div>
-                          </div>
-                          // </div>
-                        ))}
-                      </div>
+              {groupMealsData?.data?.Snacks && (
+                <div className="py-6 text-base text-black">
+                  <div>
+                    <p className="flex justify-between mb-4 text-xl font-semibold">Snacks</p>
+                    <div className="grid grid-cols-1 gap-8 md:grid-cols-2 ">
+                      {groupMealsData?.data?.Snacks?.map((meal) => (
+                        <MealComponent
+                          key={meal?._id}
+                          meal={meal}
+                          selected={selectedMealStates[meal?._id]}
+                          onClick={handleSelectMeal}
+                          alreadySelected={userSelectedMealsData?.data[0]?.selected_meals.some(item => item._id === meal?._id)}
+                        />
+                      ))}
                     </div>
                   </div>
-                </>
-              }
+                </div>
+              )}
+              {/* Snacks ends */}
             </div>
           </div>
         </div >

@@ -3,89 +3,68 @@ import Image from "next/image";
 import MainLayout from "@/layouts/mainLayout";
 import { useState } from "react";
 import { KFButton } from "@/components/UI/KFButton";
-import { useGetGroupedMealsByMealPlanIDQuery, useGetMealByMealPlanIDQuery, useGetSingleMealPlanQuery } from "@/redux/feature/meal/meal-api";
+import { useGetGroupedMealsByMealPlanIDQuery, useGetMealByUserIDQuery, useGetSingleMealPlanQuery, useSelectMealMutation } from "@/redux/feature/meal/meal-api";
 import { Spinner } from "@nextui-org/react";
-import { useUpdateUserMutation } from "@/redux/feature/user/user-api";
-import { useGetReviewsByMealPlanIdQuery } from "@/redux/feature/review/review-api";
-import ReviewStar from "@/components/ShowReview/ReviewStar";
+import { getItemFromLocalStorage } from "@/lib/utils";
 
 function MealDetailsPage() {
+
   const [selectedMeals, setSelectedMeals] = useState([]);
   const [selectedMealStates, setSelectedMealStates] = useState({});
-  // console.log(selectedMeals);
 
-  // console.log("SelectedMeals", selectedMeals);
-  const [isBorderd, setIsBordered] = useState(false);
-
-  // const [updateUser] = useUpdateUserMutation();
-
-
-
-
-  const handleSubmitMeals = async (data) => {
-    // console.log(data);
-    // return;
-    // const mealData = { ...data, ingredients: items };
-    // console.log(object)
-
-    // const updateUserInfo = {
-    //   data: {
-    //     selected_meals: selectedMeals
-    //   },
-    //   userId: user?.id
-    // };
-    // console.log("mealplan-response", createMealPlanResponse?.data?.status);
-    // console.log("updateuserinfo", updateUserInfo);
-    // return;
-    // return;
-    // const result = await updateUser(updateUserInfo);
-    // if (result?.data?.status === 200) {
-    //   router.push("/dashboard");
-    // }
-    // console.log(result);
-
-  };
-
-
-  const handleMealSelect = (categoryName, mealId) => {
-    const selectedMeal = groupedMealsByMealPlan?.categorizedMeals?.[categoryName]?.find(
-      (meal) => meal.meal_id === mealId
-    );
-
-    if (selectedMeal) {
-      const isMealSelected = selectedMealStates[mealId];
-
-      if (isMealSelected) {
-        // If selected, remove it from the list
-        const updatedSelectedStates = { ...selectedMealStates };
-        delete updatedSelectedStates[mealId];
-        setSelectedMealStates(updatedSelectedStates);
-
-        // Remove the meal from selectedMeals
-        const updatedSelectedMeals = selectedMeals.filter(
-          (meal) => meal.categoryName !== categoryName || meal.meal_id !== mealId
-        );
-        setSelectedMeals(updatedSelectedMeals);
-      } else {
-        // If not selected, add it to the list
-        setSelectedMealStates({ ...selectedMealStates, [mealId]: true });
-        setSelectedMeals([...selectedMeals, { categoryName, meal_id: mealId }]);
-      }
-    }
-  };
-
+  const accessToken = getItemFromLocalStorage('accessToken');
+  const userData = getItemFromLocalStorage('userData');
 
   const router = useRouter();
   const { mealPlanId } = router.query;
 
+  const [selectMeal] = useSelectMealMutation();
   const { data, isLoading } = useGetSingleMealPlanQuery(mealPlanId);
-
-  // const { data: mealDataByMealPlan, isLoading: mealLoading } = useGetMealByMealPlanIDQuery(mealPlanId);
   const { data: groupMealsData, isLoading: groupMealsLoading } = useGetGroupedMealsByMealPlanIDQuery(mealPlanId);
-  // const { data: mealPlanReviewData } = useGetReviewsByMealPlanIdQuery(mealPlanId);
-  console.log("🔥 meal plan group meals data", groupMealsData);
+  const { data: userSelectedMealsData, refetch } = useGetMealByUserIDQuery(userData?._id);
+  console.log("userSelectedMealsData", userSelectedMealsData);
+
+  const isSubmitDisabled = selectedMeals.length === 0;
+
+  let alreadyMealSelected;
+  const handleSelectMeal = (mealId) => {
+    alreadyMealSelected = userSelectedMealsData?.data[0]?.selected_meals.some(item => item._id === mealId);
+    if (alreadyMealSelected) {
+      return;
+    }
+    const updatedSelectedMeals = [...selectedMeals];
+    if (updatedSelectedMeals.includes(mealId)) {
+      const index = updatedSelectedMeals.indexOf(mealId);
+      updatedSelectedMeals.splice(index, 1);
+    } else {
+      updatedSelectedMeals.push(mealId);
+    }
+
+    setSelectedMeals(updatedSelectedMeals);
+
+    // Update selected meal states
+    const updatedSelectedMealStates = { ...selectedMealStates };
+    updatedSelectedMealStates[mealId] = !updatedSelectedMealStates[mealId];
+    setSelectedMealStates(updatedSelectedMealStates);
+  };
 
 
+  const handleSubmitMeals = async () => {
+    const selectedMealsData = {
+      data: {
+        user: userData?._id,
+        selected_meals: selectedMeals
+      }, accessToken
+    };
+    const selectedMealsResponse = await selectMeal(selectedMealsData);
+    // console.log("selectedMealsResponse", selectedMealsResponse);
+    if (selectedMealsResponse?.data?.statusCode === 200) {
+      if (!isSubmitDisabled) {
+        router.push('/dashboard');
+        refetch();
+      }
+    }
+  };
 
   if (isLoading || groupMealsLoading || !data) {
     return (
@@ -95,13 +74,9 @@ function MealDetailsPage() {
     );
   }
 
-  // return
-  // const { mealPlan_name, mealPlan_description, mealPlan_id, trainer_id, mealPlan_cover_img, mealPlan_category } = data?.mealPlan;
-
-  const isSubmitDisabled = selectedMeals.length === 0;
-
 
   const { mealPlan_cover, mealPlan_name, mealPlan_description, mealPlan_category } = data.data;
+
   return (
     <>
 
@@ -144,11 +119,10 @@ function MealDetailsPage() {
                         {groupMealsData?.data?.Breakfast?.map((meal) => (
                           <div
                             key={meal?._id}
-                            className={`flex selectable justify-between items-center rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] ${selectedMealStates[meal?._id] ? "border-2 border-blue-800" : ""
+                            onClick={() => handleSelectMeal(meal?._id)}
+                            className={`flex selectable justify-between items-center rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] ${selectedMealStates[meal?._id] ? "border-2 border-blue-800 rounded-sm" : ""
+                              } ${userSelectedMealsData?.data[0]?.selected_meals.some(item => item._id === meal?._id) ? "opacity-[0.6] border-2 rounded-sm border-blue-800" : ""
                               }`}
-                            onClick={() =>
-                              handleMealSelect("breakfast", meal?._id)
-                            }
                           >
 
                             <div className="flex flex-col max-w-[14rem] md:max-w-lg pl-0 md:pl-8 ">
@@ -204,11 +178,10 @@ function MealDetailsPage() {
                         {groupMealsData?.data?.Lunch?.map((meal) => (
                           <div
                             key={meal?._id}
-                            className={`flex selectable justify-between items-center rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] ${selectedMealStates[meal?._id] ? "border-2 border-blue-800" : ""
+                            onClick={() => handleSelectMeal(meal?._id)}
+                            className={`flex selectable justify-between items-center rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] ${selectedMealStates[meal?._id] ? "border-2 border-blue-800 rounded-sm" : ""
+                              } ${userSelectedMealsData?.data[0]?.selected_meals.some(item => item._id === meal?._id) ? "opacity-[0.6] border-2 rounded-sm border-blue-800" : ""
                               }`}
-                            onClick={() =>
-                              handleMealSelect("lunch", meal?._id)
-                            }
                           >
 
                             <div className="flex flex-col max-w-[14rem] md:max-w-lg pl-0 md:pl-8 ">
@@ -264,11 +237,10 @@ function MealDetailsPage() {
                         {groupMealsData?.data?.Dinner?.map((meal) => (
                           <div
                             key={meal?._id}
-                            className={`flex selectable justify-between items-center rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] ${selectedMealStates[meal?._id] ? "border-2 border-blue-800" : ""
+                            onClick={() => handleSelectMeal(meal?._id)}
+                            className={`flex selectable justify-between items-center rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] ${selectedMealStates[meal?._id] ? "border-2 border-blue-800 rounded-sm" : ""
+                              } ${userSelectedMealsData?.data[0]?.selected_meals.some(item => item._id === meal?._id) ? "opacity-[0.6] border-2 rounded-sm border-blue-800" : ""
                               }`}
-                            onClick={() =>
-                              handleMealSelect("dinner", meal?._id)
-                            }
                           >
 
                             <div className="flex flex-col max-w-[14rem] md:max-w-lg pl-0 md:pl-8 ">
@@ -323,11 +295,10 @@ function MealDetailsPage() {
                         {groupMealsData?.data?.Snacks?.map((meal) => (
                           <div
                             key={meal?._id}
-                            className={`flex selectable justify-between items-center rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] ${selectedMealStates[meal?._id] ? "border-2 border-blue-800" : ""
+                            onClick={() => handleSelectMeal(meal?._id)}
+                            className={`flex selectable justify-between items-center rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] ${selectedMealStates[meal?._id] ? "border-2 border-blue-800 rounded-sm" : ""
+                              } ${userSelectedMealsData?.data[0]?.selected_meals.some(item => item._id === meal?._id) ? "opacity-[0.6] border-2 rounded-sm border-blue-800" : ""
                               }`}
-                            onClick={() =>
-                              handleMealSelect("snacks", meal?._id)
-                            }
                           >
 
                             <div className="flex flex-col max-w-[14rem] md:max-w-lg pl-0 md:pl-8 ">
@@ -379,10 +350,12 @@ function MealDetailsPage() {
         {/* submit     */}
         <div className="text-center" >
           <KFButton
-            type="submit"
+            // type="submit"
             onClick={handleSubmitMeals}
             size="lg"
             color="secondary"
+            className={`${isSubmitDisabled && "opacity-[0.6]"}`}
+          // disabled={isSubmitDisabled}
           >
             Confirm Meal Submission
           </KFButton>

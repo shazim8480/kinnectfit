@@ -4,7 +4,9 @@ import {
   GET_ALL_MEALS,
   GET_ALL_MEALS_BY_MEAL_PLAN,
   GET_ALL_MEAL_PLANS, GET_MEAL_BY_MEAL_PLAN,
-  GET_SINGLE_MEAL_PLAN
+  GET_SELECTED_MEALS_BY_USER_ID,
+  GET_SINGLE_MEAL_PLAN,
+  SELECT_MEAL
 } from "@/constants/url";
 import { api } from "@/redux/api/apiSlice";
 
@@ -59,6 +61,22 @@ const mealApi = api.injectEndpoints({
       query: (id) => `${GET_ALL_MEALS_BY_MEAL_PLAN}/${id}`,
       provideTags: ["meals"],
     }),
+    selectMeal: builder.mutation({
+      query: ({ data, accessToken }) => ({
+        url: `${SELECT_MEAL}`,
+        method: "POST",
+        body: data,
+        headers: {
+          Authorization: `${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+      invalidatesTags: ["meals"],
+    }),
+    getMealByUserID: builder.query({
+      query: (id) => `${GET_SELECTED_MEALS_BY_USER_ID}/${id}`,
+      provideTags: ["meals"],
+    }),
   }),
   overrideExisting: true,
 });
@@ -70,5 +88,7 @@ export const {
   useCreateMealMutation,
   useGetMealByMealPlanIDQuery,
   useGetGroupedMealsByMealPlanIDQuery,
-  useGetFeaturedMealPlansQuery
+  useGetFeaturedMealPlansQuery,
+  useSelectMealMutation,
+  useGetMealByUserIDQuery
 } = mealApi;

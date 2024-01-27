@@ -74,7 +74,7 @@ export const GET_A_SINGLE_TRAINER = "/trainer";
 export const SELECT_MEAL = "/select-meal/select";
 export const GET_ALL_SELECTED_MEALS = "/select-meal/meals";
 export const GET_A_SINGLE_SELECTED_MEAL = "/select-meal/meal";
-export const GET_ALL_SELECTED_MEALS_BY_USER_ID = "/select-meal/user-meals";
+export const GET_SELECTED_MEALS_BY_USER_ID = "/select-meal/user-meals";
 
 /* *************** profile info url ****************** */
 export const CREATE_PROFILE_INFO = "/profile-info/create-profileinfo";

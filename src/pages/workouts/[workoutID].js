@@ -212,7 +212,7 @@ function WorkoutPage() {
                 <ReviewStar rating={review?.review_information?.review_info?.rating} />
               </div>
               <div className='mt-2'>
-                <span className='font-medium text-base'>{review?.review_information?.review_info?.review_name}</span>
+                <span className='font-medium text-base'>{review?.review_information?.review_info?.review_item_name}</span>
               </div>
               <div className='mt-2'>
                 <span className='italic text-gray-600'>

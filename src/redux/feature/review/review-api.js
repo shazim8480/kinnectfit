@@ -16,10 +16,14 @@ const mealApi = api.injectEndpoints({
       providesTags: ["reviews"],
     }),
     createReview: builder.mutation({
-      query: (data) => ({
+      query: ({ data, accessToken }) => ({
         url: `${CREATE_REVIEW}`,
         method: "POST",
         body: data,
+        headers: {
+          Authorization: `${accessToken}`,
+          'Content-Type': 'application/json',
+        },
       }),
       invalidatesTags: ["reviews"],
     }),

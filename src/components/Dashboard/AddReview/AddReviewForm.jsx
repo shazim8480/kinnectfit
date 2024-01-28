@@ -48,40 +48,42 @@ const AddReviewForm = ({
     refetch: mealPlansRefetch,
   } = useGetAllMealPlansQuery();
 
+  // console.log("all workouts", data);
+  // console.log("all workouts", useGetAllWorkoutsQuery);
+
   useEffect(() => {
-    if (data !== undefined) {
+    if (data?.data !== undefined) {
       workoutsRefetch();
     }
-    if (mealPlanData !== undefined) {
+    if (mealPlanData?.data !== undefined) {
       mealPlansRefetch();
     }
   }, [data, mealPlanData]);
 
   // console.log("meal data", mealPlanData);
   const [isCategorySelected, setIsCategorySelected] = useState(false);
-  const workoutCategoryNames = data?.workouts?.map((workout) => ({
+  const workoutCategoryNames = data?.data?.map((workout) => ({
     label: workout?.workout_name,
     value: workout?.workout_name,
-    workout_id: workout?.workout_id,
+    workout_id: workout?._id,
   }));
-  const mealPlanCategoryNames = mealPlanData?.mealPlans?.map((mealPlan) => ({
+  const mealPlanCategoryNames = mealPlanData?.data?.map((mealPlan) => ({
     label: mealPlan?.mealPlan_name,
     value: mealPlan?.mealPlan_name,
-    mealPlan_id: mealPlan?.mealPlan_id,
+    mealPlan_id: mealPlan?._id,
   }));
-  // console.log(mealPlanCategoryNames);
   const reviewTypes = [
     {
       label: "Workout",
-      value: "workout",
+      value: "Workout",
     },
     {
-      label: "Meal",
-      value: "meal",
+      label: "Meal Plan",
+      value: "Meal Plan",
     },
     {
       label: "App",
-      value: "app",
+      value: "App",
     },
   ];
   const handleReviewType = (type) => {
@@ -104,8 +106,6 @@ const AddReviewForm = ({
       </div>
     );
   }
-  // console.log("mealplanId", isMealPlanId);
-  // console.log("workoutId", isWorkoutId);
   return (
     <div className="max-w-xs mx-auto md:max-w-5xl">
       <div className="px-8 pt-6 pb-8 mb-4 bg-white rounded shadow-md">
@@ -140,44 +140,44 @@ const AddReviewForm = ({
           </div>
 
           {
-            reviewType !== 'app' && <div>
+            reviewType !== 'App' && <div>
               <div className="mt-4 mb-3 text-base text-left">
                 <label>
                   {" "}
-                  {reviewType === "workout" ? "Select workout" : "Select meal"}
+                  {reviewType === "Workout" ? "Select workout" : "Select meal plan"}
                 </label>
               </div>
               <Select
                 // items={workoutCategoryNames}
                 items={
-                  reviewType === "workout"
+                  reviewType === "Workout"
                     ? workoutCategoryNames
                     : mealPlanCategoryNames
                 }
                 placeholder={
-                  reviewType === "workout" ? "Select workout" : "Select meal"
+                  reviewType === "Workout" ? "Select workout" : "Select meal"
                 }
                 className="max-w-l"
-                {...register("review_name", {
+                {...register("review_item_name", {
                   required: "Please select review category name",
                 })}
               >
-                {(review_name) => (
+                {(review_item_name) => (
                   <SelectItem
                     onClick={
-                      reviewType === "workout"
-                        ? () => setWorkoutId(review_name?.workout_id)
-                        : () => setMealPlanId(review_name?.mealPlan_id)
+                      reviewType === "Workout"
+                        ? () => setWorkoutId(review_item_name?.workout_id)
+                        : () => setMealPlanId(review_item_name?.mealPlan_id)
                     }
-                    key={review_name.value}
+                    key={review_item_name.value}
                   >
-                    {review_name.label}
+                    {review_item_name.label}
                   </SelectItem>
                 )}
               </Select>
-              {errors.review_name && !isCategorySelected && (
+              {errors.review_item_name && !isCategorySelected && (
                 <p className="mt-1 text-left text-red-500">
-                  {errors.review_name.message}
+                  {errors.review_item_name.message}
                 </p>
               )}
             </div>
@@ -193,24 +193,24 @@ const AddReviewForm = ({
             minRows={5}
             name="description"
             placeholder="Describe your review"
-            {...register("description", {
+            {...register("review_description", {
               required: "You have to describe your review",
             })}
           />
-          {errors.description && (
+          {errors.review_description && (
             <p className="mt-1 text-left text-red-500">
-              {errors.description.message}
+              {errors.review_description.message}
             </p>
           )}
         </div>
 
-        {/*starts review description */}
+        {/*starts review rating */}
         <div className="mt-10 mb-4">
           <div className="mt-4 text-base text-left">
             <label htmlFor="workoutDescription">Share your review</label>
           </div>
           <div>
-            <StarRating  setRating={setRating} />
+            <StarRating setRating={setRating} />
           </div>
         </div>
         {/*ends review description */}

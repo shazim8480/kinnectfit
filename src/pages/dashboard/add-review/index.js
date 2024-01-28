@@ -1,6 +1,7 @@
 import AddReviewForm from "@/components/Dashboard/AddReview/AddReviewForm";
 import { KFButton } from "@/components/UI/KFButton";
 import DashboardLayout from "@/layouts/dashboard/DashboardLayout";
+import { getItemFromLocalStorage } from "@/lib/utils";
 import { useCreateReviewMutation } from "@/redux/feature/review/review-api";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -13,7 +14,9 @@ const AddReviewPage = () => {
   const [workoutId, setWorkoutId] = useState("");
   const [rating, setRating] = useState(0);
   const [createReview] = useCreateReviewMutation();
-  const { user } = useSelector((state) => state?.user);
+
+  const { _id } = getItemFromLocalStorage('userData');
+  const accessToken = getItemFromLocalStorage('accessToken');
 
   // review videos
   // const [reviewVideo, setReviewVideo] = useState([]);
@@ -28,34 +31,28 @@ const AddReviewPage = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    const {
-      review_type,
-      review_name,
-      description,
-    } = data;
+    console.log("reviewData", data);
+    const { review_type,
+      review_item_name,
+      review_description } = data;
     const review_data = {
-      review_information: {
-        workout_id: workoutId,
-        mealPlan_id: mealPlanId,
-        review_info: {
-          review_type,
-          review_name,
-          reviewer_name: user?.name,
-          reviewer_id: user?.id,
-          description,
-          rating,
-          review_img: reviewImg,
-        },
+      data: {
+        review_type,
+        review_item_name,
+        review_description,
+        rating,
+        review_cover: reviewImg,
+        ...(workoutId ? { workout: workoutId } : {}),
+        ...(mealPlanId ? { mealPlan: mealPlanId } : {}),
+        user: _id
       },
+      accessToken
     };
-    console.log("rating", rating);
-
-    // console.log(review_data);
+    console.log("review_data", review_data);
     // return;
-    // await createReview(review_data);
 
     let createReviewResponse = await createReview(review_data);
-    // console.log("res", createReviewResponse);
+    console.log("res", createReviewResponse);
     setWorkoutId("");
     setMealPlanId("");
     setReviewImg([]);

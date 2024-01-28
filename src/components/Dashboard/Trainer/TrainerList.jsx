@@ -1,23 +1,22 @@
-import React, { useEffect, useState } from "react";
+import { EyeIcon } from "@/assets/icons/EyeIcon";
+import { PROTOCOL_HOST } from "@/constants/url";
+import { useFetch } from "@/hooks/useFetch";
+import { columns } from "@/lib/db/trainer-data";
 import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  User,
-  Chip,
-  Tooltip,
   Spinner,
+  Table,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHeader,
+  TableRow,
+  Tooltip,
+  User,
   useDisclosure,
 } from "@nextui-org/react";
-import { EyeIcon } from "@/assets/icons/EyeIcon";
-import { columns, users } from "@/lib/db/trainer-data";
-import DropdownStatus from "./DropdownStatus";
-import { PROTOCOL_HOST } from "@/constants/url";
 import moment from "moment";
-import { useFetch } from "@/hooks/useFetch";
+import React, { useState } from "react";
+import DropdownStatus from "./DropdownStatus";
 import TrainerDetails from "./TrainerDetails";
 
 const statusColorMap = {
@@ -29,16 +28,11 @@ const statusColorMap = {
 export default function TrainerList() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedTrainer, setSelectedTrainer] = useState(null);
-  const {
-    data: trainerList,
-    loading,
-    error,
-  } = useFetch(`${PROTOCOL_HOST}/trainers`);
+  const { data: trainerList, loading } = useFetch(`${PROTOCOL_HOST}/trainers`);
 
   console.log("trainerList", trainerList);
 
   const handleEyeButton = (trainerId) => {
-    // console.log("trainerId", trainerId);
     setSelectedTrainer(trainerId);
     onOpen();
   };

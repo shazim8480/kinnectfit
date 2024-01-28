@@ -87,5 +87,9 @@ export const GET_ALL_WORKOUT_MODULES = "/workout-module/all-modules";
 export const GET_A_SINGLE_WORKOUT_MODULE = "/workout-module";
 export const GET_WORKOUT_MODULE_BY_WORKOUT = "/workout-module/workout";
 
+/* *************** enrolled workout module url ****************** */
+export const ENROLL_WORKOUT_MODULE = "/enrolled-workout/enroll";
+export const GET_ALL_ENROLL_WORKOUT_MODULES = "/enrolled-workout/all-modules";
+export const GET_ENROLL_WORKOUT_MODULES_BY_USER = "/enrolled-workout/user";
 
 

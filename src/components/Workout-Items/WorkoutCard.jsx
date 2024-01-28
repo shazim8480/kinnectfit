@@ -6,27 +6,32 @@ import Star from "@/assets/icons/Star";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
+import { getItemFromLocalStorage } from "@/lib/utils";
 
 const WorkoutCard = ({ workoutItem }) => {
-  const router = useRouter();
-  const { isAuthenticated } = useSelector((state) => state.user);
-  const handleStart = () => {
-    if (isAuthenticated) {
-      router.push(`/workouts/${workout_name}`);
-    } else {
-      router.replace(`/workouts/${workout_name}`, "sign-in");
-    }
-  };
-  // destructure workout item data //
   const {
     workout_name,
     total_workout_time,
-    trainer_name,
-    average_rating,
-    category,
+    trainer,
+    workout_description,
     workout_cover,
-    workout_id,
+    workout_category,
+    _id: workout_id,
   } = workoutItem;
+
+  console.log("Workout Item", workoutItem);
+  // const userData = getItemFromLocalStorage('userData');
+  const accessToken = getItemFromLocalStorage('accessToken');
+  const router = useRouter();
+  const handleStart = () => {
+    if (accessToken) {
+      router.push(`/workouts/${workout_id}`);
+    } else {
+      router.replace(`/workouts/${workout_id}`, "sign-in");
+    }
+  };
+  // destructure workout item data //
+
   return (
     <Card
       isFooterBlurred
@@ -34,7 +39,7 @@ const WorkoutCard = ({ workoutItem }) => {
     >
       <CardHeader className="absolute top-0 z-10 flex-col items-start bg-black/40">
         <p className="font-bold uppercase text-tiny text-white/70">
-          {category}
+          {workout_category}
         </p>
         <h4 className="text-xl font-medium text-white/90">{workout_name}</h4>
       </CardHeader>
@@ -44,8 +49,6 @@ const WorkoutCard = ({ workoutItem }) => {
         className="z-0 object-cover w-full h-full rounded-lg"
         src={
           workout_cover
-            ? workout_cover
-            : "https://images.unsplash.com/photo-1581009137042-c552e485697a?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         }
       />
       <CardFooter className="absolute bottom-0 z-10 bg-black/40 border-t-1 border-default-600 dark:border-default-100">
@@ -53,7 +56,7 @@ const WorkoutCard = ({ workoutItem }) => {
           <div className="flex flex-col">
             <div className="flex justify-start mb-2">
               <UserIcon />
-              <p className="ml-1 text-tiny text-white/80">{trainer_name}</p>
+              <p className="ml-1 text-tiny text-white/80">{trainer?.user?.name}</p>
             </div>
             <div className="flex justify-between ">
               <div className="flex justify-between mr-3">
@@ -62,12 +65,12 @@ const WorkoutCard = ({ workoutItem }) => {
                   {total_workout_time} min
                 </p>
               </div>
-              <div className="flex justify-between">
+              {/* <div className="flex justify-between">
                 <Star />
                 <p className="ml-1 text-tiny text-white/60">
                   {average_rating} / 5
                 </p>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

@@ -15,9 +15,9 @@ import { getItemFromLocalStorage } from "@/lib/utils";
 import { useGetTrainerByUserQuery } from "@/redux/feature/user/user-api";
 
 const MealCategories = ({ mealPlanLoading, allMealPlansData }) => {
-  const { _id } = getItemFromLocalStorage('userData');
+  const userData = getItemFromLocalStorage('userData');
   const accessToken = getItemFromLocalStorage('accessToken');
-  const { data: trainerData, isLoading } = useGetTrainerByUserQuery(_id);
+  const { data: trainerData, isLoading } = useGetTrainerByUserQuery(userData?._id);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const router = useRouter();
   const [items, setItems] = useState([]);

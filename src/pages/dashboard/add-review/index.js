@@ -15,7 +15,7 @@ const AddReviewPage = () => {
   const [rating, setRating] = useState(0);
   const [createReview] = useCreateReviewMutation();
 
-  const { _id } = getItemFromLocalStorage('userData');
+  const userData = getItemFromLocalStorage('userData');
   const accessToken = getItemFromLocalStorage('accessToken');
 
   // review videos
@@ -44,7 +44,7 @@ const AddReviewPage = () => {
         review_cover: reviewImg,
         ...(workoutId ? { workout: workoutId } : {}),
         ...(mealPlanId ? { mealPlan: mealPlanId } : {}),
-        user: _id
+        user: userData?._id
       },
       accessToken
     };

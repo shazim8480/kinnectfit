@@ -7,7 +7,7 @@ import { useGetAllWorkoutsQuery } from "@/redux/feature/workout/workout-api";
 
 const Workouts = () => {
   const { data: workout_data } = useGetAllWorkoutsQuery();
-  // console.log("workout data from workouts page", workout_data);
+  console.log("workout data from workouts page", workout_data);
   const [searchProduct, setSearchProduct] = useState("");
   const [groupSelected, setGroupSelected] = useState([]);
 
@@ -16,7 +16,7 @@ const Workouts = () => {
     setSearchProduct(value);
   };
 
-  const filteredProducts = workout_data?.workouts?.filter((item) => {
+  const filteredProducts = workout_data?.data?.filter((item) => {
     const searchMatch = item.workout_name
       .toLowerCase()
       .includes(searchProduct.toLowerCase());

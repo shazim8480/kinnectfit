@@ -12,7 +12,7 @@ import { CldUploadButton, CldImage } from "next-cloudinary";
 import { getItemFromLocalStorage } from "@/lib/utils";
 
 const MealPlanDetails = ({ refetch }) => {
-  const { _id } = getItemFromLocalStorage('userData');
+  const userData = getItemFromLocalStorage('userData');
   const accessToken = getItemFromLocalStorage('accessToken');
   // console.log("Userforls",_id)
   //   file upload section
@@ -20,7 +20,7 @@ const MealPlanDetails = ({ refetch }) => {
   // console.log("🚀 MealPlanDetails ~ mealPlanFiles:", mealPlanFiles);
   // console.log(user?.id);
   const [createMealPlan] = useCreateMealPlanMutation();
-  const { data: trainerData, isLoading } = useGetTrainerByUserQuery(_id);
+  const { data: trainerData, isLoading } = useGetTrainerByUserQuery(userData?._id);
   // console.log("UserId Trainer data", trainerData);
   const [updateUser] = useUpdateUserMutation();
   const {

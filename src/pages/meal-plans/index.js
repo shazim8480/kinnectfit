@@ -15,9 +15,19 @@ const MealPlansPage = () => {
         setSearchMealPlan(value);
     };
 
+    // const uniqueCategories = Array.from(new Set(mealData?.map(item => item.category)));
+    // const uniqueCategories = (data?.data?.map(item => item.meal_category));
 
-    const uniqueCategories = Array.from(new Set(mealData?.map(item => item.category)));
+    const filteredMealPlans = data?.data?.filter((item) => {
+        const searchMatch = item.mealPlan_name
+            .toLowerCase()
+            .includes(searchMealPlan.toLowerCase());
 
+        const categoryMatch =
+            groupSelected.length === 0 || groupSelected.includes(item.mealPlan_category);
+
+        return searchMatch && categoryMatch;
+    });
 
     return (
         <>
@@ -49,10 +59,10 @@ const MealPlansPage = () => {
                 </Chip>
                 <Chip color="primary">Vegan Meal Plan</Chip>
                 <hr className="my-5"></hr>
-                <h5 className="my-3 text-xl font-medium leading-tight text-neutral-800">
+                {/* <h5 className="my-3 text-xl font-medium leading-tight text-neutral-800">
                     Categories
-                </h5>
-                <CheckboxGroup
+                </h5> */}
+                {/* <CheckboxGroup
                     orientation="horizontal"
                     color="secondary"
                     defaultValue={[]}
@@ -66,9 +76,9 @@ const MealPlansPage = () => {
                             </Checkbox>
                         );
                     })}
-                </CheckboxGroup>
+                </CheckboxGroup> */}
                 <div className="grid max-w-screen-xl grid-cols-2 gap-6  mx-auto place-items-center lg:place-content-center lg:gap-8 xl:gap-8 lg:py-8 lg:grid-cols-4">
-                    {data?.data?.map((item) => {
+                    {filteredMealPlans?.map((item) => {
                         return <MealPlanCard key={item.id} mealItem={item} />;
                     })}
                 </div>

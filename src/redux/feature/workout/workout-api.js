@@ -1,8 +1,11 @@
 import {
   CREATE_WORKOUT,
+  ENROLL_WORKOUT_MODULE,
   GET_ALL_WORKOUTS,
+  GET_ENROLL_WORKOUT_MODULES_BY_USER,
   GET_SINGLE_WORKOUT,
   GET_USER_WORKOUT_BY_ID,
+  GET_WORKOUT_MODULE_BY_WORKOUT,
   START_WORKOUT,
   UPDATE_WORKOUT_MODULE,
 } from "@/constants/url";
@@ -14,6 +17,10 @@ const workoutApi = api.injectEndpoints({
       query: () => `${GET_ALL_WORKOUTS}`,
       providesTags: ["workouts"],
     }),
+    getFeaturedWorkouts: builder.query({
+      query: () => `${GET_ALL_WORKOUTS}?sortBy=createdAt&sortOrder=desc&limit=8`,
+      provideTags: ["workouts"],
+    }),
     createWorkout: builder.mutation({
       query: (data) => ({
         url: `${CREATE_WORKOUT}`,
@@ -22,8 +29,8 @@ const workoutApi = api.injectEndpoints({
       }),
       invalidatesTags: ["workouts"],
     }),
-    getUserWorkoutById: builder.query({
-      query: (id) => `${GET_USER_WORKOUT_BY_ID}/${id}`,
+    getWorkoutModuleByWorkoutId: builder.query({
+      query: (id) => `${GET_WORKOUT_MODULE_BY_WORKOUT}/${id}`,
       providesTags: ["moduleUpdate"],
     }),
 
@@ -47,6 +54,22 @@ const workoutApi = api.injectEndpoints({
       }),
       invalidatesTags: ["moduleUpdate"],
     }),
+    enrollWorkoutModule: builder.mutation({
+      query: ({ data, accessToken }) => ({
+        url: `${ENROLL_WORKOUT_MODULE}`,
+        method: "POST",
+        body: data,
+        headers: {
+          Authorization: `${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+      invalidatesTags: ["moduleUpdate"],
+    }),
+    getEnrolledWorkoutModuleByUserId: builder.query({
+      query: (id) => `${GET_ENROLL_WORKOUT_MODULES_BY_USER}/${id}`,
+      providesTags: ["moduleUpdate"],
+    }),
   }),
   overrideExisting: true,
 });
@@ -55,7 +78,11 @@ export const {
   useCreateWorkoutMutation,
   useStartWorkoutMutation,
   useGetAllWorkoutsQuery,
+  useGetFeaturedWorkoutsQuery,
   useGetSingleWorkoutQuery,
   useUpdateWorkoutModuleMutation,
   useGetUserWorkoutByIdQuery,
+  useGetWorkoutModuleByWorkoutIdQuery,
+  useEnrollWorkoutModuleMutation,
+  useGetEnrolledWorkoutModuleByUserIdQuery
 } = workoutApi;

@@ -2,108 +2,31 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import MainLayout from "@/layouts/mainLayout";
 import Clock from "@/assets/icons/Clock";
-import Star from "@/assets/icons/Star";
 import { UserIcon } from "@/assets/icons/UserIcon";
 import { KFButton } from "@/components/UI/KFButton";
 import { useState } from "react";
-import { Checkbox, Link, User, Chip, cn, Spinner } from "@nextui-org/react";
 import {
-  useEnrollWorkoutModuleMutation,
-  useGetSingleWorkoutQuery,
-  useGetUserWorkoutByIdQuery,
-  useGetWorkoutModuleByWorkoutIdQuery,
-  useStartWorkoutMutation,
-  useUpdateWorkoutModuleMutation,
+  useGetSingleWorkoutQuery, useGetWorkoutModuleByWorkoutIdQuery
 } from "@/redux/feature/workout/workout-api";
-import { useSelector } from "react-redux";
 import UserCard from "@/components/Workout-Items/UserCard";
-import ShowReview from "@/components/ShowReview/ShowReview";
-import ReviewStar from "@/components/ShowReview/ReviewStar";
-import { useGetReviewsByWorkoutIdQuery } from "@/redux/feature/review/review-api";
-import { getItemFromLocalStorage } from "@/lib/utils";
 
 function WorkoutPage() {
-
-
-
-  const [confirmed, setIsConfirmed] = useState(false);
-
   const router = useRouter();
   const { workoutID } = router.query;
-  // console.log("route query", router?.query);
-  const { user } = useSelector((state) => state.user);
-  // console.log("userinfo ", user);
-  // const { data: workoutReviewData, isLoading: workoutReviewLoading } = useGetReviewsByWorkoutIdQuery(workoutID);
-  // const [startWorkout, { isLoading, isSuccess }] = useStartWorkoutMutation();
-  // const [updateWorkoutModule] = useUpdateWorkoutModuleMutation();
   const { data } = useGetSingleWorkoutQuery(workoutID);
   const { data: workoutModuleData } = useGetWorkoutModuleByWorkoutIdQuery(workoutID);
-
-
-
-
-  // const handleEnrollment =  () => {
-  // };
-
-
-
-  // let _id, total_workout_time, trainer, workout_category, workout_cover, workout_description, workout_name;
-
-  // if (data && data.data) {
-  //   ({ _id, total_workout_time, trainer, workout_category, workout_cover, workout_description, workout_name } = data.data);
-  // }
-  // console.log('cover'._id, total_workout_time, trainer, workout_category, workout_cover, workout_description, workout_name);
-
   const [isStarted, setIsStarted] = useState(false);
-
-  // const handleStartWorkout = async () => {
-  //   try {
-  //     const data = {
-  //       data: workoutData,
-  //       userId: user.id,
-  //     };
-  //     // console.log(data);
-
-  //     let startWorkoutResponse = await startWorkout(data);
-  //     // console.log("start workout -", startWorkoutResponse);
-  //     if (startWorkoutResponse?.data?.status === 200) {
-  //       setIsStarted(true);
-  //     } else {
-  //       console.log("err msg", startWorkoutResponse?.error);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching workout data:", error);
-  //   }
-  // };
-
-  // const handleCheck = async (module) => {
-  //   // console.log("clicked", module);
-  //   const updateModuleInfo = {
-  //     data: {
-  //       isConfirmed: true,
-  //     },
-  //     id: workoutID,
-  //     module_id: module?.id,
-  //   };
-  //   const updatedResult = await updateWorkoutModule(updateModuleInfo);
-  //   // console.log("updatedResult", updatedResult);
-
-  //   if (updatedResult?.data?.status === 200) {
-  //     setIsStarted(true);
-  //   } else if (updatedResult?.error) {
-  //     console.log("err msg", updatedResult?.error);
-  //   }
-  // };
-
-  // if (workoutReviewLoading) {
-  //   return (
-  //     <div className="min-h-[80vh] flex justify-center items-center">
-  //       <Spinner />
-  //     </div>
-  //   );
-  // }
+  const [isCompleted, setIsCompleted] = useState(false);
+  console.log("🚀isCompleted", isCompleted);
 
 
+
+  const handleStarted = () => {
+    setIsStarted(!isStarted);
+  };
+  const handleCompleted = () => {
+    router.push('/dashboard');
+  };
 
   return (
     <>
@@ -153,14 +76,14 @@ function WorkoutPage() {
             </h5>
             <div className="mb-4 text-base text-neutral-600">
               {
-                workoutModuleData?.data[0].modules.map((module) => (
-                  // <p>Hello</p>
+                workoutModuleData?.data[0]?.modules.map((module) => (
                   <UserCard
                     key={module?.id}
                     module={module}
                     workoutModuleData={workoutModuleData}
-                  // handleCheck={handleCheck}
-                  // isStarted={isStarted}
+                    isStarted={isStarted}
+                    isCompleted={isCompleted}
+                    setIsCompleted={setIsCompleted}
                   />
                 ))
               }
@@ -169,16 +92,17 @@ function WorkoutPage() {
             <KFButton
               color={"secondary"}
               className="w-full rounded-md"
+              onClick={isCompleted ? handleCompleted : handleStarted}
             >
-              {"Start Workout"}
+              {
+                isCompleted ? "Complete Workout" : isStarted ? "Pause Workout" : !isStarted && "Start Workout"
+              }
+
             </KFButton>
           </div>
         </div>
       </section>;
       {/* workout modules ends */}
-
-
-
 
 
       {/* Show reviews  */}

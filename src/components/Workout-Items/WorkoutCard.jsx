@@ -56,7 +56,7 @@ const WorkoutCard = ({ workoutItem }) => {
           <div className="flex flex-col">
             <div className="flex justify-start mb-2">
               <UserIcon />
-              <p className="ml-1 text-tiny text-white/80">{trainer?.user?.name}</p>
+              <p className="ml-1 text-tiny text-white/80">{trainer?.name}</p>
             </div>
             <div className="flex justify-between ">
               <div className="flex justify-between mr-3">

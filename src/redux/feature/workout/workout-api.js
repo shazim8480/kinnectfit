@@ -1,5 +1,6 @@
 import {
   CREATE_WORKOUT,
+  CREATE_WORKOUT_MODULE,
   ENROLL_WORKOUT_MODULE,
   GET_ALL_WORKOUTS,
   GET_ENROLL_WORKOUT_MODULES_BY_USER,
@@ -20,10 +21,14 @@ const workoutApi = api.injectEndpoints({
       provideTags: ["workouts"],
     }),
     createWorkout: builder.mutation({
-      query: (data) => ({
+      query: ({ data, accessToken }) => ({
         url: `${CREATE_WORKOUT}`,
         method: "POST",
         body: data,
+        headers: {
+          Authorization: `${accessToken}`,
+          'Content-Type': 'application/json',
+        },
       }),
       invalidatesTags: ["workouts"],
     }),
@@ -49,6 +54,18 @@ const workoutApi = api.injectEndpoints({
         url: `${UPDATE_WORKOUT_MODULE}/${id}/${module_id}`,
         method: "PUT",
         body: data,
+      }),
+      invalidatesTags: ["moduleUpdate"],
+    }),
+    createWorkoutModule: builder.mutation({
+      query: ({ data, accessToken }) => ({
+        url: `${CREATE_WORKOUT_MODULE}`,
+        method: "POST",
+        body: data,
+        headers: {
+          Authorization: `${accessToken}`,
+          'Content-Type': 'application/json',
+        },
       }),
       invalidatesTags: ["moduleUpdate"],
     }),
@@ -82,5 +99,6 @@ export const {
   useGetUserWorkoutByIdQuery,
   useGetWorkoutModuleByWorkoutIdQuery,
   useEnrollWorkoutModuleMutation,
-  useGetEnrolledWorkoutModuleByUserIdQuery
+  useGetEnrolledWorkoutModuleByUserIdQuery,
+  useCreateWorkoutModuleMutation
 } = workoutApi;

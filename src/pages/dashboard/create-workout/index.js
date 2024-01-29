@@ -2,7 +2,7 @@ import CreateWorkout from "@/components/CreateWorkout/CreateWorkout";
 import WorkoutModules from "@/components/CreateWorkout/WorkoutModules";
 import { KFButton } from "@/components/UI/KFButton";
 import DashboardLayout from "@/layouts/dashboard/DashboardLayout";
-import { useCreateWorkoutMutation } from "@/redux/feature/workout/workout-api";
+import { useCreateWorkoutModuleMutation, useCreateWorkoutMutation } from "@/redux/feature/workout/workout-api";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -11,17 +11,23 @@ import { v4 as uuidv4 } from "uuid";
 import { useSelector } from "react-redux";
 import { useUpdateUserMutation } from "@/redux/feature/user/user-api";
 import { removeWorkoutCover } from "@/redux/feature/workout/workoutSlice";
+import { getItemFromLocalStorage } from "@/lib/utils";
 
 const CreateWorkoutPage = () => {
+  const [files, setFiles] = useState([]);
+  const userData = getItemFromLocalStorage('userData');
+  const accessToken = getItemFromLocalStorage('accessToken');
   const dispatch = useDispatch();
   const router = useRouter();
   // redux states
   const { user } = useSelector((state) => state?.user);
   const workoutState = useSelector((state) => state.workout);
   console.log("cover of workout", workoutState);
-
+  const [workoutId, setWorkoutId] = useState("");
   const [updateUser] = useUpdateUserMutation();
   const [createWorkout] = useCreateWorkoutMutation();
+  const [createWorkoutModule] = useCreateWorkoutModuleMutation();
+
   const [formSteps, setFormSteps] = useState(0);
   const {
     register,
@@ -31,15 +37,65 @@ const CreateWorkoutPage = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      workout_modules: [{ id: uuidv4(), moduleName: "", moduleTime: "" }],
+      modules: [{ module_name: "", module_time: "" }],
     },
   });
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "workout_modules",
+    name: "modules",
   });
 
   const onSubmit = async (data) => {
+    let workout;
+    const { modules, ...workoutData } = data;
+
+    if (formSteps === 0) {
+
+      const createWorkoutData = {
+        data: {
+          ...workoutData,
+          workout_cover: files,
+          trainer: userData?._id
+        }, accessToken
+      };
+
+      try {
+        const createWorkoutRes = await createWorkout(createWorkoutData);
+        // console.log("🥦createWorkoutRes", createWorkoutRes);
+        workout = createWorkoutRes?.data?.data?._id;
+        console.log(" 🥦 workout", workout);
+        setWorkoutId(workout);
+
+        if (createWorkoutRes?.data?.statusCode === 200) {
+          handleNext();
+        }
+      } catch (error) {
+        console.log("Error occured", error);
+      }
+    }
+
+    else if (formSteps === 1) {
+      // console.log("🚀 modules data", modules);
+      // console.log("🚀 workout", workoutId);
+      const createModuleData = {
+        data: {
+          modules: modules,
+          workout: workoutId,
+          trainer: userData?._id
+        }, accessToken
+      };
+      const createModuleRes = await createWorkoutModule(createModuleData);
+      // console.log("🚀 create module response", createModuleRes);
+      if (createModuleRes?.data?.statusCode === 200) {
+        router.push('/dashboard');
+      }
+    }
+
+
+    // if (Object.keys(errors).length === 0) {
+    // }
+
+    return;
     const newWorkoutObj = {
       ...data,
       workout_cover: workoutState.workout_cover[0],
@@ -80,7 +136,7 @@ const CreateWorkoutPage = () => {
     <div>
       <form action="" onSubmit={handleSubmit(onSubmit)}>
         {formSteps === 0 && (
-          <CreateWorkout register={register} errors={errors} />
+          <CreateWorkout files={files} setFiles={setFiles} register={register} errors={errors} />
         )}
         {formSteps === 1 && (
           <WorkoutModules
@@ -112,9 +168,10 @@ const CreateWorkoutPage = () => {
               color="secondary"
               size="md"
               className="mt-4"
-              onClick={() => {
-                handleNext();
-              }}
+              type="submit"
+            // onClick={() => {
+            //   handleNext();
+            // }}
             >
               Next
             </KFButton>

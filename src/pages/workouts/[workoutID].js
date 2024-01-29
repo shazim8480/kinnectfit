@@ -9,6 +9,7 @@ import {
   useGetSingleWorkoutQuery, useGetWorkoutModuleByWorkoutIdQuery
 } from "@/redux/feature/workout/workout-api";
 import UserCard from "@/components/Workout-Items/UserCard";
+import { getItemFromLocalStorage } from "@/lib/utils";
 
 function WorkoutPage() {
   const router = useRouter();
@@ -17,11 +18,15 @@ function WorkoutPage() {
   const { data: workoutModuleData } = useGetWorkoutModuleByWorkoutIdQuery(workoutID);
   const [isStarted, setIsStarted] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
-  console.log("🚀isCompleted", isCompleted);
-
+  // console.log("🚀 single workoput data", data);
+  const userData = getItemFromLocalStorage('userData');
 
 
   const handleStarted = () => {
+    if (userData?.role === 'trainer') {
+      alert("Trainer can't enroll workout modules");
+      return;
+    }
     setIsStarted(!isStarted);
   };
   const handleCompleted = () => {
@@ -51,7 +56,7 @@ function WorkoutPage() {
               <div className="flex items-center">
                 <UserIcon fill="black" />
                 <p className="ml-1 text-gray-500">
-                  {data?.data?.trainer?.user?.name}
+                  {data?.data?.trainer?.name}
                 </p>
               </div>
               <div className="flex items-center">
@@ -90,7 +95,7 @@ function WorkoutPage() {
 
             </div>
             <KFButton
-              color={"secondary"}
+              color={!isCompleted ? "secondary" : "primary"}
               className="w-full rounded-md"
               onClick={isCompleted ? handleCompleted : handleStarted}
             >

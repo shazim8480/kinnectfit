@@ -23,7 +23,7 @@ const UserCard = ({ module, isStarted, workoutModuleData, setIsCompleted, isComp
   // Filter workoutModules based on enrolledModuleIds
   const matchedModules = workoutModules.filter(workoutModule => userModuleIds.includes(workoutModule.id));
 
-  console.log("🛩️ matched bro", matchedModules);
+  // console.log("🛩️ matched", matchedModules);
 
   setIsCompleted(workoutModules.length === matchedModules.length);
 

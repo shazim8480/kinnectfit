@@ -6,11 +6,10 @@ import { PhotoIcon } from "@heroicons/react/24/solid";
 import { useDispatch } from "react-redux";
 import { setWorkoutCover } from "@/redux/feature/workout/workoutSlice";
 
-const CreateWorkout = ({ register, errors }) => {
+const CreateWorkout = ({ register, errors, files, setFiles }) => {
   const dispatch = useDispatch();
   const [isCategorySelected, setIsCategorySelected] = useState(false);
   //   file upload section
-  const [files, setFiles] = useState([]);
   // console.log("🚀CreateWorkout ~ files:", files);
 
   const addFile = (newFile) => {
@@ -64,7 +63,7 @@ const CreateWorkout = ({ register, errors }) => {
           {/*ends workout name */}
 
           {/*starts workout category */}
-          <div>
+          {/* <div>
             <div className="mt-4 mb-3 text-base text-left">
               <label>Workout Category</label>
             </div>
@@ -90,7 +89,27 @@ const CreateWorkout = ({ register, errors }) => {
                 {errors.category.message}
               </p>
             )}
+          </div> */}
+
+          <div>
+            <div className="mt-4 mb-3 text-base text-left">
+              <label htmlFor="workoutCategory">Workout Category</label>
+            </div>
+            <KFInput
+              name="workout_category"
+              type="text"
+              placeholder="Give a workout name"
+              {...register("workout_category", {
+                required: "You must need to give a workout category name",
+              })}
+            />
+            {errors.workout_category && (
+              <p className="mt-1 text-left text-red-500">
+                {errors.workout_category.message}
+              </p>
+            )}
           </div>
+
           {/*ends workout category */}
         </div>
         {/* ends name & category */}
@@ -129,16 +148,15 @@ const CreateWorkout = ({ register, errors }) => {
           </div>
           <Textarea
             minRows={5}
-            name="description"
+            name="workout_description"
             placeholder="Enter workout description"
-            description="Write a concise description about workout"
-            {...register("description", {
+            {...register("workout_description", {
               required: "You have to describe about your workout",
             })}
           />
-          {errors.description && (
+          {errors.workout_description && (
             <p className="mt-1 text-left text-red-500">
-              {errors.description.message}
+              {errors.workout_description.message}
             </p>
           )}
         </div>

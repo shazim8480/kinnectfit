@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { KFInput } from "@/components/UI/KFInput";
 import { KFButton } from "../UI/KFButton";
-import { v4 as uuidv4 } from "uuid";
 
 const WorkoutModules = ({ register, fields, append, remove }) => {
   const [isDeleteButtonVisible, setDeleteButtonVisible] = useState(false);
@@ -11,7 +10,7 @@ const WorkoutModules = ({ register, fields, append, remove }) => {
     if (!isDeleteButtonVisible) {
       setDeleteButtonVisible(true);
     }
-    append({ id: uuidv4(), moduleName: "", moduleTime: "" });
+    append({ module_name: "", module_time: "" });
   };
   return (
     <div className="max-w-xs mx-auto md:max-w-3xl">
@@ -25,13 +24,13 @@ const WorkoutModules = ({ register, fields, append, remove }) => {
                 {/* start module name */}
                 <div>
                   <div className="mt-4 mb-3 text-base text-left">
-                    <label htmlFor="moduleName">Module Name</label>
+                    <label htmlFor="module_name">Module Name</label>
                   </div>
                   <KFInput
-                    name={`workout_modules[${index}].moduleName`}
+                    name={`modules[${index}].module_name`}
                     type="text"
                     placeholder="Give a module name"
-                    {...register(`workout_modules[${index}].moduleName`)}
+                    {...register(`modules[${index}].module_name`)}
                   />
                 </div>
                 {/* end module name */}
@@ -40,15 +39,15 @@ const WorkoutModules = ({ register, fields, append, remove }) => {
                 <div className="grid grid-cols-1 gap-3">
                   <div>
                     <div className="mt-4 mb-3 text-base text-left">
-                      <label htmlFor="moduleTime">Module Time</label>
+                      <label htmlFor="module_time">Module Time</label>
                     </div>
                     <div>
                       <div>
                         <KFInput
-                          name={`workout_modules[${index}].moduleTime`}
+                          name={`modules[${index}].module_time`}
                           type="text"
-                          placeholder="Give a workout name"
-                          {...register(`workout_modules[${index}].moduleTime`)}
+                          placeholder="Give a module time"
+                          {...register(`modules[${index}].module_time`)}
                         />
                       </div>
                     </div>

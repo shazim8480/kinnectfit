@@ -56,7 +56,10 @@ const SignInPage = () => {
         localStorage.setItem('accessToken', JSON.stringify(accessToken));
         localStorage.setItem('userData', JSON.stringify(userData));
         dispatch(setUser(signInResponse?.data?.data));
-        router.push("/");
+        const mealPlanRedirectUrl = sessionStorage.getItem('mealPlanRedirectUrl');
+        sessionStorage.removeItem('mealPlanRedirectUrl');
+        router.push(mealPlanRedirectUrl || "/");
+
       } else if (signInResponse?.error) {
         setError("email", {
           message: signInResponse?.error?.data?.message,

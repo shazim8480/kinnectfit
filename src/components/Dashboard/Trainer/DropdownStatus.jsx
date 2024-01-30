@@ -71,7 +71,7 @@ export default function DropdownStatus({ trainerStatus, trainerId }) {
       accessToken
     };
     const pauseTrainerRes = await pauseTrainer(pauseData);
-    console.log("🛩️ pauseTrainerRes", pauseTrainerRes);
+    // console.log("🛩️ pauseTrainerRes", pauseTrainerRes);
   };
   return (
     <Dropdown>

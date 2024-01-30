@@ -1,21 +1,22 @@
 import { useRouter } from "next/router";
 import Image from "next/image";
 import MainLayout from "@/layouts/mainLayout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { KFButton } from "@/components/UI/KFButton";
 import { useGetGroupedMealsByMealPlanIDQuery, useGetMealByUserIDQuery, useGetSingleMealPlanQuery, useSelectMealMutation } from "@/redux/feature/meal/meal-api";
 import { Spinner } from "@nextui-org/react";
 import { getItemFromLocalStorage } from "@/lib/utils";
 import MealComponent from "@/components/dashboard/MealPlan/MealComponent";
+import { useGetReviewsByMealPlanIdQuery } from "@/redux/feature/review/review-api";
+import ShowReview from "@/components/ShowReview/ShowReview";
 
 function MealDetailsPage() {
-
-  const [selectedMeals, setSelectedMeals] = useState([]);
-  const [selectedMealStates, setSelectedMealStates] = useState({});
-
   // get token and userData from localStorage
   const accessToken = getItemFromLocalStorage('accessToken');
   const userData = getItemFromLocalStorage('userData');
+  const [key, setKey] = useState(Date.now());
+  const [selectedMeals, setSelectedMeals] = useState([]);
+  const [selectedMealStates, setSelectedMealStates] = useState({});
 
   const router = useRouter();
   const { mealPlanId } = router.query;
@@ -25,6 +26,8 @@ function MealDetailsPage() {
   const { data, isLoading } = useGetSingleMealPlanQuery(mealPlanId);
   const { data: groupMealsData, isLoading: groupMealsLoading } = useGetGroupedMealsByMealPlanIDQuery(mealPlanId);
   const { data: userSelectedMealsData, refetch } = useGetMealByUserIDQuery(userData?._id);
+  const { data: mealPlanReviewsData } = useGetReviewsByMealPlanIdQuery(mealPlanId);
+  console.log("🚀 mealplan reviews", mealPlanReviewsData);
 
   const isSubmitDisabled = selectedMeals.length === 0;
 
@@ -53,6 +56,11 @@ function MealDetailsPage() {
 
   // submit meals after selecting
   const handleSubmitMeals = async () => {
+    // if (!accessToken) {
+    //   const currentUrl = window.location.pathname + window.location.search;
+    //   sessionStorage.setItem('mealPlanRedirectUrl', currentUrl);
+    //   router.push('/sign-in');
+    // }
     const selectedMealsData = {
       data: {
         user: userData?._id,
@@ -63,11 +71,22 @@ function MealDetailsPage() {
     // console.log("selectedMealsResponse", selectedMealsResponse);
     if (selectedMealsResponse?.data?.statusCode === 200) {
       if (!isSubmitDisabled) {
-        router.push('/dashboard');
+        router.push("/dashboard");
         refetch();
       }
     }
   };
+
+
+
+  useEffect(() => {
+    // Reset selected meal states when accessToken becomes unavailable (user logs out)
+    if (!accessToken) {
+      setSelectedMeals([]);
+      setSelectedMealStates({});
+      setKey(Date.now());
+    }
+  }, [accessToken]);
 
   if (isLoading || groupMealsLoading || !data) {
     return (
@@ -78,6 +97,8 @@ function MealDetailsPage() {
   }
 
   const { mealPlan_cover, mealPlan_name, mealPlan_description } = data.data;
+
+
 
   return (
     <>
@@ -119,11 +140,13 @@ function MealDetailsPage() {
                     <div className="grid grid-cols-1 gap-8 md:grid-cols-2 ">
                       {groupMealsData?.data?.Breakfast?.map((meal) => (
                         <MealComponent
+                          setSelectedMeals={setSelectedMeals}
+                          setSelectedMealStates={setSelectedMealStates}
                           key={meal?._id}
                           meal={meal}
-                          selected={selectedMealStates[meal?._id]}
+                          selected={accessToken && selectedMealStates[meal?._id]}
                           onClick={handleSelectMeal}
-                          alreadySelected={userSelectedMealsData?.data[0]?.selected_meals.some(item => item._id === meal?._id)}
+                          alreadySelected={accessToken && userSelectedMealsData?.data[0]?.selected_meals.some(item => item._id === meal?._id)}
                         />
                       ))}
                     </div>
@@ -140,11 +163,13 @@ function MealDetailsPage() {
                     <div className="grid grid-cols-1 gap-8 md:grid-cols-2 ">
                       {groupMealsData?.data?.Lunch?.map((meal) => (
                         <MealComponent
+                          setSelectedMeals={setSelectedMeals}
+                          setSelectedMealStates={setSelectedMealStates}
                           key={meal?._id}
                           meal={meal}
-                          selected={selectedMealStates[meal?._id]}
+                          selected={accessToken && selectedMealStates[meal?._id]}
                           onClick={handleSelectMeal}
-                          alreadySelected={userSelectedMealsData?.data[0]?.selected_meals.some(item => item._id === meal?._id)}
+                          alreadySelected={accessToken && userSelectedMealsData?.data[0]?.selected_meals.some(item => item._id === meal?._id)}
                         />
                       ))}
                     </div>
@@ -161,11 +186,13 @@ function MealDetailsPage() {
                     <div className="grid grid-cols-1 gap-8 md:grid-cols-2 ">
                       {groupMealsData?.data?.Dinner?.map((meal) => (
                         <MealComponent
+                          setSelectedMeals={setSelectedMeals}
+                          setSelectedMealStates={setSelectedMealStates}
                           key={meal?._id}
                           meal={meal}
-                          selected={selectedMealStates[meal?._id]}
+                          selected={accessToken && selectedMealStates[meal?._id]}
                           onClick={handleSelectMeal}
-                          alreadySelected={userSelectedMealsData?.data[0]?.selected_meals.some(item => item._id === meal?._id)}
+                          alreadySelected={accessToken && userSelectedMealsData?.data[0]?.selected_meals.some(item => item._id === meal?._id)}
                         />
                       ))}
                     </div>
@@ -176,17 +203,19 @@ function MealDetailsPage() {
 
               {/* Snacks */}
               {groupMealsData?.data?.Snacks && (
-                <div className="py-6 text-base text-black">
+                <div key={key} className="py-6 text-base text-black">
                   <div>
                     <p className="flex justify-between mb-4 text-xl font-semibold">Snacks</p>
                     <div className="grid grid-cols-1 gap-8 md:grid-cols-2 ">
                       {groupMealsData?.data?.Snacks?.map((meal) => (
                         <MealComponent
+                          setSelectedMeals={setSelectedMeals}
+                          setSelectedMealStates={setSelectedMealStates}
                           key={meal?._id}
                           meal={meal}
-                          selected={selectedMealStates[meal?._id]}
+                          selected={accessToken && selectedMealStates[meal?._id]}
                           onClick={handleSelectMeal}
-                          alreadySelected={userSelectedMealsData?.data[0]?.selected_meals.some(item => item._id === meal?._id)}
+                          alreadySelected={accessToken && userSelectedMealsData?.data[0]?.selected_meals.some(item => item._id === meal?._id)}
                         />
                       ))}
                     </div>
@@ -206,7 +235,7 @@ function MealDetailsPage() {
             onClick={handleSubmitMeals}
             size="lg"
             color="secondary"
-            className={`${isSubmitDisabled && "opacity-[0.6]"}`}
+            className={`${(isSubmitDisabled || !accessToken) && "opacity-[0.6]"}`}
           // disabled={isSubmitDisabled}
           >
             Confirm Meal Submission
@@ -214,31 +243,12 @@ function MealDetailsPage() {
         </div >
       </section >
 
-      {/* {mealPlanReviewData?.reviews?.map((review) => {
-        return <div key={review?.review_id} className=" m-10">
-          <div className='grid grid-cols-1 md:grid-cols-2 h-full  min-h-[650px] md:min-h-[350px] items-center shadow-lg '>
-            <div className='p-10'>
-              <div>
-                <span className='font-semibold text-lg'>{review?.review_information?.review_info?.reviewer_name}</span>
-              </div>
-              <div className='mt-1'>
-                <ReviewStar rating={review?.review_information?.review_info?.rating} />
-              </div>
-              <div className='mt-2'>
-                <span className='font-medium text-base'>{review?.review_information?.review_info?.review_item_name}</span>
-              </div>
-              <div className='mt-2'>
-                <span className='italic text-gray-600'>
-                  {review?.review_information?.review_info?.description}
-                </span>
-              </div>
-            </div>
-            <div className='h-full relative '>
-              <Image src={review?.review_information?.review_info?.review_img[0]} alt='rental' layout='fill' className='absolute' />
-            </div>
-          </div>
-        </div>;
-      })} */}
+      {/* Reviews  */}
+      {mealPlanReviewsData?.data?.map((review) => (
+        <ShowReview key={review?._id} review={review} />
+      )
+      )}
+      {/* Reviews ends */}
 
     </>
 

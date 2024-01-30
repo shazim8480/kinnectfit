@@ -10,17 +10,20 @@ import {
 } from "@/redux/feature/workout/workout-api";
 import UserCard from "@/components/Workout-Items/UserCard";
 import { getItemFromLocalStorage } from "@/lib/utils";
+import { useGetReviewsByWorkoutIdQuery } from "@/redux/feature/review/review-api";
+import ReviewStar from "@/components/ShowReview/ReviewStar";
+import ShowReview from "@/components/ShowReview/ShowReview";
 
 function WorkoutPage() {
+  const [isStarted, setIsStarted] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
+  const userData = getItemFromLocalStorage('userData');
   const router = useRouter();
   const { workoutID } = router.query;
   const { data } = useGetSingleWorkoutQuery(workoutID);
   const { data: workoutModuleData } = useGetWorkoutModuleByWorkoutIdQuery(workoutID);
-  const [isStarted, setIsStarted] = useState(false);
-  const [isCompleted, setIsCompleted] = useState(false);
-  // console.log("🚀 single workoput data", data);
-  const userData = getItemFromLocalStorage('userData');
-
+  const { data: workoutReviewsData } = useGetReviewsByWorkoutIdQuery(workoutID);
+  console.log("🚀 single workoput reviews data", workoutReviewsData);
 
   const handleStarted = () => {
     if (userData?.role === 'trainer') {
@@ -111,33 +114,10 @@ function WorkoutPage() {
 
 
       {/* Show reviews  */}
-
-      {/* {workoutReviewData?.reviews?.map((review) => {
-        return <div key={review?.review_id} className=" m-10">
-          <div className='grid grid-cols-1 md:grid-cols-2 h-full  min-h-[650px] md:min-h-[350px] items-center shadow-lg '>
-            <div className='p-10'>
-              <div>
-                <span className='font-semibold text-lg'>{review?.review_information?.review_info?.reviewer_name}</span>
-              </div>
-              <div className='mt-1'>
-                <ReviewStar rating={review?.review_information?.review_info?.rating} />
-              </div>
-              <div className='mt-2'>
-                <span className='font-medium text-base'>{review?.review_information?.review_info?.review_item_name}</span>
-              </div>
-              <div className='mt-2'>
-                <span className='italic text-gray-600'>
-                  {review?.review_information?.review_info?.description}
-                </span>
-              </div>
-            </div>
-            <div className='h-full relative '>
-              <Image src={review?.review_information?.review_info?.review_img[0]} alt='rental' layout='fill' className='absolute' />
-            </div>
-          </div>
-        </div>;
-      })} */}
-
+      {workoutReviewsData?.data?.map((review) => (
+        <ShowReview key={review?._id} review={review} />
+      )
+      )}
       {/* Show reviews ends */}
     </>
   );

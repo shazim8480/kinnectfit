@@ -57,7 +57,7 @@ const workoutApi = api.injectEndpoints({
       }),
       invalidatesTags: ["moduleUpdate"],
     }),
-    createWorkoutModule: builder.mutation({
+  createWorkoutModule: builder.mutation({
       query: ({ data, accessToken }) => ({
         url: `${CREATE_WORKOUT_MODULE}`,
         method: "POST",

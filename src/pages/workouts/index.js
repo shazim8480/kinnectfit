@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { Button, Checkbox, CheckboxGroup, Chip, Pagination } from "@nextui-org/react";
+import { Checkbox, CheckboxGroup, Chip, Pagination } from "@nextui-org/react";
 import MainLayout from "@/layouts/mainLayout";
 import { KFInput } from "@/components/UI/KFInput";
 import WorkoutCard from "@/components/Workout-Items/WorkoutCard";
 import { useGetAllWorkoutsQuery } from "@/redux/feature/workout/workout-api";
-import { KFButton } from "@/components/UI/KFButton";
 
 const Workouts = () => {
 
@@ -13,7 +12,16 @@ const Workouts = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const categories = groupSelected.join('&workout_category=');
-  const { data: workout_data } = useGetAllWorkoutsQuery({ searchTerm: searchWorkout, page: currentPage, categories });
+  // const { data: workout_data } = useGetAllWorkoutsQuery({ searchTerm: searchWorkout, page: currentPage, categories });
+  const { data: workout_data } = useGetAllWorkoutsQuery({
+    searchTerm: searchWorkout,
+    page: currentPage,
+    categories,
+    // Add a field to fetch all categories
+    // fetchAllCategories: true,
+  });
+  // console.log("🚀 allCategories");
+
   const pageLimit = workout_data?.meta?.total / 12;
 
   const uniqueCategory = [];
@@ -81,36 +89,8 @@ const Workouts = () => {
 
       {/* pagination */}
       <div className="flex justify-end">
-        <div className="flex flex-col gap-5 ">
-          {/* <p className="text-small text-default-500">Selected Page: {currentPage}</p> */}
-          <Pagination
-            total={Math.ceil(pageLimit)}
-            color="secondary"
-            page={currentPage}
-            onChange={setCurrentPage}
-          />
-          <div className="flex gap-2">
-            <KFButton
-              size="sm"
-              variant="flat"
-              color="secondary"
-              onPress={() => setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev))}
-            >
-              Previous
-            </KFButton>
-            <KFButton
-              size="sm"
-              variant="flat"
-              color="secondary"
-              onPress={() => setCurrentPage((prev) => (prev < `${pageLimit}` ? prev + 1 : prev))}
-            >
-              Next
-            </KFButton>
-          </div>
-        </div>
-
+        <Pagination showControls color="secondary" total={Math.ceil(pageLimit)} initialPage={1} />
       </div>
-
       {/* pagination ends */}
     </section>
   );

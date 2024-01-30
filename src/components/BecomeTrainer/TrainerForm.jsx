@@ -9,6 +9,7 @@ import { calculateBmi } from "@/lib/getBMI";
 import { CldUploadButton, CldImage } from "next-cloudinary";
 import { useTrainerRequestMutation } from "@/redux/feature/trainer/trainer-api";
 import { useRouter } from "next/navigation";
+import { getItemFromLocalStorage } from "@/lib/utils";
 
 const TrainerForm = () => {
   const router = useRouter();
@@ -38,9 +39,9 @@ const TrainerForm = () => {
   // console.log("🚀 ~ file: TrainerForm.jsx:16 ~ TrainerForm ~ bmi:", bmi);
   //   console.log(typeof bmi);
 
-  const userProfile = useSelector((state) => state.user);
   // console.log("🚀 ~ userProfile:", userProfile);
-  const accessToken = userProfile?.user?.accessToken;
+  const userData = getItemFromLocalStorage('userData');
+  const accessToken = getItemFromLocalStorage('accessToken');
 
   //   file upload section
   const [files, setFiles] = useState([]);
@@ -62,20 +63,16 @@ const TrainerForm = () => {
   }, [calculatedBmi]);
 
   const onSubmit = async (data) => {
-    // console.log("form data", data);
-    // return;
     if (Object.keys(errors).length === 0) {
       const trainerDataObj = {
-        user: userProfile?.user?.user?.id,
+        user: userData?._id,
         age: data.age,
         height: data.height,
         weight: data.weight,
         bmi: data.bmi,
-        // status: "pending",
         images: files,
       };
       let addTrainerResponse = await trainerRequest({ data: trainerDataObj, accessToken });
-      // console.log("trainer submission ready data ===>", addTrainerResponse);
       if (addTrainerResponse?.data?.statusCode === 200) {
         router.push("/dashboard/health-summary");
       }
@@ -103,7 +100,7 @@ const TrainerForm = () => {
               id="name"
               name="name"
               label="name"
-              placeholder={userProfile?.user?.user?.name}
+              placeholder={userData?.name}
               isDisabled
               variant="faded"
               size="xl"
@@ -120,7 +117,7 @@ const TrainerForm = () => {
               id="email"
               name="email"
               label="email"
-              placeholder={userProfile?.user?.user?.email}
+              placeholder={userData?.email}
               isDisabled
               variant="faded"
               size="xl"

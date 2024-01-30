@@ -10,11 +10,12 @@ import {
 
 import { useGetUserWorkoutByIdQuery } from "@/redux/feature/workout/workout-api";
 import { useSelector } from "react-redux";
+import { getItemFromLocalStorage } from "@/lib/utils";
 
 const WorkoutList = () => {
-  const { user } = useSelector((state) => state.user);
-  const { data: getworkoutbyuserid, isLoading } = useGetUserWorkoutByIdQuery(
-    user?.id,
+  const userData = getItemFromLocalStorage('userData');
+  const { data: getWorkoutByUserId, isLoading } = useGetUserWorkoutByIdQuery(
+    userData?._id,
     {
       refetchOnMountOrArgChange: true,
     }
@@ -37,14 +38,14 @@ const WorkoutList = () => {
   return (
     <>
       <h3 className="font-bold my-5">Enrolled workouts</h3>
-      {getworkoutbyuserid?.workouts ? (
+      {getWorkoutByUserId?.workouts ? (
         <Table aria-label="Example table with custom cells">
           <TableHeader columns={columns}>
             {(column) => (
               <TableColumn key={column.uid}>{column.name}</TableColumn>
             )}
           </TableHeader>
-          <TableBody items={getworkoutbyuserid.workouts}>
+          <TableBody items={getWorkoutByUserId.workouts}>
             {(item) => (
               <TableRow key={item._id}>
                 {columns.map((column) => (
@@ -55,8 +56,8 @@ const WorkoutList = () => {
                           (e) => e?.isConfirmed == true
                         )
                           ? item.workout_modules.filter(
-                              (e) => e?.isConfirmed == true
-                            ).length
+                            (e) => e?.isConfirmed == true
+                          ).length
                           : 0}
                         /{item.workout_modules.length}
                       </ul>

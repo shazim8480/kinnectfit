@@ -14,12 +14,15 @@ import { PROTOCOL_HOST } from "@/constants/url";
 import { useFetch } from "@/hooks/useFetch";
 import Image from "next/image";
 import TrainerImages from "./TrainerImages";
+import { useGetSingleTrainerQuery } from "@/redux/feature/trainer/trainer-api";
 
 export default function TrainerDetails({ isOpen, onOpenChange, trainerId }) {
-  const { data: trainerDetails, loading } = useFetch(
-    `${PROTOCOL_HOST}/trainer/${trainerId}`
-  );
-  const trainerImg = trainerDetails?.trainer?.trainerImg;
+  // const { data: trainerDetails, loading } = useFetch(
+  //   `${PROTOCOL_HOST}/trainer/${trainerId}`
+  // );
+  const { data, isLoading } = useGetSingleTrainerQuery(trainerId);
+  // const trainerImg = trainerDetails?.trainer?.trainerImg;
+  console.log(" 🚀 single trainer data", data);
 
   const {
     isOpen: imageModalOpen,
@@ -28,7 +31,7 @@ export default function TrainerDetails({ isOpen, onOpenChange, trainerId }) {
   } = useDisclosure();
   const [selectedImage, setSelectedImage] = useState(null);
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-[80vh] flex justify-center items-center">
         <Spinner />
@@ -36,7 +39,8 @@ export default function TrainerDetails({ isOpen, onOpenChange, trainerId }) {
     );
   }
 
-  const { name, age, BMI, height, weight } = trainerDetails?.trainer;
+  const { user, age, bmi, height, weight, images } = data?.data;
+  const { name } = user;
 
   const handleImageClick = (image) => {
     setSelectedImage(image);
@@ -89,7 +93,7 @@ export default function TrainerDetails({ isOpen, onOpenChange, trainerId }) {
                     />
                     <Input
                       label="BMI"
-                      defaultValue={`${BMI} `}
+                      defaultValue={`${bmi} `}
                       variant="faded"
                       isDisabled
                     />
@@ -97,7 +101,7 @@ export default function TrainerDetails({ isOpen, onOpenChange, trainerId }) {
                   <div className="mt-5 text-base font-medium text-neutral-800">
                     <h3 className="mb-2 font-medium">Uploaded images :</h3>
                     <div className="flex flex-wrap items-center justify-center gap-2 mb-10 md:grid md:grid-cols-5">
-                      {trainerImg?.map((image, index) => (
+                      {images?.map((image, index) => (
                         <div
                           key={index}
                           className="relative w-20 h-20"

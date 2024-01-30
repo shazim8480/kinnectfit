@@ -19,7 +19,7 @@ const WorkoutCard = ({ workoutItem }) => {
     _id: workout_id,
   } = workoutItem;
 
-  console.log("Workout Item", workoutItem);
+  // console.log("Workout Item", workoutItem);
   // const userData = getItemFromLocalStorage('userData');
   const accessToken = getItemFromLocalStorage('accessToken');
   const router = useRouter();

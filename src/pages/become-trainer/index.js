@@ -2,15 +2,16 @@ import { useEffect } from "react";
 import MainLayout from "@/layouts/mainLayout";
 import TrainerForm from "@/components/BecomeTrainer/TrainerForm";
 import { useRouter } from "next/navigation";
-import { accessTokenFromLS } from "@/lib/utils";
+import { getItemFromLocalStorage } from "@/lib/utils";
 
 const BecomeTrainerPage = () => {
+  const accessToken = getItemFromLocalStorage('accessToken');
   const router = useRouter();
   useEffect(() => {
-    if (!accessTokenFromLS) {
+    if (!accessToken) {
       router.push("/");
     }
-  }, [accessTokenFromLS]);
+  }, [accessToken]);
 
   const stats = [
     { label: "Trainers every 24 hours", value: "20+" },

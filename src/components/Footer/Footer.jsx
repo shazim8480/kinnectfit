@@ -46,7 +46,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="flex flex-col items-center justify-center py-3 text-slate-200 text-center bg-[#1D267D] ">
-        <div>© 2023 KinnectFit.All rights reserved.</div>
+        <div>© 2024 KinnectFit.All rights reserved.</div>
       </div>
     </footer>
   );

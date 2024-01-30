@@ -13,7 +13,13 @@ import { api } from "@/redux/api/apiSlice";
 const workoutApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getAllWorkouts: builder.query({
-      query: () => `${GET_ALL_WORKOUTS}`,
+      query: ({ searchTerm, limit, page, categories }) => {
+        let category;
+        if (categories && categories.length > 0) {
+          category = `workout_category=${categories}`;
+        }
+        return `${GET_ALL_WORKOUTS}?searchTerm=${searchTerm}&limit=${limit || 12}&page=${page}&${category}`;
+      },
       providesTags: ["workouts"],
     }),
     getFeaturedWorkouts: builder.query({
@@ -57,7 +63,7 @@ const workoutApi = api.injectEndpoints({
       }),
       invalidatesTags: ["moduleUpdate"],
     }),
-  createWorkoutModule: builder.mutation({
+    createWorkoutModule: builder.mutation({
       query: ({ data, accessToken }) => ({
         url: `${CREATE_WORKOUT_MODULE}`,
         method: "POST",

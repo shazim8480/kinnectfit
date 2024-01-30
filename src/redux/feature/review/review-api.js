@@ -1,10 +1,14 @@
-import { CREATE_REVIEW, GET_ALL_REVIEWS, GET_REVIEWS_BY_MEAL_PLAN, GET_REVIEWS_BY_WORKOUT } from "@/constants/url";
+import { CREATE_REVIEW, GET_ALL_REVIEWS, GET_REVIEWS_BY_APP, GET_REVIEWS_BY_MEAL_PLAN, GET_REVIEWS_BY_WORKOUT } from "@/constants/url";
 import { api } from "@/redux/api/apiSlice";
 
-const mealApi = api.injectEndpoints({
+const reviewApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getAllReviews: builder.query({
       query: () => `${GET_ALL_REVIEWS}`,
+      providesTags: ["reviews"],
+    }),
+    getReviewsByApp: builder.query({
+      query: () => `${GET_REVIEWS_BY_APP}`,
       providesTags: ["reviews"],
     }),
     getReviewsByWorkoutId: builder.query({
@@ -31,4 +35,4 @@ const mealApi = api.injectEndpoints({
   overrideExisting: true,
 });
 
-export const { useCreateReviewMutation, useGetReviewsByMealPlanIdQuery, useGetReviewsByWorkoutIdQuery } = mealApi;
+export const { useCreateReviewMutation, useGetReviewsByMealPlanIdQuery, useGetReviewsByWorkoutIdQuery, useGetReviewsByAppQuery } = reviewApi;

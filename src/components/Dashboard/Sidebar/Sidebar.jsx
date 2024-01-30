@@ -11,12 +11,13 @@ import AddReviewIcon from "@/assets/icons/AddReviewIcon";
 import { TrainerListIcon } from "@/assets/icons/TrainerListIcon";
 import { useSelector } from "react-redux";
 import { useGetAllTrainersQuery } from "@/redux/feature/trainer/trainer-api";
+import { accessToken, getItemFromLocalStorage, userData } from "@/lib/utils";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const { user } = useSelector((state) => state?.user);
   let userID = user?.id;
-  // check if trainer is true
   const [isTrainer, setIsTrainer] = useState(false);
+  const userData = getItemFromLocalStorage('userData');
 
   // get all trainers query
   const { data: allTrainerData, refetch: trainersRefetch } =
@@ -84,9 +85,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   return (
     <aside
       ref={sidebar}
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-blue-100 duration-300 ease-linear lg:static lg:translate-x-0 ${
-        sidebarOpen ? "translate-x-0" : "-translate-x-full"
-      }`}
+      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-blue-100 duration-300 ease-linear lg:static lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2  py-5.5 lg:py-6.5">
@@ -105,15 +105,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           {/* <!-- Menu Group --> */}
           <div>
             <ul className="mb-6 flex flex-col gap-1.5">
-              {!user?.isAdmin && (!isTrainer || isTrainer === undefined) && (
+              {userData?.role === 'user' && (
                 <>
                   {/* <!-- Menu Item Health Summary --> */}
                   <li>
                     <Link
                       href="/dashboard/health-summary"
-                      className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${
-                        pathname.includes("health-summary") && "bg-blue-200"
-                      }`}
+                      className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${pathname.includes("health-summary") && "bg-blue-200"
+                        }`}
                     >
                       <HealthSummaryIcon
                         fill="currentColor"
@@ -128,9 +127,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   <li>
                     <Link
                       href="/dashboard/add-review"
-                      className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${
-                        pathname.includes("add-review") && "bg-blue-200 "
-                      }`}
+                      className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${pathname.includes("add-review") && "bg-blue-200 "
+                        }`}
                     >
                       <AddReviewIcon fill="currentColor" className="w-5 h-5" />
                       Add Review
@@ -140,10 +138,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 </>
               )}
 
-              {isTrainer === true && (
+              {userData?.role === 'trainer' && (
                 <>
                   {/* <!-- Menu Item Trainer Summary --> */}
-                  {/* <li>
+                  <li>
                     <Link
                       href="/dashboard/trainer-summary"
                       className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${
@@ -157,17 +155,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                       />
                       Trainer Summary
                     </Link>
-                  </li> */}
+                  </li>
                   {/* <!-- Menu Item Trainer Summary --> */}
 
                   {/* <!-- Menu Item Create Workout --> */}
                   <li>
                     <Link
                       href="/dashboard/create-workout"
-                      className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${
-                        pathname.includes("create-workout") &&
+                      className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${pathname.includes("create-workout") &&
                         "bg-blue-200 dark:bg-meta-4"
-                      }`}
+                        }`}
                     >
                       <CreateWorkoutIcon
                         fill="currentColor"
@@ -182,10 +179,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   <li>
                     <Link
                       href="/dashboard/create-mealplan"
-                      className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${
-                        pathname.includes("create-mealplan") &&
+                      className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${pathname.includes("create-mealplan") &&
                         "bg-blue-200 dark:bg-meta-4"
-                      }`}
+                        }`}
                     >
                       <MealPlanIcon fill="currentColor" className="w-5 h-5" />
                       Create Meal Plan
@@ -196,13 +192,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               )}
 
               {/* <!-- Menu Item Add Review --> */}
-              {user?.isAdmin && (
+              {userData?.role === 'admin' && (
                 <li>
                   <Link
                     href="/dashboard/trainer-list"
-                    className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${
-                      pathname.includes("trainer-list") && "bg-blue-200 "
-                    }`}
+                    className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${pathname.includes("trainer-list") && "bg-blue-200 "
+                      }`}
                   >
                     <TrainerListIcon fill="currentColor" className="w-5 h-5" />
                     Trainer List

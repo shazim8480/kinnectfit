@@ -61,22 +61,22 @@ const CreateWorkoutPage = () => {
 
       try {
         const createWorkoutRes = await createWorkout(createWorkoutData);
-        // console.log("🥦createWorkoutRes", createWorkoutRes);
+        // console.log("☘️ createModuleRes", createWorkoutRes);
+
         workout = createWorkoutRes?.data?.data?._id;
-        console.log(" 🥦 workout", workout);
         setWorkoutId(workout);
 
         if (createWorkoutRes?.data?.statusCode === 200) {
+
           handleNext();
         }
       } catch (error) {
+        alert(error.message);
         console.log("Error occured", error);
       }
     }
 
     else if (formSteps === 1) {
-      // console.log("🚀 modules data", modules);
-      // console.log("🚀 workout", workoutId);
       const createModuleData = {
         data: {
           modules: modules,
@@ -85,7 +85,6 @@ const CreateWorkoutPage = () => {
         }, accessToken
       };
       const createModuleRes = await createWorkoutModule(createModuleData);
-      // console.log("🚀 create module response", createModuleRes);
       if (createModuleRes?.data?.statusCode === 200) {
         router.push('/dashboard');
       }

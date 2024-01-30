@@ -15,5 +15,6 @@ export const getItemFromLocalStorage = (key) => {
     return null;
   }
 };
-export const accessTokenFromLS = getItemFromLocalStorage('accessToken');
-export const userDataFromLS = getItemFromLocalStorage('userData');
+const userData = getItemFromLocalStorage('userData');
+const accessToken = getItemFromLocalStorage('accessToken');
+export { userData, accessToken };

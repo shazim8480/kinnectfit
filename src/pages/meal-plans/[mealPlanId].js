@@ -71,7 +71,7 @@ function MealDetailsPage() {
     // console.log("selectedMealsResponse", selectedMealsResponse);
     if (selectedMealsResponse?.data?.statusCode === 200) {
       if (!isSubmitDisabled) {
-        router.push("/dashboard");
+        router.push("/dashboard/health-summary");
         refetch();
       }
     }

@@ -105,7 +105,15 @@ export default function KFNavbar() {
               >
                 <DropdownItem
                   key="dashboard"
-                  onClick={() => router.push("/dashboard")}
+                  onClick={() => {
+                    if (userData?.role === 'trainer') {
+                      router.push('/dashboard/trainer-summary');
+                    } else if (userData?.role === 'admin') {
+                      router.push('/dashboard/trainer-list');
+                    } else {
+                      router.push('/dashboard/health-summary');
+                    }
+                  }}
                 >
                   Dashboard
                 </DropdownItem>
@@ -131,13 +139,13 @@ export default function KFNavbar() {
 
       <NavbarMenu>
         {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item}-${index}`}>
+          <NavbarMenuItem key={`${item} - ${index}`}>
             <Link className="w-full" href="#" size="lg">
               {item}
             </Link>
           </NavbarMenuItem>
         ))}
       </NavbarMenu>
-    </Navbar>
+    </Navbar >
   );
-}
+};

@@ -13,7 +13,13 @@ import { api } from "@/redux/api/apiSlice";
 const mealApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getAllMealPlans: builder.query({
-      query: () => `${GET_ALL_MEAL_PLANS}`,
+      query: ({ searchTerm, limit, page, categories }) => {
+        let category;
+        if (categories && categories.length > 0) {
+          category = `mealPlan_category=${categories}`;
+        }
+        return `${GET_ALL_MEAL_PLANS}?searchTerm=${searchTerm}&limit=${limit || 12}&page=${page}&${category}`;
+      },
       provideTags: ["mealPlans"],
     }),
     getFeaturedMealPlans: builder.query({

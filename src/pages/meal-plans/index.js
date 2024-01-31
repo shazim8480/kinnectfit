@@ -3,31 +3,37 @@ import MainLayout from "@/layouts/mainLayout";
 import { KFInput } from "@/components/UI/KFInput";
 import { mealData } from "@/lib/db/meal-data";
 import MealPlanCard from "@/components/MealPlanCard/MealPlanCard";
-import { Checkbox, CheckboxGroup, Chip } from "@nextui-org/react";
+import { Checkbox, CheckboxGroup, Chip, Pagination } from "@nextui-org/react";
 import { useGetAllMealPlansQuery } from "@/redux/feature/meal/meal-api";
 
 const MealPlansPage = () => {
     const [searchMealPlan, setSearchMealPlan] = useState('');
     const [groupSelected, setGroupSelected] = useState([]);
-    const { data } = useGetAllMealPlansQuery();
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const categories = groupSelected.join('&mealPlan_category=');
+
+    const { data: mealPlan_data } = useGetAllMealPlansQuery({
+        searchTerm: searchMealPlan,
+        page: currentPage,
+        categories,
+    });
+
+    const pageLimit = mealPlan_data?.meta?.total / 12;
+
+    const uniqueCategory = [];
+    mealPlan_data?.data?.map((mealPlan) => {
+        if (!uniqueCategory.includes(mealPlan?.mealPlan_category)) {
+            uniqueCategory.push(mealPlan?.mealPlan_category);
+        }
+    });
+
     const handleInputSearch = (e) => {
         const { name, value } = e.target;
         setSearchMealPlan(value);
     };
 
-    // const uniqueCategories = Array.from(new Set(mealData?.map(item => item.category)));
-    // const uniqueCategories = (data?.data?.map(item => item.meal_category));
 
-    const filteredMealPlans = data?.data?.filter((item) => {
-        const searchMatch = item.mealPlan_name
-            .toLowerCase()
-            .includes(searchMealPlan.toLowerCase());
-
-        const categoryMatch =
-            groupSelected.length === 0 || groupSelected.includes(item.mealPlan_category);
-
-        return searchMatch && categoryMatch;
-    });
 
     return (
         <>
@@ -59,29 +65,35 @@ const MealPlansPage = () => {
                 </Chip>
                 <Chip color="primary">Vegan Meal Plan</Chip>
                 <hr className="my-5"></hr>
-                {/* <h5 className="my-3 text-xl font-medium leading-tight text-neutral-800">
+                <h5 className="my-3 text-xl font-medium leading-tight text-neutral-800">
                     Categories
-                </h5> */}
-                {/* <CheckboxGroup
+                </h5>
+                <CheckboxGroup
                     orientation="horizontal"
                     color="secondary"
-                    defaultValue={[]}
                     value={groupSelected}
                     onChange={setGroupSelected}
                 >
-                    {uniqueCategories?.map((item) => {
+                    {uniqueCategory?.map((item) => {
                         return (
                             <Checkbox key={item} value={item}>
                                 {item}
                             </Checkbox>
                         );
                     })}
-                </CheckboxGroup> */}
+                </CheckboxGroup>
                 <div className="grid max-w-screen-xl grid-cols-2 gap-6  mx-auto place-items-center lg:place-content-center lg:gap-8 xl:gap-8 lg:py-8 lg:grid-cols-4">
-                    {filteredMealPlans?.map((item) => {
+                    {mealPlan_data?.data?.map((item) => {
                         return <MealPlanCard key={item.id} mealItem={item} />;
                     })}
                 </div>
+
+                {/* pagination */}
+                <div className="flex justify-end">
+                    <Pagination showControls color="secondary" total={Math.ceil(pageLimit)} initialPage={1} />
+                </div>
+                {/* pagination ends */}
+
             </section>
         </>
 

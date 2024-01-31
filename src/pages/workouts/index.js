@@ -12,15 +12,12 @@ const Workouts = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const categories = groupSelected.join('&workout_category=');
-  // const { data: workout_data } = useGetAllWorkoutsQuery({ searchTerm: searchWorkout, page: currentPage, categories });
+
   const { data: workout_data } = useGetAllWorkoutsQuery({
     searchTerm: searchWorkout,
     page: currentPage,
     categories,
-    // Add a field to fetch all categories
-    // fetchAllCategories: true,
   });
-  // console.log("🚀 allCategories");
 
   const pageLimit = workout_data?.meta?.total / 12;
 

@@ -27,7 +27,7 @@ function MealDetailsPage() {
   const { data: groupMealsData, isLoading: groupMealsLoading } = useGetGroupedMealsByMealPlanIDQuery(mealPlanId);
   const { data: userSelectedMealsData, refetch } = useGetMealByUserIDQuery(userData?._id);
   const { data: mealPlanReviewsData } = useGetReviewsByMealPlanIdQuery(mealPlanId);
-  console.log("🚀 mealplan reviews", mealPlanReviewsData);
+  // console.log("🚀 mealplan reviews", mealPlanReviewsData);
 
   const isSubmitDisabled = selectedMeals.length === 0;
 

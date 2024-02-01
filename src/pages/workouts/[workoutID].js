@@ -6,6 +6,7 @@ import { UserIcon } from "@/assets/icons/UserIcon";
 import { KFButton } from "@/components/UI/KFButton";
 import { useState } from "react";
 import {
+  useGetAllWorkoutModulesQuery,
   useGetSingleWorkoutQuery, useGetWorkoutModuleByWorkoutIdQuery
 } from "@/redux/feature/workout/workout-api";
 import UserCard from "@/components/Workout-Items/UserCard";
@@ -22,6 +23,7 @@ function WorkoutPage() {
   const { data } = useGetSingleWorkoutQuery(workoutID);
   const { data: workoutModuleData } = useGetWorkoutModuleByWorkoutIdQuery(workoutID);
   const { data: workoutReviewsData } = useGetReviewsByWorkoutIdQuery(workoutID);
+  const { data: allWorkoutModules } = useGetAllWorkoutModulesQuery();
   // console.log("🚀 single workoput reviews data", workoutReviewsData);
 
   const handleStarted = () => {
@@ -95,6 +97,7 @@ function WorkoutPage() {
                       isStarted={isStarted}
                       isCompleted={isCompleted}
                       setIsCompleted={setIsCompleted}
+                      workoutID={workoutID}
                     />
                   ))
                 }

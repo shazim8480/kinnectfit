@@ -3,7 +3,7 @@ import { useEnrollWorkoutModuleMutation, useGetEnrolledWorkoutModuleByUserIdQuer
 import { Checkbox, Chip, Spinner, cn } from "@nextui-org/react";
 import { useState } from "react";
 
-const UserCard = ({ module, isStarted, workoutModuleData, setIsCompleted, isCompleted }) => {
+const UserCard = ({ module, isStarted, workoutModuleData, setIsCompleted, isCompleted, workoutID }) => {
   const userData = getItemFromLocalStorage('userData');
   const accessToken = getItemFromLocalStorage('accessToken');
 
@@ -12,7 +12,7 @@ const UserCard = ({ module, isStarted, workoutModuleData, setIsCompleted, isComp
   const { data, isLoading } = useGetEnrolledWorkoutModuleByUserIdQuery(userData?._id);
 
   const userModules = data?.data[0]?.modules || [];  // Ensure data is not undefined
-
+  // console.log("🚀 userModules", userModules);
   const isModuleEnrolled = userModules.some(userModule => userModule.module_id === module?._id);
 
   const workoutModules = workoutModuleData?.data[0]?.modules || [];
@@ -34,17 +34,19 @@ const UserCard = ({ module, isStarted, workoutModuleData, setIsCompleted, isComp
 
     const updatedEnrolled = [...enrolled, { module_id: module?._id }];
     setEnrolled(updatedEnrolled);
-
+    console.log("🚀 workoutId", workoutID);
     try {
       const enrollData = {
         data: {
           modules: updatedEnrolled,
-          user: userData?._id
+          user: userData?._id,
+          workout: workoutID
         },
         accessToken
       };
 
-      await enrollWorkoutModule(enrollData);
+      const resEnroll = await enrollWorkoutModule(enrollData);
+      console.log("🚀 response", resEnroll);
 
     } catch (error) {
       console.error("Error enrolling module:", error);

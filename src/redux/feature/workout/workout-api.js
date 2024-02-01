@@ -3,6 +3,7 @@ import {
   CREATE_WORKOUT_MODULE,
   ENROLL_WORKOUT_MODULE,
   GET_ALL_WORKOUTS,
+  GET_ALL_WORKOUT_MODULES,
   GET_ENROLL_WORKOUT_MODULES_BY_USER,
   GET_SINGLE_WORKOUT, GET_WORKOUT_MODULE_BY_WORKOUT,
   START_WORKOUT,
@@ -59,6 +60,9 @@ const workoutApi = api.injectEndpoints({
     getSingleWorkout: builder.query({
       query: (id) => `${GET_SINGLE_WORKOUT}/${id}`,
     }),
+    getAllWorkoutModules: builder.query({
+      query: () => `${GET_ALL_WORKOUT_MODULES}`,
+    }),
     updateWorkoutModule: builder.mutation({
       query: ({ data, id, module_id }) => ({
         url: `${UPDATE_WORKOUT_MODULE}/${id}/${module_id}`,
@@ -110,5 +114,6 @@ export const {
   useGetWorkoutModuleByWorkoutIdQuery,
   useEnrollWorkoutModuleMutation,
   useGetEnrolledWorkoutModuleByUserIdQuery,
-  useCreateWorkoutModuleMutation
+  useCreateWorkoutModuleMutation,
+  useGetAllWorkoutModulesQuery
 } = workoutApi;

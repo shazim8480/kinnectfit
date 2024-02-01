@@ -28,19 +28,18 @@ const UserCard = ({ module, isStarted, workoutModuleData, setIsCompleted, isComp
   setIsCompleted(workoutModules.length === matchedModules.length);
 
 
-
-
   const handleCheckboxClick = async () => {
 
     const updatedEnrolled = [...enrolled, { module_id: module?._id }];
     setEnrolled(updatedEnrolled);
-    console.log("🚀 workoutId", workoutID);
+    // console.log("🚀 workout module data", workoutModuleData);
     try {
       const enrollData = {
         data: {
           modules: updatedEnrolled,
           user: userData?._id,
-          workout: workoutID
+          workout: workoutID,
+          total_modules: workoutModuleData?.data[0]?.modules.length
         },
         accessToken
       };

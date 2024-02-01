@@ -5,7 +5,7 @@ import DashboardLayout from "@/layouts/dashboard/DashboardLayout";
 const HealthSummaryPage = () => {
   return (
     <>
-      {/* <WorkoutList /> */}
+      <WorkoutList />
       <MealPlanList />
     </>
   );

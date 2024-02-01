@@ -24,7 +24,7 @@ function WorkoutPage() {
   const { data: workoutModuleData } = useGetWorkoutModuleByWorkoutIdQuery(workoutID);
   const { data: workoutReviewsData } = useGetReviewsByWorkoutIdQuery(workoutID);
   const { data: allWorkoutModules } = useGetAllWorkoutModulesQuery();
-  // console.log("🚀 single workoput reviews data", workoutReviewsData);
+  // console.log("🚀 single workoput module data", workoutModuleData?.data[0]?.modules.length);
 
   const handleStarted = () => {
     if (userData?.role === 'trainer') {

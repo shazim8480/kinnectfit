@@ -18,6 +18,7 @@ const Workouts = () => {
     page: currentPage,
     categories,
   });
+  console.log("🚀 current page", workout_data);
 
   const pageLimit = workout_data?.meta?.total / 12;
 
@@ -86,7 +87,7 @@ const Workouts = () => {
 
       {/* pagination */}
       <div className="flex justify-end">
-        <Pagination showControls color="secondary" total={Math.ceil(pageLimit)} initialPage={1} />
+        <Pagination showControls onChange={setCurrentPage} color="secondary" total={Math.ceil(pageLimit)} initialPage={1} />
       </div>
       {/* pagination ends */}
     </section>

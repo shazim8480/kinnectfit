@@ -15,10 +15,14 @@ const workoutApi = api.injectEndpoints({
     getAllWorkouts: builder.query({
       query: ({ searchTerm, limit, page, categories }) => {
         let category;
+        let URL;
         if (categories && categories.length > 0) {
           category = `workout_category=${categories}`;
         }
-        return `${GET_ALL_WORKOUTS}?searchTerm=${searchTerm}&limit=${limit || 12}&page=${page}&${category}`;
+        URL = `${GET_ALL_WORKOUTS}?searchTerm=${searchTerm}&limit=${limit || 12}&page=${page || 1}&${category}`;
+        console.log("👨‍🦱URL", URL);
+
+        return URL;
       },
       providesTags: ["workouts"],
     }),

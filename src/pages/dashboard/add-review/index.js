@@ -3,12 +3,13 @@ import { KFButton } from "@/components/UI/KFButton";
 import DashboardLayout from "@/layouts/dashboard/DashboardLayout";
 import { getItemFromLocalStorage } from "@/lib/utils";
 import { useCreateReviewMutation } from "@/redux/feature/review/review-api";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 
 const AddReviewPage = () => {
-  // review images
+  const router = useRouter();
   const [reviewImg, setReviewImg] = useState([]);
   const [mealPlanId, setMealPlanId] = useState("");
   const [workoutId, setWorkoutId] = useState("");
@@ -53,13 +54,14 @@ const AddReviewPage = () => {
 
     let createReviewResponse = await createReview(review_data);
     console.log("res", createReviewResponse);
-    setWorkoutId("");
-    setMealPlanId("");
-    setReviewImg([]);
-    reset();
-    return;
-    if (createReviewResponse?.data?.status === 201) {
+
+    // reset();
+    // return;
+    if (createReviewResponse?.data?.statusCode === 200) {
       router.push("/dashboard/health-summary");
+      setWorkoutId("");
+      setMealPlanId("");
+      setReviewImg([]);
       reset();
     } else if (createReviewResponse?.error) {
       console.log("err msg", createReviewResponse?.error);
@@ -68,6 +70,7 @@ const AddReviewPage = () => {
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
+        {/* <p>Hello</p> */}
         <AddReviewForm
           reviewImg={reviewImg}
           setReviewImg={setReviewImg}

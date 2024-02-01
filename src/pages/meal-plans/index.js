@@ -33,8 +33,6 @@ const MealPlansPage = () => {
         setSearchMealPlan(value);
     };
 
-
-
     return (
         <>
             <section className="max-w-screen-xl mx-auto py-10 px-4">
@@ -90,7 +88,7 @@ const MealPlansPage = () => {
 
                 {/* pagination */}
                 <div className="flex justify-end">
-                    <Pagination showControls color="secondary" total={Math.ceil(pageLimit)} initialPage={1} />
+                    <Pagination showControls onChange={setCurrentPage} color="secondary" total={Math.ceil(pageLimit)} initialPage={1} />
                 </div>
                 {/* pagination ends */}
 

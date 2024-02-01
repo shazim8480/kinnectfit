@@ -98,7 +98,7 @@ const CreateWorkout = ({ register, errors, files, setFiles }) => {
             <KFInput
               name="workout_category"
               type="text"
-              placeholder="Give a workout name"
+              placeholder="Give a workout category name"
               {...register("workout_category", {
                 required: "You must need to give a workout category name",
               })}

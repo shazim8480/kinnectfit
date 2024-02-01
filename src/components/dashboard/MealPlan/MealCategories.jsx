@@ -5,9 +5,8 @@ import { KFButton } from "@/components/UI/KFButton";
 import { useForm } from "react-hook-form";
 import { PhotoIcon } from "@heroicons/react/24/outline";
 import {
-  useCreateMealMutation, useGetAllMealPlansQuery
+  useCreateMealMutation
 } from "@/redux/feature/meal/meal-api";
-import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
 import { CldUploadButton, CldImage } from "next-cloudinary";
@@ -108,6 +107,13 @@ const MealCategories = ({ mealPlanLoading, allMealPlansData }) => {
       </div>
     );
   }
+  if (isLoading) {
+    return (
+      <div className="min-h-[80vh] flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
+  }
   // console.log("mealPlanId", mealPlanId);
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -167,7 +173,7 @@ const MealCategories = ({ mealPlanLoading, allMealPlansData }) => {
                   <label htmlFor="meal_name">Available meal plans</label>
                 </div>
                 <Select
-                  items={mealPlanItems}
+                  items={mealPlanItems || []}
                   label="Select available category"
                   className="max-w-l"
                   {...register(`mealPlan`, {

@@ -11,7 +11,6 @@ import {
 import UserCard from "@/components/Workout-Items/UserCard";
 import { getItemFromLocalStorage } from "@/lib/utils";
 import { useGetReviewsByWorkoutIdQuery } from "@/redux/feature/review/review-api";
-import ReviewStar from "@/components/ShowReview/ReviewStar";
 import ShowReview from "@/components/ShowReview/ShowReview";
 
 function WorkoutPage() {
@@ -30,10 +29,13 @@ function WorkoutPage() {
       alert("Trainer can't enroll workout modules");
       return;
     }
+    if (userData?.role === 'admin') {
+      return;
+    }
     setIsStarted(!isStarted);
   };
   const handleCompleted = () => {
-    router.push('/dashboard');
+    router.push('/dashboard/health-summary');
   };
 
   return (
@@ -78,36 +80,41 @@ function WorkoutPage() {
           </div>
         </div>
         <div className="block">
-          <div className="px-6 py-6 lg:py-0 xl:py-0">
-            <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800">
-              Workout Modules
-            </h5>
-            <div className="mb-4 text-base text-neutral-600">
-              {
-                workoutModuleData?.data[0]?.modules.map((module) => (
-                  <UserCard
-                    key={module?.id}
-                    module={module}
-                    workoutModuleData={workoutModuleData}
-                    isStarted={isStarted}
-                    isCompleted={isCompleted}
-                    setIsCompleted={setIsCompleted}
-                  />
-                ))
-              }
+          {
+            workoutModuleData?.data.length !== 0 ? <div className="px-6 py-6 lg:py-0 xl:py-0 ">
+              <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800">
+                Workout Modules
+              </h5>
+              <div className="mb-4 text-base text-neutral-600">
+                {
+                  workoutModuleData?.data[0]?.modules.map((module) => (
+                    <UserCard
+                      key={module?.id}
+                      module={module}
+                      workoutModuleData={workoutModuleData}
+                      isStarted={isStarted}
+                      isCompleted={isCompleted}
+                      setIsCompleted={setIsCompleted}
+                    />
+                  ))
+                }
+              </div>
+              <KFButton
+                color={!isCompleted ? "secondary" : "primary"}
+                className="w-full rounded-md"
+                onClick={isCompleted ? handleCompleted : handleStarted}
+              >
+                {
+                  isCompleted ? "Complete Workout" : isStarted ? "Pause Workout" : !isStarted && "Start Workout"
+                }
 
+              </KFButton>
+            </div> : <div className="px-6 py-6 lg:py-0 xl:py-0 flex justify-center items-center h-1/2">
+              <p className="font-medium text-xl">No workout modules available</p>
             </div>
-            <KFButton
-              color={!isCompleted ? "secondary" : "primary"}
-              className="w-full rounded-md"
-              onClick={isCompleted ? handleCompleted : handleStarted}
-            >
-              {
-                isCompleted ? "Complete Workout" : isStarted ? "Pause Workout" : !isStarted && "Start Workout"
-              }
+          }
 
-            </KFButton>
-          </div>
+
         </div>
       </section>;
       {/* workout modules ends */}

@@ -86,7 +86,7 @@ const CreateWorkoutPage = () => {
       };
       const createModuleRes = await createWorkoutModule(createModuleData);
       if (createModuleRes?.data?.statusCode === 200) {
-        router.push('/dashboard');
+        router.push('/dashboard/trainer-summary');
       }
     }
 

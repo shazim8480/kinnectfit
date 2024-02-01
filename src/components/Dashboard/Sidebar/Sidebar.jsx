@@ -1,17 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 // import SidebarLinkGroup from ;
-import MealPlanIcon from "@/assets/icons/MealPlanIcon";
 import HealthSummaryIcon from "@/assets/icons/HealthSummaryIcon";
 import TrainerSummaryIcon from "@/assets/icons/TrainerSummaryIcon";
 import CreateWorkoutIcon from "@/assets/icons/CreateWorkoutIcon";
-import UserProfileIcon from "@/assets/icons/UserProfileIcon";
 import AddReviewIcon from "@/assets/icons/AddReviewIcon";
 import { TrainerListIcon } from "@/assets/icons/TrainerListIcon";
 import { useSelector } from "react-redux";
 import { useGetAllTrainersQuery } from "@/redux/feature/trainer/trainer-api";
-import { accessToken, getItemFromLocalStorage, userData } from "@/lib/utils";
+import { getItemFromLocalStorage } from "@/lib/utils";
+import MealPlanIcon from "@/assets/icons/MealIcon";
+import MealIcon from "@/assets/icons/MealPlanIcon";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const { user } = useSelector((state) => state?.user);
@@ -118,7 +118,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                         fill="currentColor"
                         className="w-5 h-5"
                       />
-                      Health Summary
+                      User Summary
                     </Link>
                   </li>
                   {/* <!-- Menu Item Health Summary --> */}
@@ -144,10 +144,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   <li>
                     <Link
                       href="/dashboard/trainer-summary"
-                      className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${
-                        pathname.includes("trainer-summary") &&
+                      className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${pathname.includes("trainer-summary") &&
                         "bg-blue-200 dark:bg-meta-4"
-                      }`}
+                        }`}
                     >
                       <TrainerSummaryIcon
                         fill="currentColor"
@@ -188,6 +187,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     </Link>
                   </li>
                   {/* <!-- Menu Item Create Meal Plan --> */}
+
+                  {/* <!-- Menu Item Create Meal  --> */}
+                  <li>
+                    <Link
+                      href="/dashboard/create-meals"
+                      className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-blue-800 duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-meta-4 ${pathname.includes("create-meals") &&
+                        "bg-blue-200 dark:bg-meta-4"
+                        }`}
+                    >
+                      <MealIcon fill="currentColor" className="w-5 h-5" />
+                      Create Meal
+                    </Link>
+                  </li>
+                  {/* <!-- Menu Item Create Meal  --> */}
                 </>
               )}
 

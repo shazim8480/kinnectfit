@@ -1,6 +1,6 @@
 import React from "react";
 
-const MealPlanIcon = (props) => (
+const MealIcon = (props) => (
   <svg
     version="1.1"
     id="Layer_1"
@@ -23,4 +23,4 @@ const MealPlanIcon = (props) => (
   </svg>
 );
 
-export default MealPlanIcon;
+export default MealIcon;

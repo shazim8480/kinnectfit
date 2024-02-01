@@ -24,14 +24,14 @@ const WorkoutList = () => {
       refetchOnMountOrArgChange: true,
     }
   );
-  console.log("object🇲🇦", data?.data);
+  // console.log("object🇲🇦", data?.data);
 
 
   const columns = [
     { name: "Workout name", uid: "workout.workout_name" },
     { name: "Workout category", uid: "workout.workout_category" },
-    { name: "Enrolled Date", uid: "workout.createdAt" },
-    { name: "Completed Modules", uid: `workout.modules` },
+    { name: "Enrolled date", uid: "workout.updatedAt" },
+    { name: "Completed modules", uid: `workout.modules` },
     // { name: "Trainer ID", uid: "trainer_id" },
   ];
 
@@ -42,7 +42,7 @@ const WorkoutList = () => {
     switch (columnKey) {
       case "workout.workout_name":
         return <p>{cellValue}</p>;
-      case "workout.createdAt":
+      case "workout.updatedAt":
         const dateString = workout?.createdAt.slice(0, 10);
         const registrationDate = moment(dateString).format("DD MMM YYYY");
         return (
@@ -77,7 +77,7 @@ const WorkoutList = () => {
   return (
     <>
       <h3 className="font-bold my-5">Enrolled workouts</h3>
-      {data?.data ? (
+      {data?.data.length !== 0 ? (
         <Table aria-label="Example table with custom cells">
           <TableHeader columns={columns}>
             {(column) => (
@@ -101,7 +101,7 @@ const WorkoutList = () => {
           </TableBody>
         </Table >
       ) : (
-        <h3>Not Enrolled in any workouts</h3>
+        <h3 >Not Enrolled in any workouts</h3>
       )}
     </>
   );

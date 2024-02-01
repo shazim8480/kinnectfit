@@ -6,21 +6,16 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
 const CreateMealPlanPage = () => {
-  const router = useRouter();
-  const [createMealPlan] = useCreateMealPlanMutation();
 
   const {
-    register,
-    handleSubmit,
-    reset,
     formState: { errors },
   } = useForm();
-  const { data: allMealPlansData, isLoading: mealPlanLoading, refetch } = useGetAllMealPlansQuery();
+  const { data: allMealPlansData, isLoading: mealPlanLoading, refetch } = useGetAllMealPlansQuery({ searchTerm: "" });
 
   return (
     <div>
       <MealPlanDetails refetch={refetch} />
-      <MealCategories allMealPlansData={allMealPlansData} mealPlanLoading={mealPlanLoading} />
+      {/* <MealCategories allMealPlansData={allMealPlansData} mealPlanLoading={mealPlanLoading} /> */}
     </div>
   );
 };

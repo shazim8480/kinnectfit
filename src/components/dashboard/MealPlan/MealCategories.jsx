@@ -57,11 +57,10 @@ const MealCategories = ({ mealPlanLoading, allMealPlansData }) => {
     let createMealResponse = await createMeal(mealData);
     console.log("createMealResponse", createMealResponse);
     // return;
-    if (createMealResponse?.data?.status === 201) {
-      const result = await updateUser(updateUserInfo);
+    if (createMealResponse?.data?.statusCode === 200) {
       reset();
       setMealFiles([]);
-      router.push("/dashboard");
+      router.push("/dashboard/trainer-summary");
     } else if (createMealResponse?.error) {
       console.log("err msg", createMealResponse?.error);
     }
@@ -92,7 +91,7 @@ const MealCategories = ({ mealPlanLoading, allMealPlansData }) => {
       value: "Snacks",
     },
   ];
-  // console.log("mealplan data", allMealPlansData?.data);
+  console.log("🚀 mealplan data", allMealPlansData);
   const mealPlanItems = allMealPlansData?.data?.map((mealPlan) => (
     {
       _id: mealPlan?._id,
@@ -100,6 +99,9 @@ const MealCategories = ({ mealPlanLoading, allMealPlansData }) => {
       value: mealPlan?.mealPlan_name,
     }
   ));
+
+  // console.log("🚀 mealPlan items", mealPlanItems);
+
   if (mealPlanLoading) {
     return (
       <div className="min-h-[80vh] flex justify-center items-center">

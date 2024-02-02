@@ -22,7 +22,7 @@ const MealPlanList = () => {
       refetchOnMountOrArgChange: true,
     }
   );
-  console.log("object🇲🇦", data?.data);
+  console.log("🚀selected meal by user", data?.data);
 
   // return
   const columns = [
@@ -33,10 +33,7 @@ const MealPlanList = () => {
     // { name: "Trainer ID", uid: "trainer_id" },
   ];
   const renderCell = useCallback((meal, columnKey) => {
-    // const selectedItems = data?.data[0].ingredients.length;
-    console.log("🚀 meal", meal);
-    // console.log("🚀 meallength", meal.length);
-    // const cellValue = workout[columnKey];
+
     const cellValue = meal?.meal_name;
     const meal_category = meal?.meal_category;
     const ingredients = meal?.ingredients.join(", ");

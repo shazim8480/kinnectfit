@@ -2,14 +2,14 @@ import { useState } from "react";
 import { KFButton } from "@/components/UI/KFButton";
 import { KFInput } from "@/components/UI/KFInput";
 import { useCreateMealPlanMutation } from "@/redux/feature/meal/meal-api";
-import { useGetTrainerByUserQuery, useUpdateUserMutation } from "@/redux/feature/user/user-api";
+import { useGetTrainerByUserQuery } from "@/redux/feature/user/user-api";
 import { PhotoIcon } from "@heroicons/react/24/outline";
 import { Spinner, Textarea } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
 
 import { CldUploadButton, CldImage } from "next-cloudinary";
 import { getItemFromLocalStorage } from "@/lib/utils";
+import { useRouter } from "next/router";
 
 const MealPlanDetails = ({ refetch }) => {
   const userData = getItemFromLocalStorage('userData');
@@ -17,12 +17,12 @@ const MealPlanDetails = ({ refetch }) => {
   // console.log("Userforls",_id)
   //   file upload section
   const [mealPlanFiles, setMealPlanFiles] = useState([]);
+  const router = useRouter();
   // console.log("🚀 MealPlanDetails ~ mealPlanFiles:", mealPlanFiles);
   // console.log(user?.id);
   const [createMealPlan] = useCreateMealPlanMutation();
   const { data: trainerData, isLoading } = useGetTrainerByUserQuery(userData?._id);
   // console.log("UserId Trainer data", trainerData);
-  const [updateUser] = useUpdateUserMutation();
   const {
     register,
     handleSubmit,
@@ -47,6 +47,7 @@ const MealPlanDetails = ({ refetch }) => {
       refetch();
       reset();
       setMealPlanFiles([]);
+      router.push('/dashboard/trainer-summary');
     } else if (createMealPlanResponse?.error) {
       alert(createMealPlanResponse?.error?.data?.errorMessages[0].message);
       console.log("err msg", createMealPlanResponse?.error);

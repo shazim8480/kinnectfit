@@ -1,8 +1,6 @@
-import MealCategories from "@/components/dashboard/MealPlan/MealCategories";
 import MealPlanDetails from "@/components/dashboard/MealPlan/MealPlanDetails";
 import DashboardLayout from "@/layouts/dashboard/DashboardLayout";
-import { useCreateMealPlanMutation, useGetAllMealPlansQuery } from "@/redux/feature/meal/meal-api";
-import { useRouter } from "next/router";
+import { useGetAllMealPlansQuery } from "@/redux/feature/meal/meal-api";
 import { useForm } from "react-hook-form";
 
 const CreateMealPlanPage = () => {

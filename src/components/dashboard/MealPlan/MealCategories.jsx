@@ -17,6 +17,7 @@ const MealCategories = ({ mealPlanLoading, allMealPlansData }) => {
   const userData = getItemFromLocalStorage('userData');
   const accessToken = getItemFromLocalStorage('accessToken');
   const { data: trainerData, isLoading } = useGetTrainerByUserQuery(userData?._id);
+  // console.log("🚀 traier\dat", trainerData);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const router = useRouter();
   const [items, setItems] = useState([]);
@@ -91,7 +92,7 @@ const MealCategories = ({ mealPlanLoading, allMealPlansData }) => {
       value: "Snacks",
     },
   ];
-  console.log("🚀 mealplan data", allMealPlansData);
+  // console.log("🚀 mealplan data", allMealPlansData);
   const mealPlanItems = allMealPlansData?.data?.map((mealPlan) => (
     {
       _id: mealPlan?._id,
@@ -109,13 +110,13 @@ const MealCategories = ({ mealPlanLoading, allMealPlansData }) => {
       </div>
     );
   }
-  if (isLoading) {
-    return (
-      <div className="min-h-[80vh] flex justify-center items-center">
-        <Spinner />
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="min-h-[80vh] flex justify-center items-center">
+  //       <Spinner />
+  //     </div>
+  //   );
+  // }
   // console.log("mealPlanId", mealPlanId);
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

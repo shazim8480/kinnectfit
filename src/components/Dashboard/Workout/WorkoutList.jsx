@@ -57,7 +57,7 @@ const WorkoutList = () => {
         return <p>{workoutCategory}</p>;
       case "workout.modules":
         return (
-          <div>
+          <div className="pl-[2.5rem]">
             <span>{workout?.modules.length} / {workout?.total_modules}</span>
           </div>
         );

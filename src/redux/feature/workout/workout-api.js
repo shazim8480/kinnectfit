@@ -5,7 +5,7 @@ import {
   GET_ALL_WORKOUTS,
   GET_ALL_WORKOUT_MODULES,
   GET_ENROLL_WORKOUT_MODULES_BY_USER,
-  GET_SINGLE_WORKOUT, GET_WORKOUT_MODULE_BY_WORKOUT,
+  GET_SINGLE_WORKOUT, GET_WORKOUT_MODULES_BY_TRAINER, GET_WORKOUT_MODULE_BY_WORKOUT,
   START_WORKOUT,
   UPDATE_WORKOUT_MODULE
 } from "@/constants/url";
@@ -99,6 +99,10 @@ const workoutApi = api.injectEndpoints({
       query: (id) => `${GET_ENROLL_WORKOUT_MODULES_BY_USER}/${id}`,
       providesTags: ["moduleUpdate"],
     }),
+    getWorkoutModuleByTrainerId: builder.query({
+      query: (id) => `${GET_WORKOUT_MODULES_BY_TRAINER}/${id}`,
+      providesTags: ["moduleUpdate"],
+    }),
   }),
   overrideExisting: true,
 });
@@ -115,5 +119,6 @@ export const {
   useEnrollWorkoutModuleMutation,
   useGetEnrolledWorkoutModuleByUserIdQuery,
   useCreateWorkoutModuleMutation,
-  useGetAllWorkoutModulesQuery
+  useGetAllWorkoutModulesQuery,
+  useGetWorkoutModuleByTrainerIdQuery
 } = workoutApi;

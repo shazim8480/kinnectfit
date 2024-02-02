@@ -85,7 +85,6 @@ const MealPlanList = () => {
             {(column) => (
               <TableColumn
                 key={column.uid}
-                align={column.uid === "meal.selected_meals" ? "center" : "start"}
               >
                 {column.name}
               </TableColumn>

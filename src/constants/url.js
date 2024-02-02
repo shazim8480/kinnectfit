@@ -93,4 +93,9 @@ export const ENROLL_WORKOUT_MODULE = "/enrolled-workout/enroll";
 export const GET_ALL_ENROLL_WORKOUT_MODULES = "/enrolled-workout/all-modules";
 export const GET_ENROLL_WORKOUT_MODULES_BY_USER = "/enrolled-workout/user";
 
+/* *************** trainer summary url ****************** */
+export const GET_WORKOUT_MODULES_BY_TRAINER = "/workout-module/trainer";
+
+
+
 

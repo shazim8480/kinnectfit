@@ -1,8 +1,8 @@
 import Header from "@/components/Dashboard/Header";
 import Sidebar from "@/components/Dashboard/Sidebar/Sidebar";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Montserrat } from "next/font/google";
-import { accessTokenFromLS, getItemFromLocalStorage } from "@/lib/utils";
+import { getItemFromLocalStorage } from "@/lib/utils";
 import { useRouter } from "next/router";
 import { Spinner } from "@nextui-org/react";
 const montserrat = Montserrat({

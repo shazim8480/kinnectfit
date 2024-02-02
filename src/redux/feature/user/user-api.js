@@ -1,4 +1,4 @@
-import { GET_ALL_USER, GET_A_USER, GET_TRAINER_BY_USER, UPDATE_USER } from "@/constants/url";
+import { GET_ALL_USER, GET_A_USER, GET_TRAINER_BY_USER } from "@/constants/url";
 import { api } from "@/redux/api/apiSlice";
 
 const updateUserApi = api.injectEndpoints({
@@ -7,14 +7,14 @@ const updateUserApi = api.injectEndpoints({
       query: () => `${GET_ALL_USER}`,
       providesTags: ["users"],
     }),
-    updateUser: builder.mutation({
-      query: ({ data, userId }) => ({
-        url: `${UPDATE_USER}/${userId}`,
-        method: "PUT",
-        body: data,
-      }),
-      invalidatesTags: ["users"],
-    }),
+    // updateUser: builder.mutation({
+    //   query: ({ data, userId }) => ({
+    //     url: `${UPDATE_USER}/${userId}`,
+    //     method: "PUT",
+    //     body: data,
+    //   }),
+    //   invalidatesTags: ["users"],
+    // }),
     getSingleUser: builder.query({
       query: (id) => `${GET_A_USER}/${id}`,
     }),
@@ -26,7 +26,7 @@ const updateUserApi = api.injectEndpoints({
 });
 
 export const {
-  useUpdateUserMutation,
+  // useUpdateUserMutation,
   useGetAllUsersQuery,
   useGetSingleUserQuery,
   useGetTrainerByUserQuery

@@ -3,7 +3,7 @@ import {
   CREATE_MEAL_PLAN,
   GET_ALL_MEALS,
   GET_ALL_MEALS_BY_MEAL_PLAN,
-  GET_ALL_MEAL_PLANS, GET_MEALS_BY_TRAINER, GET_MEAL_BY_MEAL_PLAN,
+  GET_ALL_MEAL_PLANS, GET_MEALS_BY_TRAINER,
   GET_MEAL_PLAN_BY_TRAINER,
   GET_SELECTED_MEALS_BY_USER_ID,
   GET_SINGLE_MEAL_PLAN,
@@ -60,10 +60,7 @@ const mealApi = api.injectEndpoints({
       query: (id) => `${GET_SINGLE_MEAL_PLAN}/${id}`,
       provideTags: ["mealPlans"],
     }),
-    getMealByMealPlanID: builder.query({
-      query: (id) => `${GET_MEAL_BY_MEAL_PLAN}/${id}`,
-      provideTags: ["meals"],
-    }),
+
     getGroupedMealsByMealPlanID: builder.query({
       query: (id) => `${GET_ALL_MEALS_BY_MEAL_PLAN}/${id}`,
       provideTags: ["meals"],
@@ -101,7 +98,6 @@ export const {
   useGetAllMealPlansQuery,
   useGetSingleMealPlanQuery,
   useCreateMealMutation,
-  useGetMealByMealPlanIDQuery,
   useGetGroupedMealsByMealPlanIDQuery,
   useGetFeaturedMealPlansQuery,
   useSelectMealMutation,

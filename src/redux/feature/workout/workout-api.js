@@ -5,9 +5,7 @@ import {
   GET_ALL_WORKOUTS,
   GET_ALL_WORKOUT_MODULES,
   GET_ENROLL_WORKOUT_MODULES_BY_USER,
-  GET_SINGLE_WORKOUT, GET_WORKOUT_MODULES_BY_TRAINER, GET_WORKOUT_MODULE_BY_WORKOUT,
-  START_WORKOUT,
-  UPDATE_WORKOUT_MODULE
+  GET_SINGLE_WORKOUT, GET_WORKOUT_MODULES_BY_TRAINER, GET_WORKOUT_MODULE_BY_WORKOUT
 } from "@/constants/url";
 import { api } from "@/redux/api/apiSlice";
 
@@ -48,14 +46,6 @@ const workoutApi = api.injectEndpoints({
       providesTags: ["moduleUpdate"],
     }),
 
-    startWorkout: builder.mutation({
-      query: ({ data, userId }) => ({
-        url: `${START_WORKOUT}/${userId}`,
-        method: "PUT",
-        body: data,
-      }),
-      invalidatesTags: ["moduleUpdate"],
-    }),
 
     getSingleWorkout: builder.query({
       query: (id) => `${GET_SINGLE_WORKOUT}/${id}`,
@@ -63,14 +53,7 @@ const workoutApi = api.injectEndpoints({
     getAllWorkoutModules: builder.query({
       query: () => `${GET_ALL_WORKOUT_MODULES}`,
     }),
-    updateWorkoutModule: builder.mutation({
-      query: ({ data, id, module_id }) => ({
-        url: `${UPDATE_WORKOUT_MODULE}/${id}/${module_id}`,
-        method: "PUT",
-        body: data,
-      }),
-      invalidatesTags: ["moduleUpdate"],
-    }),
+
     createWorkoutModule: builder.mutation({
       query: ({ data, accessToken }) => ({
         url: `${CREATE_WORKOUT_MODULE}`,
@@ -109,11 +92,9 @@ const workoutApi = api.injectEndpoints({
 
 export const {
   useCreateWorkoutMutation,
-  useStartWorkoutMutation,
   useGetAllWorkoutsQuery,
   useGetFeaturedWorkoutsQuery,
   useGetSingleWorkoutQuery,
-  useUpdateWorkoutModuleMutation,
   useGetUserWorkoutByIdQuery,
   useGetWorkoutModuleByWorkoutIdQuery,
   useEnrollWorkoutModuleMutation,

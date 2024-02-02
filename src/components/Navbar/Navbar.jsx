@@ -19,9 +19,10 @@ import { ChevronDown } from "@/assets/icons/ChevronDown";
 import { useRouter } from "next/router";
 
 import Link from "next/link";
-import { accessTokenFromLS, getItemFromLocalStorage } from "@/lib/utils";
+import { getItemFromLocalStorage } from "@/lib/utils";
 
 export default function KFNavbar() {
+  const accessTokenFromLS = getItemFromLocalStorage('accessToken');
   const [accessToken, setAccessToken] = useState(accessTokenFromLS);
   useEffect(() => {
     const updatedAccessToken = localStorage.getItem('accessToken'); // Replace with your actual logic

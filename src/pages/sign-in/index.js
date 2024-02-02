@@ -158,18 +158,18 @@ const SignInPage = () => {
           <div className="flex items-center justify-around mt-10">
             <div className="p-5 mr-5 rounded-md shadow-sm bg-blue-50">
               <h5 className="font-medium text-blue-900">Admin</h5>
-              <p className="pt-2">test@gmail.com</p>
-              <p className="pt-1">1234</p>
+              <p className="pt-2">admin@gmail.com</p>
+              <p className="pt-1">112022</p>
             </div>
             <div className="p-5 mr-5 rounded-md shadow-sm bg-blue-50">
               <h5 className="font-medium text-blue-900">Trainer</h5>
-              <p className="pt-2">trainer2@gmail.com</p>
-              <p className="pt-1">1234</p>
+              <p className="pt-2">trainer@gmail.com</p>
+              <p className="pt-1">112022</p>
             </div>
             <div className="p-5 mr-5 rounded-md shadow-sm bg-blue-50">
               <h5 className="font-medium text-blue-900">User</h5>
-              <p className="pt-2">adnan@gmail.com</p>
-              <p className="pt-1">1234</p>
+              <p className="pt-2">user@gmail.com</p>
+              <p className="pt-1">112022</p>
             </div>
           </div>
         </form>

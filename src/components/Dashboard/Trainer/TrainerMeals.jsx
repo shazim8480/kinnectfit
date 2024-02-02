@@ -19,7 +19,7 @@ const TrainerMeals = () => {
     const userData = getItemFromLocalStorage('userData');
     // console.log("🚀 userData", userData?._id);
     const { data: trainerData, isLoading: trainerLoading } = useGetTrainerByUserQuery(userData?._id);
-    // console.log("🚀 trainerData", trainerData);
+    console.log("🚀 trainerData", trainerData?.data?._id);
     // return;
     const { data, isLoading } = useGetMealByTrainerIDQuery(
         trainerData?.data?._id,
@@ -27,7 +27,7 @@ const TrainerMeals = () => {
             refetchOnMountOrArgChange: true,
         }
     );
-    console.log("☘️meals by trainer", data?.data);
+    // console.log("☘️meals by trainer", data);
     // return;
 
     // return
@@ -90,7 +90,7 @@ const TrainerMeals = () => {
             </div>
         );
     }
-
+    // console.log("🚀 See data", data?.data);
     return (
         <>
             <h3 className="font-bold my-5">Created meal</h3>

@@ -89,7 +89,7 @@ const WorkoutList = () => {
               </TableColumn>
             )}
           </TableHeader>
-          <TableBody items={data?.data}>
+          <TableBody items={data?.data }>
             {(item) => (
               <TableRow TableRow key={item._id}>
                 {(columnKey) => {

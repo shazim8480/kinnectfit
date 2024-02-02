@@ -72,7 +72,7 @@ const MealPlanList = () => {
       </div>
     );
   }
-
+  console.log("🚀 seelcected", data?.data);
   return (
     <>
       <h3 className="font-bold my-5">Selected meals</h3>

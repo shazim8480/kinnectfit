@@ -1,5 +1,5 @@
-export const PROTOCOL_HOST = "http://localhost:8000/api/kv1";
-// export const PROTOCOL_HOST = "https://kinnectfit-backend.onrender.com/api/kv1";
+// export const PROTOCOL_HOST = "http://localhost:8000/api/kv1";
+export const PROTOCOL_HOST = "https://kinnectfit-backend-v2.onrender.com/api/kv1";
 
 /* *************** Auth  url ****************** */
 

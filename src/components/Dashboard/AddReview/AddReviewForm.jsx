@@ -63,7 +63,7 @@ const AddReviewForm = ({
     if (mealPlanData?.data !== undefined) {
       mealPlansRefetch();
     }
-  }, [data, mealPlanData]);
+  }, [data, mealPlanData, mealPlansRefetch, workoutsRefetch]);
 
   // console.log("meal data", mealPlanData);
   const workoutCategoryNames = allWorkouts?.data?.map((workout) => ({

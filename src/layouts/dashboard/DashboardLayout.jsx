@@ -24,7 +24,7 @@ const DashboardLayout = ({ children }) => {
     };
 
     checkAuthentication();
-  }, [accessToken]);
+  }, [accessToken, router]);
 
   if (loading) {
     return <div className="min-h-[80vh] flex justify-center items-center">

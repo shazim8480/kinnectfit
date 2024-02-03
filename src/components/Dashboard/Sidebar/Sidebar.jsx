@@ -32,7 +32,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     );
     let isUserTrainer = matchedTrainer?.isTrainer;
     setIsTrainer(isUserTrainer);
-  }, [allTrainerData]);
+  }, [allTrainerData, trainersRefetch, userID]);
 
   // console.log("is trainer", isTrainer);
 

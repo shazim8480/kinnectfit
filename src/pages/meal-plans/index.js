@@ -3,7 +3,7 @@ import MainLayout from "@/layouts/mainLayout";
 import { KFInput } from "@/components/UI/KFInput";
 import { mealData } from "@/lib/db/meal-data";
 import MealPlanCard from "@/components/MealPlanCard/MealPlanCard";
-import { Checkbox, CheckboxGroup, Chip, Pagination } from "@nextui-org/react";
+import { Card, Checkbox, CheckboxGroup, Chip, Pagination, Skeleton } from "@nextui-org/react";
 import { useGetAllMealPlansQuery } from "@/redux/feature/meal/meal-api";
 
 const MealPlansPage = () => {
@@ -13,7 +13,7 @@ const MealPlansPage = () => {
 
     const categories = groupSelected.join('&mealPlan_category=');
 
-    const { data: mealPlan_data } = useGetAllMealPlansQuery({
+    const { data: mealPlan_data, isLoading } = useGetAllMealPlansQuery({
         searchTerm: searchMealPlan,
         page: currentPage,
         categories,
@@ -81,9 +81,21 @@ const MealPlansPage = () => {
                     })}
                 </CheckboxGroup>
                 <div className="grid max-w-screen-xl grid-cols-2 gap-6  mx-auto place-items-center lg:place-content-center lg:gap-8 xl:gap-8 lg:py-8 lg:grid-cols-4">
-                    {mealPlan_data?.data?.map((item) => {
-                        return <MealPlanCard key={item.id} mealItem={item} />;
-                    })}
+
+                    {isLoading || !mealPlan_data?.data ? (
+                        Array.from({ length: 12 }).map((_, index) => (
+                            <Skeleton key={index} className="rounded-lg">
+                                <Card
+                                    className="lg:w-[300px] lg:h-[300px] w-[400px] h-[400px]"
+                                    radius="lg"
+                                ></Card>
+                            </Skeleton>
+                        ))
+                    ) : (
+                        mealPlan_data?.data.map((mealItem, index) => (
+                            <MealPlanCard key={index} mealItem={mealItem} />
+                        ))
+                    )}
                 </div>
 
                 {/* pagination */}

@@ -60,7 +60,7 @@ const TrainerForm = () => {
         shouldDirty: true,
       });
     }
-  }, [calculatedBmi]);
+  }, [calculatedBmi, resetField, setValue]);
 
   const onSubmit = async (data) => {
     if (Object.keys(errors).length === 0) {

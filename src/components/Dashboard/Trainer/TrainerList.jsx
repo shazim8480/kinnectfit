@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState } from "react";
 import {
   Table,
   TableHeader,
@@ -6,18 +7,14 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  User,
-  Chip,
-  Tooltip,
+  User, Tooltip,
   Spinner,
-  useDisclosure,
+  useDisclosure
 } from "@nextui-org/react";
 import { EyeIcon } from "@/assets/icons/EyeIcon";
-import { columns, users } from "@/lib/db/trainer-data";
+import { columns } from "@/lib/db/trainer-data";
 import DropdownStatus from "./DropdownStatus";
-import { PROTOCOL_HOST } from "@/constants/url";
 import moment from "moment";
-import { useFetch } from "@/hooks/useFetch";
 import TrainerDetails from "./TrainerDetails";
 import { useGetAllTrainersQuery } from "@/redux/feature/trainer/trainer-api";
 import { getItemFromLocalStorage } from "@/lib/utils";
@@ -44,7 +41,7 @@ export default function TrainerList() {
   // console.log("trainerList", trainerList);
 
   const handleEyeButton = (trainerId) => {
-    console.log(" 🚀 trainerId", trainerId);
+    // console.log(" 🚀 trainerId", trainerId);
     setSelectedTrainer(trainerId);
     // return;
     onOpen();
@@ -96,7 +93,7 @@ export default function TrainerList() {
       default:
         return cellValue;
     }
-  }, []);
+  }, [handleEyeButton]);
 
   // const trainers = trainerList?.trainers;
 

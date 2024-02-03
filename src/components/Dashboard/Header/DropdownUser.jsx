@@ -46,6 +46,7 @@ const DropdownUser = () => {
     // console.log("logged out");
     localStorage.removeItem('userData');
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('startTodayData');
     dispatch(logOutUser());
     router.push("/");
   };

@@ -4,13 +4,10 @@ import { KFButton } from "@/components/UI/KFButton";
 import DashboardLayout from "@/layouts/dashboard/DashboardLayout";
 import { useCreateWorkoutModuleMutation, useCreateWorkoutMutation } from "@/redux/feature/workout/workout-api";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
 import { useSelector } from "react-redux";
-import { useUpdateUserMutation } from "@/redux/feature/user/user-api";
-import { removeWorkoutCover } from "@/redux/feature/workout/workoutSlice";
 import { getItemFromLocalStorage } from "@/lib/utils";
 
 const CreateWorkoutPage = () => {
@@ -24,7 +21,6 @@ const CreateWorkoutPage = () => {
   const workoutState = useSelector((state) => state.workout);
   console.log("cover of workout", workoutState);
   const [workoutId, setWorkoutId] = useState("");
-  const [updateUser] = useUpdateUserMutation();
   const [createWorkout] = useCreateWorkoutMutation();
   const [createWorkoutModule] = useCreateWorkoutModuleMutation();
 
@@ -90,38 +86,6 @@ const CreateWorkoutPage = () => {
       }
     }
 
-
-    // if (Object.keys(errors).length === 0) {
-    // }
-
-    return;
-    const newWorkoutObj = {
-      ...data,
-      workout_cover: workoutState.workout_cover[0],
-      trainer_id: user?.id,
-    };
-    console.log("data to post ===>", newWorkoutObj);
-    // return;
-    let createWorkoutResponse = await createWorkout(newWorkoutObj);
-    console.log("createWorkoutResponse", createWorkoutResponse);
-    const updateUserInfo = {
-      data: {
-        workout: data,
-      },
-      userId: user?.id,
-    };
-    // console.log("mealplan-response", createMealPlanResponse?.data?.status);
-    // console.log("updateuserinfo", updateUserInfo);
-    // return;
-    if (createWorkoutResponse?.data?.status === 201) {
-      const result = await updateUser(updateUserInfo);
-      dispatch(removeWorkoutCover());
-      router.push("/dashboard");
-      // console.log(result);
-      // reset();
-    } else if (createWorkoutResponse?.error) {
-      console.log("err msg", createWorkoutResponse?.error);
-    }
   };
 
   const handleNext = () => {

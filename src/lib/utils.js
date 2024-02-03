@@ -8,8 +8,11 @@ export default function cn(...inputs) {
 // Generic function to retrieve data from localStorage
 export const getItemFromLocalStorage = (key) => {
   try {
-    const item = localStorage.getItem(key);
-    return item ? JSON.parse(item) : null;
+    if (typeof window !== 'undefined') {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : null;
+    }
+
   } catch (error) {
     console.error(`Error retrieving data from localStorage for key '${key}':`, error);
     return null;

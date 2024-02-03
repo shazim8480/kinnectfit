@@ -25,7 +25,7 @@ export default function KFNavbar() {
   const accessTokenFromLS = getItemFromLocalStorage('accessToken');
   const [accessToken, setAccessToken] = useState(accessTokenFromLS);
   useEffect(() => {
-    const updatedAccessToken = localStorage.getItem('accessToken'); // Replace with your actual logic
+    const updatedAccessToken = localStorage.getItem('accessToken');
     setAccessToken(updatedAccessToken);
   }, [accessToken]);
   const router = useRouter();
@@ -38,8 +38,10 @@ export default function KFNavbar() {
   const handleLogout = () => {
     localStorage.removeItem('userData');
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('startTodayData');
     setAccessToken(null);
     dispatch(logOutUser());
+    router.push('/');
   };
 
   const menuItems = ["Workout Plans", "Find your Meal", "Be a Trainer"];

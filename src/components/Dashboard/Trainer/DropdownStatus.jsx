@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import {
   Dropdown,
@@ -51,7 +52,7 @@ export default function DropdownStatus({ trainerStatus, trainerId }) {
 
   useEffect(() => {
     handleStatusUpdate();
-  }, [selectedKeys]);
+  }, [handleStatusUpdate]);
 
   const handleApproved = async (user) => {
     const approveData = {

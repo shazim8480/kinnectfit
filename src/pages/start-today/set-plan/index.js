@@ -33,7 +33,11 @@ const SetPlanPage = () => {
     }
     // console.log("plan", data, selectedItems[0]);
     const selectedPlan = selectedItems[0];
-    dispatch(setFormValues({ ...formData, plan: selectedPlan }));
+    const startTodayData = { ...formData, plan: selectedPlan };
+    localStorage.setItem('startTodayData', JSON.stringify(startTodayData));
+    // console.log("🚀 start today",);
+    // return;
+    // dispatch(setFormValues({ ...formData, plan: selectedPlan }));
     router.push("recommended-plans");
   };
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Checkbox, CheckboxGroup, Chip, Pagination } from "@nextui-org/react";
+import { Card, Checkbox, CheckboxGroup, Chip, Pagination, Skeleton } from "@nextui-org/react";
 import MainLayout from "@/layouts/mainLayout";
 import { KFInput } from "@/components/UI/KFInput";
 import WorkoutCard from "@/components/Workout-Items/WorkoutCard";
@@ -13,12 +13,12 @@ const Workouts = () => {
 
   const categories = groupSelected.join('&workout_category=');
 
-  const { data: workout_data } = useGetAllWorkoutsQuery({
+  const { data: workout_data, isLoading } = useGetAllWorkoutsQuery({
     searchTerm: searchWorkout,
     page: currentPage,
     categories,
   });
-  console.log("🚀 current page", workout_data);
+  // console.log("🚀 current page", workout_data);
 
   const pageLimit = workout_data?.meta?.total / 12;
 
@@ -80,9 +80,21 @@ const Workouts = () => {
         })}
       </CheckboxGroup>
       <div className="grid max-w-screen-xl grid-cols-1 gap-6 px-4 py-8 mx-auto place-items-center lg:place-content-center lg:gap-8 xl:gap-8 lg:py-16 lg:grid-cols-4">
-        {workout_data?.data?.map((item) => {
-          return <WorkoutCard key={item?.workout_id} workoutItem={item} />;
-        })}
+
+        {isLoading || !workout_data?.data ? (
+          Array.from({ length: 12 }).map((_, index) => (
+            <Skeleton key={index} className="rounded-lg">
+              <Card
+                className="lg:w-[300px] lg:h-[300px] w-[400px] h-[400px]"
+                radius="lg"
+              ></Card>
+            </Skeleton>
+          ))
+        ) : (
+          workout_data?.data.map((workoutItem, index) => (
+            <WorkoutCard key={index} workoutItem={workoutItem} />
+          ))
+        )}
       </div>
 
       {/* pagination */}

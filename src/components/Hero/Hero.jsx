@@ -5,13 +5,19 @@ import hero_img from "@/assets/images/hero-img.webp";
 import RightArrowIcon from "@/assets/icons/RightArrowIcon";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
+import { getItemFromLocalStorage } from "@/lib/utils";
 
 const Hero = () => {
   const router = useRouter();
-  const { isAuthenticated } = useSelector((state) => state.user);
+  const userData = getItemFromLocalStorage('userData');
+  const accessToken = getItemFromLocalStorage('accessToken');
   const handleStart = () => {
-    if (isAuthenticated) {
-      router.push("start-today");
+    if (accessToken) {
+      if (userData?.role === 'user') {
+        router.push("start-today");
+      } else {
+        return;
+      }
     } else {
       router.push("sign-in");
     }

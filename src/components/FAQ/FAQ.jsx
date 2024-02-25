@@ -30,13 +30,10 @@ export default function FAQ() {
     <div className="mb-16">
       <div className="px-6 py-16 mx-auto max-w-7xl lg:px-8 lg:py-24">
         <div className="max-w-4xl mx-auto divide-y divide-gray-900/10">
-          {/* <HeadingText
-            title={"Frequently asked questions"}
-            className="pt-0 text-left"
-          /> */}
-          <h2 className="text-3xl font-semibold leading-10 tracking-tight text-blue-700">
-            Frequently asked questions
-          </h2>
+          <HeadingText
+            title="Frequently asked questions"
+            className="text-center"
+          />
           <dl className="mt-20 space-y-6 divide-y divide-gray-900/10">
             {faqs.map((faq) => (
               <Disclosure as="div" key={faq.question} className="pt-6">

@@ -1,31 +1,39 @@
 import { useState } from "react";
-import { Checkbox, CheckboxGroup, Chip } from "@nextui-org/react";
+import { Card, Checkbox, CheckboxGroup, Chip, Pagination, Skeleton } from "@nextui-org/react";
 import MainLayout from "@/layouts/mainLayout";
 import { KFInput } from "@/components/UI/KFInput";
 import WorkoutCard from "@/components/Workout-Items/WorkoutCard";
 import { useGetAllWorkoutsQuery } from "@/redux/feature/workout/workout-api";
 
 const Workouts = () => {
-  const { data: workout_data } = useGetAllWorkoutsQuery();
-  console.log("workout data from workouts page", workout_data);
-  const [searchProduct, setSearchProduct] = useState("");
+
+  const [searchWorkout, setSearchWorkout] = useState("");
   const [groupSelected, setGroupSelected] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const categories = groupSelected.join('&workout_category=');
+
+  const { data: workout_data, isLoading } = useGetAllWorkoutsQuery({
+    searchTerm: searchWorkout,
+    page: currentPage,
+    categories,
+  });
+  // console.log("🚀 current page", workout_data);
+
+  const pageLimit = workout_data?.meta?.total / 12;
+
+  const uniqueCategory = [];
+  workout_data?.data?.map((workout) => {
+    if (!uniqueCategory.includes(workout?.workout_category)) {
+      uniqueCategory.push(workout?.workout_category);
+    }
+  });
 
   const handleInputSearch = (e) => {
-    const { name, value } = e.target;
-    setSearchProduct(value);
+    const { value } = e.target;
+    setSearchWorkout(value);
   };
 
-  const filteredProducts = workout_data?.workouts?.filter((item) => {
-    const searchMatch = item.workout_name
-      .toLowerCase()
-      .includes(searchProduct.toLowerCase());
-
-    const categoryMatch =
-      groupSelected.length === 0 || groupSelected.includes(item.category);
-
-    return searchMatch && categoryMatch;
-  });
   return (
     <section className="max-w-screen-xl px-4 py-10 mx-auto">
       <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800">
@@ -37,7 +45,7 @@ const Workouts = () => {
         isRequired
         variant="bordered"
         placeholder="Search Here ..."
-        value={searchProduct}
+        value={searchWorkout}
         onChange={handleInputSearch}
         type="text"
         className="w-full mb-4 md:w-1/2"
@@ -60,23 +68,40 @@ const Workouts = () => {
       <CheckboxGroup
         orientation="horizontal"
         color="secondary"
-        defaultValue={["hiit", "yoga"]}
         value={groupSelected}
         onChange={setGroupSelected}
       >
-        {workout_data?.workouts?.map((item) => {
+        {uniqueCategory.map((item) => {
           return (
-            <Checkbox key={item.category} value={item.category}>
-              {item.category}
+            <Checkbox key={item} value={item}>
+              {item}
             </Checkbox>
           );
         })}
       </CheckboxGroup>
       <div className="grid max-w-screen-xl grid-cols-1 gap-6 px-4 py-8 mx-auto place-items-center lg:place-content-center lg:gap-8 xl:gap-8 lg:py-16 lg:grid-cols-4">
-        {filteredProducts?.map((item) => {
-          return <WorkoutCard key={item?.workout_id} workoutItem={item} />;
-        })}
+
+        {isLoading || !workout_data?.data ? (
+          Array.from({ length: 12 }).map((_, index) => (
+            <Skeleton key={index} className="rounded-lg">
+              <Card
+                className="lg:w-[300px] lg:h-[300px] w-[400px] h-[400px]"
+                radius="lg"
+              ></Card>
+            </Skeleton>
+          ))
+        ) : (
+          workout_data?.data.map((workoutItem, index) => (
+            <WorkoutCard key={index} workoutItem={workoutItem} />
+          ))
+        )}
       </div>
+
+      {/* pagination */}
+      <div className="flex justify-end">
+        <Pagination showControls onChange={setCurrentPage} color="secondary" total={Math.ceil(pageLimit)} initialPage={1} />
+      </div>
+      {/* pagination ends */}
     </section>
   );
 };

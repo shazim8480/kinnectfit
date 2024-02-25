@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { Montserrat } from "next/font/google";
 
@@ -26,6 +26,15 @@ const SignInPage = () => {
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
 
+  const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+
+  const setCredentials = (emailValue, passwordValue) => {
+    // Update state with the new values
+    setUserEmail(emailValue);
+    setUserPassword(passwordValue);
+  };
+
   const {
     register,
     handleSubmit,
@@ -37,16 +46,21 @@ const SignInPage = () => {
   const [signIn] = useSignInMutation();
 
   const onSubmit = async (data) => {
-    // e.preventDefault();
-    // console.log(data);
     if (Object.keys(errors).length === 0) {
       let signInResponse = await signIn(data);
-      // console.log("sign in response", signInResponse);
-      if (signInResponse?.data?.status === 200) {
-        dispatch(setUser(signInResponse?.data?.user));
-        router.push("/");
+      const accessToken = signInResponse?.data?.data?.accessToken;
+      const userData = signInResponse?.data?.data?.user;
+      // Store user data or token in localStorage
+
+      if (signInResponse?.data?.statusCode === 200) {
+        localStorage.setItem('accessToken', JSON.stringify(accessToken));
+        localStorage.setItem('userData', JSON.stringify(userData));
+        dispatch(setUser(signInResponse?.data?.data));
+        const mealPlanRedirectUrl = sessionStorage.getItem('mealPlanRedirectUrl');
+        sessionStorage.removeItem('mealPlanRedirectUrl');
+        router.push(mealPlanRedirectUrl || "/");
+
       } else if (signInResponse?.error) {
-        console.log("err msg", signInResponse?.error);
         setError("email", {
           message: signInResponse?.error?.data?.message,
         });
@@ -75,7 +89,7 @@ const SignInPage = () => {
               },
             })}
             variant="bordered"
-            placeholder="Enter your email"
+            placeholder={"Enter your email"}
             endContent={
               <MailIcon className="flex-shrink-0 text-2xl pointer-events-none text-default-400" />
             }
@@ -94,6 +108,7 @@ const SignInPage = () => {
             name="password"
             label="Password"
             variant="bordered"
+            // defaultValue={isUser ? isUser.password : null}
             {...register("password", {
               required: "*Password is required",
               minLength: {
@@ -139,6 +154,24 @@ const SignInPage = () => {
           <span className="text-sm ml-2 hover:text-[#0C134F] cursor-pointer">
             Forgot Password ?
           </span> */}
+
+          <div className="flex items-center justify-around mt-10">
+            <div className="p-5 mr-5 rounded-md shadow-sm bg-blue-50">
+              <h5 className="font-medium text-blue-900">Admin</h5>
+              <p className="pt-2">admin@gmail.com</p>
+              <p className="pt-1">112022</p>
+            </div>
+            <div className="p-5 mr-5 rounded-md shadow-sm bg-blue-50">
+              <h5 className="font-medium text-blue-900">Trainer</h5>
+              <p className="pt-2">trainer@gmail.com</p>
+              <p className="pt-1">112022</p>
+            </div>
+            <div className="p-5 mr-5 rounded-md shadow-sm bg-blue-50">
+              <h5 className="font-medium text-blue-900">User</h5>
+              <p className="pt-2">user@gmail.com</p>
+              <p className="pt-1">112022</p>
+            </div>
+          </div>
         </form>
       </div>
       <div className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-tr from-[#0C134F] to-[#1D267D] i justify-around items-center hidden">

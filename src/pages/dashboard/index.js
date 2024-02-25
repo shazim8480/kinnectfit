@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import DashboardLayout from "@/layouts/dashboard/DashboardLayout";
+
 const DashboardPage = () => {
+
   return (
     <div>
       <h3>This is dashboard page</h3>

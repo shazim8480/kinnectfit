@@ -1,10 +1,16 @@
-import DashboardLayout from '@/layouts/dashboard/DashboardLayout';
-import React from 'react';
+import DashboardLayout from "@/layouts/dashboard/DashboardLayout";
+import TrainerWorkouts from "@/components/Dashboard/Workout/TrainerWorkouts";
+import TrainerMealPlans from "@/components/Dashboard/Trainer/TrainerMealPlans";
+import TrainerMeals from "@/components/Dashboard/Trainer/TrainerMeals";
+
 const TrainerSummaryPage = () => {
+
     return (
-        <div>
-            <h3>This is trainer summary page.</h3>
-        </div>
+        <>
+            <TrainerWorkouts />
+            <TrainerMealPlans />
+            <TrainerMeals />
+        </>
     );
 };
 

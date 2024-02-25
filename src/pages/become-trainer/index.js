@@ -1,17 +1,18 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import MainLayout from "@/layouts/mainLayout";
 import TrainerForm from "@/components/BecomeTrainer/TrainerForm";
-import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
+import { getItemFromLocalStorage } from "@/lib/utils";
+import Image from "next/image";
 
 const BecomeTrainerPage = () => {
+  const accessToken = getItemFromLocalStorage('accessToken');
   const router = useRouter();
-  const { user } = useSelector((state) => state?.user);
   useEffect(() => {
-    if (!user) {
+    if (!accessToken) {
       router.push("/");
     }
-  }, [user]);
+  }, [accessToken, router]);
 
   const stats = [
     { label: "Trainers every 24 hours", value: "20+" },
@@ -85,7 +86,7 @@ const BecomeTrainerPage = () => {
               <div className="flex justify-end gap-8 mt-14 sm:-mt-44 sm:justify-start sm:pl-20 lg:mt-0 lg:pl-0">
                 <div className="flex-none pt-32 ml-auto space-y-8 w-44 sm:ml-0 sm:pt-80 lg:order-last lg:pt-36 xl:order-none xl:pt-80">
                   <div className="relative">
-                    <img
+                    <Image
                       src="https://images.unsplash.com/photo-1694459471238-6e55eb657848?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                       alt=""
                       className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
@@ -95,7 +96,7 @@ const BecomeTrainerPage = () => {
                 </div>
                 <div className="flex-none mr-auto space-y-8 w-44 sm:mr-0 sm:pt-52 lg:pt-36">
                   <div className="relative">
-                    <img
+                    <Image
                       src="https://images.unsplash.com/photo-1628935291759-bbaf33a66dc6?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                       alt=""
                       className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
@@ -103,7 +104,7 @@ const BecomeTrainerPage = () => {
                     <div className="absolute inset-0 pointer-events-none rounded-xl ring-1 ring-inset ring-gray-900/10" />
                   </div>
                   <div className="relative">
-                    <img
+                    <Image
                       src="https://images.unsplash.com/photo-1588731234159-8b9963143fca?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                       alt=""
                       className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
@@ -113,7 +114,7 @@ const BecomeTrainerPage = () => {
                 </div>
                 <div className="flex-none pt-32 space-y-8 w-44 sm:pt-0">
                   <div className="relative">
-                    <img
+                    <Image
                       src="https://images.unsplash.com/photo-1626252346582-c7721d805e0d?q=80&w=2874&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                       alt=""
                       className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
@@ -121,7 +122,7 @@ const BecomeTrainerPage = () => {
                     <div className="absolute inset-0 pointer-events-none rounded-xl ring-1 ring-inset ring-gray-900/10" />
                   </div>
                   <div className="relative">
-                    <img
+                    <Image
                       src="https://images.unsplash.com/photo-1670272505284-8faba1c31f7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=528&q=80"
                       alt=""
                       className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
@@ -191,7 +192,7 @@ const BecomeTrainerPage = () => {
 
       {/* Image section */}
       <div className="mt-32 sm:mt-40 xl:mx-auto xl:max-w-7xl xl:px-8">
-        <img
+        <Image
           src="https://images.unsplash.com/photo-1540558870477-e8c59bf88421?q=80&w=2969&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt=""
           className="aspect-[5/2] w-full object-cover xl:rounded-3xl"

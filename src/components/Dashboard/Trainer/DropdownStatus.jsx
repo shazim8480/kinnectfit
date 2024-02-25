@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import {
   Dropdown,
@@ -7,8 +8,16 @@ import {
   Chip,
 } from "@nextui-org/react";
 import { PROTOCOL_HOST } from "@/constants/url";
+import { useCreateTrainerMutation, usePauseTrainerMutation } from "@/redux/feature/trainer/trainer-api";
+import { getItemFromLocalStorage } from "@/lib/utils";
 
 export default function DropdownStatus({ trainerStatus, trainerId }) {
+  // console.log("🚀 trainerStatus", trainerStatus);
+  // console.log("😆 trainerId", trainerId);
+  const accessToken = getItemFromLocalStorage('accessToken');
+  const [createTrainer] = useCreateTrainerMutation();
+  const [pauseTrainer] = usePauseTrainerMutation();
+
   const [selectedKeys, setSelectedKeys] = useState(new Set([trainerStatus]));
   const [localTrainerStatus, setLocalTrainerStatus] = useState(trainerStatus);
 
@@ -43,8 +52,28 @@ export default function DropdownStatus({ trainerStatus, trainerId }) {
 
   useEffect(() => {
     handleStatusUpdate();
-  }, [selectedKeys]);
+  }, [handleStatusUpdate]);
 
+  const handleApproved = async (user) => {
+    const approveData = {
+      data: {
+        user
+      },
+      accessToken
+    };
+    const createTrainerRes = await createTrainer(approveData);
+    // console.log("🚀 createTrainerRes", createTrainerRes);
+  };
+  const handlePaused = async (user) => {
+    const pauseData = {
+      data: {
+        user
+      },
+      accessToken
+    };
+    const pauseTrainerRes = await pauseTrainer(pauseData);
+    // console.log("🛩️ pauseTrainerRes", pauseTrainerRes);
+  };
   return (
     <Dropdown>
       <DropdownTrigger>
@@ -73,9 +102,15 @@ export default function DropdownStatus({ trainerStatus, trainerId }) {
         selectedKeys={selectedKeys}
         onSelectionChange={setSelectedKeys}
       >
-        <DropdownItem key="approved">Approved</DropdownItem>
-        <DropdownItem key="pending">Pending</DropdownItem>
-        <DropdownItem key="paused">Paused</DropdownItem>
+        <DropdownItem onClick={() => handleApproved(trainerId)} key="approved">Approve</DropdownItem>
+        {
+          trainerStatus === 'approved' && <DropdownItem onClick={() => handlePaused(trainerId)} key="paused">Pause</DropdownItem>
+        }
+        {
+          trainerStatus === 'pending' && <DropdownItem key="pending">Pending</DropdownItem>
+        }
+
+        {/* <DropdownItem key="paused">Paused</DropdownItem> */}
       </DropdownMenu>
     </Dropdown>
   );

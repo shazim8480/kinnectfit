@@ -3,28 +3,35 @@ import MainLayout from "@/layouts/mainLayout";
 import { KFInput } from "@/components/UI/KFInput";
 import { mealData } from "@/lib/db/meal-data";
 import MealPlanCard from "@/components/MealPlanCard/MealPlanCard";
-import { Checkbox, CheckboxGroup, Chip } from "@nextui-org/react";
+import { Card, Checkbox, CheckboxGroup, Chip, Pagination, Skeleton } from "@nextui-org/react";
+import { useGetAllMealPlansQuery } from "@/redux/feature/meal/meal-api";
 
 const MealPlansPage = () => {
     const [searchMealPlan, setSearchMealPlan] = useState('');
     const [groupSelected, setGroupSelected] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const categories = groupSelected.join('&mealPlan_category=');
+
+    const { data: mealPlan_data, isLoading } = useGetAllMealPlansQuery({
+        searchTerm: searchMealPlan,
+        page: currentPage,
+        categories,
+    });
+
+    const pageLimit = mealPlan_data?.meta?.total / 12;
+
+    const uniqueCategory = [];
+    mealPlan_data?.data?.map((mealPlan) => {
+        if (!uniqueCategory.includes(mealPlan?.mealPlan_category)) {
+            uniqueCategory.push(mealPlan?.mealPlan_category);
+        }
+    });
+
     const handleInputSearch = (e) => {
         const { name, value } = e.target;
         setSearchMealPlan(value);
     };
-
-    const filteredProducts = mealData?.filter((item) => {
-        const searchMatch = item?.name
-            .toLowerCase()
-            .includes(searchMealPlan.toLowerCase());
-        const categoryMatch =
-            groupSelected.length === 0 || groupSelected.includes(item.category);
-
-        return searchMatch && categoryMatch;
-    });
-
-    const uniqueCategories = Array.from(new Set(mealData?.map(item => item.category)));
-
 
     return (
         <>
@@ -62,11 +69,10 @@ const MealPlansPage = () => {
                 <CheckboxGroup
                     orientation="horizontal"
                     color="secondary"
-                    defaultValue={[]}
                     value={groupSelected}
                     onChange={setGroupSelected}
                 >
-                    {uniqueCategories?.map((item) => {
+                    {uniqueCategory?.map((item) => {
                         return (
                             <Checkbox key={item} value={item}>
                                 {item}
@@ -75,10 +81,29 @@ const MealPlansPage = () => {
                     })}
                 </CheckboxGroup>
                 <div className="grid max-w-screen-xl grid-cols-2 gap-6  mx-auto place-items-center lg:place-content-center lg:gap-8 xl:gap-8 lg:py-8 lg:grid-cols-4">
-                    {filteredProducts?.map((item) => {
-                        return <MealPlanCard key={item.name} mealItem={item} />;
-                    })}
+
+                    {isLoading || !mealPlan_data?.data ? (
+                        Array.from({ length: 12 }).map((_, index) => (
+                            <Skeleton key={index} className="rounded-lg">
+                                <Card
+                                    className="lg:w-[300px] lg:h-[300px] w-[400px] h-[400px]"
+                                    radius="lg"
+                                ></Card>
+                            </Skeleton>
+                        ))
+                    ) : (
+                        mealPlan_data?.data.map((mealItem, index) => (
+                            <MealPlanCard key={index} mealItem={mealItem} />
+                        ))
+                    )}
                 </div>
+
+                {/* pagination */}
+                <div className="flex justify-end">
+                    <Pagination showControls onChange={setCurrentPage} color="secondary" total={Math.ceil(pageLimit)} initialPage={1} />
+                </div>
+                {/* pagination ends */}
+
             </section>
         </>
 

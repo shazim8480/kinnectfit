@@ -2,181 +2,134 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import MainLayout from "@/layouts/mainLayout";
 import Clock from "@/assets/icons/Clock";
-import Star from "@/assets/icons/Star";
 import { UserIcon } from "@/assets/icons/UserIcon";
 import { KFButton } from "@/components/UI/KFButton";
 import { useState } from "react";
-import { Checkbox, Link, User, Chip, cn, Spinner } from "@nextui-org/react";
 import {
-  useGetSingleWorkoutQuery,
-  useGetUserWorkoutByIdQuery,
-  useStartWorkoutMutation,
-  useUpdateWorkoutModuleMutation,
+  useGetAllWorkoutModulesQuery,
+  useGetSingleWorkoutQuery, useGetWorkoutModuleByWorkoutIdQuery
 } from "@/redux/feature/workout/workout-api";
-import { useSelector } from "react-redux";
 import UserCard from "@/components/Workout-Items/UserCard";
+import { getItemFromLocalStorage } from "@/lib/utils";
+import { useGetReviewsByWorkoutIdQuery } from "@/redux/feature/review/review-api";
+import ShowReview from "@/components/ShowReview/ShowReview";
 
 function WorkoutPage() {
+  const [isStarted, setIsStarted] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
+  const userData = getItemFromLocalStorage('userData');
   const router = useRouter();
   const { workoutID } = router.query;
-  // console.log("route query", router?.query);
-  const { user } = useSelector((state) => state.user);
-  // console.log("userinfo ", user);
+  const { data } = useGetSingleWorkoutQuery(workoutID);
+  const { data: workoutModuleData } = useGetWorkoutModuleByWorkoutIdQuery(workoutID);
+  const { data: workoutReviewsData } = useGetReviewsByWorkoutIdQuery(workoutID);
+  const { data: allWorkoutModules } = useGetAllWorkoutModulesQuery();
+  // console.log("🚀 single workoput module data", workoutModuleData?.data[0]?.modules.length);
 
-  const [startWorkout, { isLoading, isSuccess }] = useStartWorkoutMutation();
-  const [updateWorkoutModule] = useUpdateWorkoutModuleMutation();
-  const { data: workoutData } = useGetSingleWorkoutQuery(workoutID);
-  const { data: getworkoutbyuserid } = useGetUserWorkoutByIdQuery(user?.id, {
-    refetchOnMountOrArgChange: true,
-  });
-
-  const [isStarted, setIsStarted] = useState(false);
-
-  const handleStartWorkout = async () => {
-    try {
-      const data = {
-        data: workoutData,
-        userId: user.id,
-      };
-      // console.log(data);
-
-      let startWorkoutResponse = await startWorkout(data);
-      console.log("start workout -", startWorkoutResponse);
-      if (startWorkoutResponse?.data?.status === 200) {
-        setIsStarted(true);
-      } else {
-        console.log("err msg", startWorkoutResponse?.error);
-      }
-    } catch (error) {
-      console.error("Error fetching workout data:", error);
+  const handleStarted = () => {
+    if (userData?.role === 'trainer') {
+      alert("Trainer can't enroll workout modules");
+      return;
     }
+    if (userData?.role === 'admin') {
+      return;
+    }
+    setIsStarted(!isStarted);
   };
-
-  const handleCheck = async (module) => {
-    // console.log("clicked", module);
-    const updateModuleInfo = {
-      data: {
-        isConfirmed: true,
-      },
-      id: workoutID,
-      module_id: module?.id,
-    };
-    const updatedResult = await updateWorkoutModule(updateModuleInfo);
-    console.log("updatedResult", updatedResult);
-
-    if (updatedResult?.data?.status === 200) {
-      setIsStarted(true);
-    } else if (updatedResult?.error) {
-      console.log("err msg", updatedResult?.error);
-    }
+  const handleCompleted = () => {
+    router.push('/dashboard/health-summary');
   };
 
   return (
-    <section className="grid max-w-screen-xl grid-cols-1 grid-rows-1 py-10 mx-auto md:grid-cols-2">
-      <div className="block rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]">
-        <Image
-          removewrapper="true"
-          alt="workout_cover"
-          className="z-0 object-cover w-full"
-          src={
-            workoutData?.workout.workout_cover
-              ? workoutData?.workout.workout_cover
-              : "https://images.unsplash.com/photo-1581009137042-c552e485697a?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          }
-          width={1000}
-          height={300}
-        />
-        <div className="p-6">
-          <h5 className="text-2xl font-bold leading-tight text-blue-900">
-            {workoutData?.workout.workout_name}
-          </h5>
-          <div className="flex gap-3 mt-3">
-            <div className="flex items-center">
-              <UserIcon fill="black" />
-              <p className="ml-1 text-gray-500">
-                {workoutData?.workout.trainer_name}
-              </p>
+    <>
+      {/* workout modules */}
+      <section className="grid max-w-screen-xl grid-cols-1 grid-rows-1 py-10 mx-auto md:grid-cols-2">
+        <div className="block rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]">
+          <Image
+            removewrapper="true"
+            alt="workout_cover"
+            className="z-0 object-cover w-full"
+            src={
+              data?.data?.workout_cover[0]
+            }
+            width={1000}
+            height={300}
+          />
+          <div className="p-6">
+            <h5 className="text-2xl font-bold leading-tight text-blue-900">
+              {data?.data?.workout_name}
+            </h5>
+            <div className="flex gap-3 mt-3">
+              <div className="flex items-center">
+                <UserIcon fill="black" />
+                <p className="ml-1 text-gray-500">
+                  {data?.data?.trainer?.name}
+                </p>
+              </div>
+              <div className="flex items-center">
+                <Clock fill="black" />
+                <p className="ml-1 text-gray-500">
+                  {data?.data?.total_workout_time} min
+                </p>
+              </div>
             </div>
-            <div className="flex items-center">
-              <Clock fill="black" />
-              <p className="ml-1 text-gray-500">
-                {workoutData?.workout.total_workout_time} min
-              </p>
-            </div>
-            <div className="flex items-center">
-              <Star fill="orange" />
-              <p className="ml-1 text-gray-500">
-                {workoutData?.workout.average_rating
-                  ? workoutData?.workout.average_rating
-                  : "4.8"}
-              </p>
-            </div>
+            <h5 className="mt-5 mb-2 text-lg font-medium leading-tight text-gray-800">
+              Workout Overview
+            </h5>
+            <p className="text-gray-500 text-md ">
+              {data?.data?.workout_description}
+            </p>
           </div>
-          <h5 className="mt-5 mb-2 text-lg font-medium leading-tight text-gray-800">
-            Workout Overview
-          </h5>
-          <p className="text-gray-500 text-md ">
-            {workoutData?.workout?.description}
-          </p>
         </div>
-      </div>
-      <div className="block">
-        <div className="px-6 py-6 lg:py-0 xl:py-0">
-          <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800">
-            Workout Modules
-          </h5>
-          <div className="mb-4 text-base text-neutral-600">
-            {isLoading ? (
-              <Spinner />
-            ) : getworkoutbyuserid?.workouts?.some(
-                (e) => e?.workout_id === workoutID
-              ) ? (
-              getworkoutbyuserid?.workouts
-                ?.filter((e) => e?.workout_id === workoutID)
-                ?.map((module, index) => {
-                  // console.log("module if user started workout", module);
-                  return module.workout_modules?.map((module) => (
+        <div className="block">
+          {
+            workoutModuleData?.data.length !== 0 ? <div className="px-6 py-6 lg:py-0 xl:py-0 ">
+              <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800">
+                Workout Modules
+              </h5>
+              <div className="mb-4 text-base text-neutral-600">
+                {
+                  workoutModuleData?.data[0]?.modules.map((module) => (
                     <UserCard
-                      key={module?._id}
+                      key={module?.id}
                       module={module}
-                      handleCheck={handleCheck}
+                      workoutModuleData={workoutModuleData}
                       isStarted={isStarted}
+                      isCompleted={isCompleted}
+                      setIsCompleted={setIsCompleted}
+                      workoutID={workoutID}
                     />
-                  ));
-                })
-            ) : (
-              workoutData?.workout?.workout_modules?.map((module, index) => {
-                // console.log("mod", module);
-                return (
-                  <UserCard
-                    key={module?.id}
-                    module={module}
-                    handleCheck={handleCheck}
-                    isStarted={isStarted}
-                  />
-                );
-              })
-            )}
-          </div>
-          {getworkoutbyuserid?.workouts?.some(
-            (e) => e?.workout_id === workoutID
-          ) ? (
-            <></>
-          ) : (
-            <KFButton
-              color={"secondary"}
-              className="w-full rounded-md"
-              onClick={isStarted ? undefined : handleStartWorkout}
-              isDisabled={getworkoutbyuserid?.workouts?.some(
-                (e) => e?.workout_id === workoutID
-              )}
-            >
-              {"Start Workout"}
-            </KFButton>
-          )}
+                  ))
+                }
+              </div>
+              <KFButton
+                color={!isCompleted ? "secondary" : "primary"}
+                className="w-full rounded-md"
+                onClick={isCompleted ? handleCompleted : handleStarted}
+              >
+                {
+                  isCompleted ? "Complete Workout" : isStarted ? "Pause Workout" : !isStarted && "Start Workout"
+                }
+
+              </KFButton>
+            </div> : <div className="px-6 py-6 lg:py-0 xl:py-0 flex justify-center items-center h-1/2">
+              <p className="font-medium text-xl">No workout modules available</p>
+            </div>
+          }
+
+
         </div>
-      </div>
-    </section>
+      </section>;
+      {/* workout modules ends */}
+
+
+      {/* Show reviews  */}
+      {workoutReviewsData?.data?.map((review) => (
+        <ShowReview key={review?._id} review={review} />
+      )
+      )}
+      {/* Show reviews ends */}
+    </>
   );
 }
 export default WorkoutPage;

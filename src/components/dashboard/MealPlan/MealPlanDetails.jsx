@@ -2,22 +2,27 @@ import { useState } from "react";
 import { KFButton } from "@/components/UI/KFButton";
 import { KFInput } from "@/components/UI/KFInput";
 import { useCreateMealPlanMutation } from "@/redux/feature/meal/meal-api";
-import { useUpdateUserMutation } from "@/redux/feature/user/user-api";
+import { useGetTrainerByUserQuery } from "@/redux/feature/user/user-api";
 import { PhotoIcon } from "@heroicons/react/24/outline";
-import { Select, SelectItem, Textarea } from "@nextui-org/react";
+import { Spinner, Textarea } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
 
 import { CldUploadButton, CldImage } from "next-cloudinary";
+import { getItemFromLocalStorage } from "@/lib/utils";
+import { useRouter } from "next/router";
 
-const MealPlanDetails = () => {
-  const { user } = useSelector((state) => state?.user);
+const MealPlanDetails = ({ refetch }) => {
+  const userData = getItemFromLocalStorage('userData');
+  const accessToken = getItemFromLocalStorage('accessToken');
+  // console.log("Userforls",_id)
   //   file upload section
   const [mealPlanFiles, setMealPlanFiles] = useState([]);
-  console.log("🚀 MealPlanDetails ~ mealPlanFiles:", mealPlanFiles);
+  const router = useRouter();
+  // console.log("🚀 MealPlanDetails ~ mealPlanFiles:", mealPlanFiles);
   // console.log(user?.id);
   const [createMealPlan] = useCreateMealPlanMutation();
-  const [updateUser] = useUpdateUserMutation();
+  const { data: trainerData, isLoading } = useGetTrainerByUserQuery(userData?._id);
+  // console.log("UserId Trainer data", trainerData);
   const {
     register,
     handleSubmit,
@@ -32,37 +37,30 @@ const MealPlanDetails = () => {
   };
 
   const onSubmit = async (data) => {
-    let createMealPlanResponse = await createMealPlan({
-      ...data,
-      mealPlan_cover_img: mealPlanFiles[0],
-      trainer_id: user?.id,
-    });
-    console.log("createMealPlanResponse", createMealPlanResponse);
-    const updateUserInfo = {
-      data: {
-        mealPlan_id: data,
-      },
-      userId: user?.id,
-    };
-    if (createMealPlanResponse?.data?.status === 201) {
-      const result = await updateUser(updateUserInfo);
-      console.log(result);
+    const mealPlanData = { data: { ...data, mealPlan_cover: mealPlanFiles, trainer: trainerData?.data?._id, }, accessToken };
+    // return;
+    let createMealPlanResponse = await createMealPlan(mealPlanData);
+    // console.log("createMealPlanResponse", createMealPlanResponse);
+
+    if (createMealPlanResponse?.data?.statusCode === 200) {
+      // console.log(result);
+      refetch();
       reset();
       setMealPlanFiles([]);
+      router.push('/dashboard/trainer-summary');
     } else if (createMealPlanResponse?.error) {
+      alert(createMealPlanResponse?.error?.data?.errorMessages[0].message);
       console.log("err msg", createMealPlanResponse?.error);
     }
   };
-  const categories = [
-    {
-      label: "Dietary Goals",
-      value: "Dietary Goals",
-    },
-    {
-      label: "Dietary Restrictions",
-      value: "Dietary Restrictions",
-    },
-  ];
+
+  if (isLoading) {
+    return (
+      <div className="min-h-[80vh] flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
+  }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="max-w-xs mx-auto md:max-w-5xl">
@@ -90,29 +88,26 @@ const MealPlanDetails = () => {
             {/*ends meal name */}
 
             {/*starts meal category */}
-            <div className="my-4 ">
+            <div className="my-4">
               <div className="mb-4 text-sm font-medium text-left">
-                <label>Meal plan category</label>
+                <label htmlFor="mealPlan_name">Meal plan category</label>
               </div>
-              <Select
-                items={categories}
-                label="Select meal plan category"
-                className="max-w-l"
+              <KFInput
+                name="mealPlan_category"
+                type="text"
+                placeholder="Give a Meal plan category name"
                 {...register("mealPlan_category", {
-                  required: "Please select meal plan category",
+                  required: "You must need to give a meal plan category name",
                 })}
-              >
-                {(category) => (
-                  <SelectItem key={category.value}>{category.label}</SelectItem>
-                )}
-              </Select>
-              {errors.category && (
+              />
+              {errors.mealPlan_category && (
                 <p className="mt-1 text-left text-red-500">
-                  {errors.category.message}
+                  {errors.mealPlan_category.message}
                 </p>
               )}
             </div>
             {/*ends meal category */}
+
           </div>
 
           {/*starts meal description */}

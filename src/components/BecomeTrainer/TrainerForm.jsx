@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { PhotoIcon } from "@heroicons/react/24/solid";
 import { KFInput } from "../UI/KFInput";
 import { useForm } from "react-hook-form";
 import { KFButton } from "../UI/KFButton";
 import { useSelector } from "react-redux";
 import { calculateBmi } from "@/lib/getBMI";
-import Image from "next/image";
 
 import { CldUploadButton, CldImage } from "next-cloudinary";
-import { useAddTrainerMutation } from "@/redux/feature/trainer/trainer-api";
+import { useTrainerRequestMutation } from "@/redux/feature/trainer/trainer-api";
 import { useRouter } from "next/navigation";
+import { getItemFromLocalStorage } from "@/lib/utils";
 
 const TrainerForm = () => {
   const router = useRouter();
@@ -22,7 +22,7 @@ const TrainerForm = () => {
   } = useForm();
 
   //   add trainer query //
-  const [addTrainer] = useAddTrainerMutation();
+  const [trainerRequest] = useTrainerRequestMutation();
 
   const [weightValue, setWeightValue] = useState(null);
 
@@ -39,8 +39,9 @@ const TrainerForm = () => {
   // console.log("🚀 ~ file: TrainerForm.jsx:16 ~ TrainerForm ~ bmi:", bmi);
   //   console.log(typeof bmi);
 
-  const userProfile = useSelector((state) => state.user);
   // console.log("🚀 ~ userProfile:", userProfile);
+  const userData = getItemFromLocalStorage('userData');
+  const accessToken = getItemFromLocalStorage('accessToken');
 
   //   file upload section
   const [files, setFiles] = useState([]);
@@ -51,24 +52,6 @@ const TrainerForm = () => {
     setFiles(updatedFiles);
   };
 
-  //   const handleFileChange = (e) => {
-  //     // this gives us the data on what files are selected
-  //     // however, it's of type `FileList` which is hard to modify.
-  //     const fileList = e.target.files;
-  //     // let's convert `FileList` into a `File[]`
-  //     if (fileList) {
-  //       const files = [...fileList];
-  //       setFiles(files);
-  //     }
-  //   };
-
-  // transform files into data urls
-  //   const imageUrls = files?.map((file) => URL.createObjectURL(file));
-  //   console.log(
-  //     "🚀 ~ file: TrainerForm.jsx:55 ~ TrainerForm ~ imageUrls:",
-  //     imageUrls
-  //   );
-
   useEffect(() => {
     resetField("bmi");
     if (calculatedBmi) {
@@ -77,28 +60,24 @@ const TrainerForm = () => {
         shouldDirty: true,
       });
     }
-  }, [calculatedBmi]);
+  }, [calculatedBmi, resetField, setValue]);
 
   const onSubmit = async (data) => {
-    // console.log("form data", data);
     if (Object.keys(errors).length === 0) {
       const trainerDataObj = {
-        trainer_id: userProfile?.user?.id,
-        name: userProfile?.user?.name,
+        user: userData?._id,
         age: data.age,
         height: data.height,
         weight: data.weight,
-        BMI: data.bmi,
-        status: "pending",
-        trainerImg: files,
+        bmi: data.bmi,
+        images: files,
       };
-      console.log("trainer submission ready data ===>", trainerDataObj);
-      let addTrainerResponse = await addTrainer(trainerDataObj);
-      console.log("addTrainerResponse", addTrainerResponse);
-      if (addTrainerResponse?.data?.status === 201) {
+      let addTrainerResponse = await trainerRequest({ data: trainerDataObj, accessToken });
+      if (addTrainerResponse?.data?.statusCode === 200) {
         router.push("/dashboard/health-summary");
-      } else {
-        alert("Something went wrong, please try again!");
+      }
+      else {
+        alert(addTrainerResponse?.error?.data?.message);
       }
     }
   };
@@ -121,7 +100,7 @@ const TrainerForm = () => {
               id="name"
               name="name"
               label="name"
-              placeholder={userProfile?.user?.name}
+              placeholder={userData?.name}
               isDisabled
               variant="faded"
               size="xl"
@@ -138,7 +117,7 @@ const TrainerForm = () => {
               id="email"
               name="email"
               label="email"
-              placeholder={userProfile?.user?.email}
+              placeholder={userData?.email}
               isDisabled
               variant="faded"
               size="xl"
@@ -317,6 +296,7 @@ const TrainerForm = () => {
                       //   console.log("showing file", file);
                       return (
                         <CldImage
+                          key={i}
                           className="mr-5"
                           width="140"
                           height="80"

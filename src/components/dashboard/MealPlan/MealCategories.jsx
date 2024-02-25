@@ -1,24 +1,28 @@
 import { KFInput } from "@/components/UI/KFInput";
 import { Select, SelectItem, Spinner } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { KFButton } from "@/components/UI/KFButton";
 import { useForm } from "react-hook-form";
 import { PhotoIcon } from "@heroicons/react/24/outline";
 import {
-  useCreateMealMutation,
-  useGetAllMealPlansQuery,
+  useCreateMealMutation
 } from "@/redux/feature/meal/meal-api";
-import { useSelector } from "react-redux";
-import { useUpdateUserMutation } from "@/redux/feature/user/user-api";
 import { useRouter } from "next/router";
 
 import { CldUploadButton, CldImage } from "next-cloudinary";
+import { getItemFromLocalStorage } from "@/lib/utils";
+import { useGetTrainerByUserQuery } from "@/redux/feature/user/user-api";
 
-const MealCategories = () => {
+const MealCategories = ({ mealPlanLoading, allMealPlansData }) => {
+  const userData = getItemFromLocalStorage('userData');
+  const accessToken = getItemFromLocalStorage('accessToken');
+  const { data: trainerData, isLoading } = useGetTrainerByUserQuery(userData?._id);
+  // console.log("🚀 traier\dat", trainerData);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const router = useRouter();
-  const { user } = useSelector((state) => state?.user);
   const [items, setItems] = useState([]);
-  const [isMealPlanId, setMealPlanId] = useState("");
+  const [mealPlanCategory, setMealPlanCategory] = useState("");
+  const [mealPlanId, setMealPlanId] = useState("");
   const [inputValue, setInputValue] = useState("");
   const {
     register,
@@ -27,28 +31,10 @@ const MealCategories = () => {
     formState: { errors },
   } = useForm();
   const [createMeal] = useCreateMealMutation();
-  const {
-    data,
-    isLoading,
-    refetch: mealPlansRefetch,
-  } = useGetAllMealPlansQuery();
 
-  useEffect(() => {
-    if (data !== undefined) {
-      mealPlansRefetch();
-    }
-  }, [data]);
-
-  console.log("getPlans", data);
-  const [updateUser] = useUpdateUserMutation();
-  const mealPlanCategoryNames = data?.mealPlans?.map((mealPlan) => ({
-    label: mealPlan?.mealPlan_name,
-    value: mealPlan?.mealPlan_name,
-    mealPlan_id: mealPlan?.mealPlan_id,
-  }));
 
   const [mealFiles, setMealFiles] = useState([]);
-  console.log("🚀mealFiles:", mealFiles);
+  // console.log("🚀mealFiles:", mealFiles);
 
   // append upload cover
   const addFile = (newFile) => {
@@ -57,27 +43,25 @@ const MealCategories = () => {
   };
 
   const onSubmit = async (data) => {
-    // console.log(data);
+    // console.log({...data});
     // return;
+
     const mealData = {
-      ...data,
-      meal_img: mealFiles[0],
-      ingredients: items,
-      mealPlan_id: isMealPlanId,
-      trainer_id: user?.id,
-    };
-    const updateUserInfo = {
       data: {
-        meal_id: mealData,
-      },
-      userId: user?.id,
+        ...data,
+        meal_cover: mealFiles,
+        ingredients: items,
+        mealPlan: mealPlanId,
+        trainer: trainerData?.data?._id,
+      }, accessToken
     };
     let createMealResponse = await createMeal(mealData);
-    if (createMealResponse?.data?.status === 201) {
-      const result = await updateUser(updateUserInfo);
+    console.log("createMealResponse", createMealResponse);
+    // return;
+    if (createMealResponse?.data?.statusCode === 200) {
       reset();
       setMealFiles([]);
-      router.push("/dashboard");
+      router.push("/dashboard/trainer-summary");
     } else if (createMealResponse?.error) {
       console.log("err msg", createMealResponse?.error);
     }
@@ -108,15 +92,32 @@ const MealCategories = () => {
       value: "Snacks",
     },
   ];
+  // console.log("🚀 mealplan data", allMealPlansData);
+  const mealPlanItems = allMealPlansData?.data?.map((mealPlan) => (
+    {
+      _id: mealPlan?._id,
+      label: mealPlan?.mealPlan_name,
+      value: mealPlan?.mealPlan_name,
+    }
+  ));
 
-  if (isLoading) {
+  // console.log("🚀 mealPlan items", mealPlanItems);
+
+  if (mealPlanLoading) {
     return (
       <div className="min-h-[80vh] flex justify-center items-center">
         <Spinner />
       </div>
     );
   }
-
+  // if (isLoading) {
+  //   return (
+  //     <div className="min-h-[80vh] flex justify-center items-center">
+  //       <Spinner />
+  //     </div>
+  //   );
+  // }
+  // console.log("mealPlanId", mealPlanId);
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="max-w-xs mx-auto md:max-w-5xl">
@@ -133,6 +134,7 @@ const MealCategories = () => {
                     items={categories}
                     label="Select meal category"
                     className="max-w-l"
+                    onChange={(selectedCategory) => setMealPlanCategory(selectedCategory.value)}
                     {...register(`meal_category`, {
                       required: "Please select meal category",
                     })}
@@ -174,16 +176,16 @@ const MealCategories = () => {
                   <label htmlFor="meal_name">Available meal plans</label>
                 </div>
                 <Select
-                  items={mealPlanCategoryNames}
+                  items={mealPlanItems || []}
                   label="Select available category"
                   className="max-w-l"
-                  {...register(`available_category`, {
-                    required: "Please select available plan",
+                  {...register(`mealPlan`, {
+                    required: "Please select a meal plan",
                   })}
                 >
                   {(category) => (
                     <SelectItem
-                      onClick={() => setMealPlanId(category.mealPlan_id)}
+                      onClick={() => setMealPlanId(category._id)}
                       key={category.value}
                     >
                       {category.label}
@@ -245,8 +247,14 @@ const MealCategories = () => {
                           </span>
                         ))}
                       </div>
+                      {(items.length === 0 && isSubmitted) && (
+                        <p className="mt-1 text-left text-red-500">
+                          Please add an item
+                        </p>
+                      )}
                     </div>
                   </div>
+
                 </div>
               </div>
               {/* Preparation time ends*/}
@@ -262,31 +270,64 @@ const MealCategories = () => {
                       name="protein"
                       size="xl"
                       placeholder="gm"
-                      {...register(`protein`)}
+                      {...register(`protein`, {
+                        required: "Please enter protein quantity",
+                        pattern: {
+                          value: /^(0|[1-9]\d*)$/,
+                          message: "Enter protein in number format",
+                        },
+                      })}
                     />
+                    {errors.protein && (
+                      <p className="mt-1 text-left text-red-500">
+                        {errors.protein.message}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <div className="mb-4 text-sm font-medium text-left">
-                      <label htmlFor="protein">Carbs</label>
+                      <label htmlFor="carbs">Carbs</label>
                     </div>{" "}
                     <KFInput
                       name="carbs"
                       size="xl"
                       placeholder="gm"
-                      {...register(`carbs`)}
+                      {...register(`carbs`, {
+                        required: "Please enter carbs quantity",
+                        pattern: {
+                          value: /^(0|[1-9]\d*)$/,
+                          message: "Enter carbs in number format.",
+                        },
+                      })}
                     />
+                    {errors.carbs && (
+                      <p className="mt-1 text-left text-red-500">
+                        {errors.carbs.message}
+                      </p>
+                    )}
                   </div>
 
                   <div>
                     <div className="mb-4 text-sm font-medium text-left">
-                      <label htmlFor="protein">Fat</label>
+                      <label htmlFor="fat">Fat</label>
                     </div>
                     <KFInput
                       name="fat"
                       size="xl"
                       placeholder="gm"
-                      {...register(`fat`)}
+                      {...register(`fat`, {
+                        required: "Please enter fat quantity",
+                        pattern: {
+                          value: /^(0|[1-9]\d*)$/,
+                          message: "Enter fat in number format.",
+                        },
+                      })}
                     />
+                    {errors.fat && (
+                      <p className="mt-1 text-left text-red-500">
+                        {errors.fat.message}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -354,7 +395,7 @@ const MealCategories = () => {
 
           {/* Submit button */}
           <div className="flex justify-center gap-4 mt-8 text-center">
-            <KFButton color="secondary" size="md" type="submit">
+            <KFButton color="secondary" size="md" type="submit" onClick={() => setIsSubmitted(true)}>
               Create Meal
             </KFButton>
           </div>
